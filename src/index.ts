@@ -4,7 +4,7 @@ import cors from 'cors';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
 import { RequestContext } from '@mikro-orm/core';
-import { orm } from './shared/orm';
+import { orm, syncSchema } from './shared/orm';
 
 dotenv.config();
 
@@ -55,6 +55,22 @@ app.use('*', (_, res) => {
   res.status(404).json({ message: 'Resource not found' });
 });
 
-app.listen(process.env.DEFAULT_PORT, () => {
-  console.log(`Server is listening to port ${process.env.DEFAULT_PORT}`);
-});
+async function startServer() {
+  try {
+    console.log('Initializing MikroORM...');
+    await orm.em.getConnection().connect();
+
+    console.log('Syncing database schema...');
+    await syncSchema();
+    console.log('Database schema synced successfully.');
+
+    app.listen(process.env.DEFAULT_PORT, () => {
+      console.log(`Server is listening to port ${process.env.DEFAULT_PORT}`);
+    });
+  } catch (error) {
+    console.error('Error during server startup:', error);
+    process.exit(1);
+  }
+}
+
+startServer();
