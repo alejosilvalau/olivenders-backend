@@ -35,7 +35,7 @@ const swaggerOptions = {
       contact: {
         name: 'Olivenders Team',
       },
-      servers: [{ url: 'http://localhost:3000' }],
+      servers: [{ url: `http://localhost:${process.env.DEFAULT_PORT}` }],
     },
   },
   apis: ['./dist/components/**/*.routes.js'],
@@ -49,10 +49,10 @@ app.use((req, res, next) => {
   RequestContext.create(orm.em, next);
 });
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
-app.use('/api/usuarios', mageRouter);
+app.use('/api/usuarios', magoRouter);
 
-app.use('*', (req, res, next) => {
-  return res.status(404).json({ message: 'Resource not found' });
+app.use('*', (_, res) => {
+  res.status(404).json({ message: 'Resource not found' });
 });
 
 app.listen(process.env.DEFAULT_PORT, () => {
