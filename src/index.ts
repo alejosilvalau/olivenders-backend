@@ -49,7 +49,7 @@ app.use((req, res, next) => {
   RequestContext.create(orm.em, next);
 });
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
-app.use('/api/usuarios', magoRouter);
+// app.use('/api/usuarios', escuelaRouter);
 
 app.use('*', (_, res) => {
   res.status(404).json({ message: 'Resource not found' });
