@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import swaggerJSDoc from 'swagger-jsdoc';
 
 dotenv.config();
 
@@ -19,6 +20,25 @@ app.use(
     },
   })
 );
+
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Olivernders API',
+      version: '0.0.1',
+      description:
+        'API for wizards to purchase magical wands securely and easily. Supports wand management, user management, questionnaire, sales, and review system.',
+      contact: {
+        name: 'Olivenders Team',
+      },
+      servers: [{ url: 'http://localhost:3000' }],
+    },
+  },
+  apis: ['./dist/components/**/*.routes.js'],
+};
+
+const swaggerDocs = swaggerJSDoc(swaggerOptions);
 
 app.use(express.json());
 
