@@ -26,25 +26,25 @@ const validateEscuelaInput = (req: Request, res: Response, next: NextFunction) =
   }
 };
 
-async function findAll(req: Request, res: Response) {
+async function findAll(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const escuelas = await em.find(Escuela, {});
-    return res.status(200).json(escuelas);
+    res.status(200).json(escuelas);
   } catch (error: any) {
-    return res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 }
 
-async function findOne(req: Request, res: Response) {
+async function findOne(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const id = req.params.id;
     const escuela = await em.findOne(Escuela, { id });
     if (!escuela) {
-      return res.status(404).json({ message: 'School not found' });
+      res.status(404).json({ message: 'School not found' });
     }
-    return res.status(200).json(escuela);
+    res.status(200).json(escuela);
   } catch (error: any) {
-    return res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 }
 
