@@ -4,7 +4,7 @@ import cors from 'cors';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
 import { RequestContext } from '@mikro-orm/core';
-import { orm, syncSchema } from './shared/orm';
+import { orm, syncSchema } from './shared/orm.js';
 
 dotenv.config();
 

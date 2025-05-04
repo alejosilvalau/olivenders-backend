@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { orm } from '../../shared/orm';
-import { Escuela } from './escuela.entity';
+import { orm } from '../../shared/orm.js';
+import { Escuela } from './escuela.entity.js';
 import { z } from 'zod';
 
 const escuelaZodSchema = z.object({
