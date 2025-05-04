@@ -75,11 +75,11 @@ async function findOneByName(req: Request, res: Response) {
 
 async function add(req: Request, res: Response) {
   try {
-    req.body.nombre = req.body.nombre.toUpperCase(); // Transform 'nombre' to uppercase
-    const escuelaExistente = await em.findOne(Escuela, {
+    req.body.nombre = req.body.nombre.toUpperCase();
+    const existingEscuela = await em.findOne(Escuela, {
       email: req.body.email,
     });
-    if (escuelaExistente) {
+    if (existingEscuela) {
       return res.status(409).json({ message: 'The school already exists' });
     } else {
       const escuela = em.create(Escuela, req.body);
