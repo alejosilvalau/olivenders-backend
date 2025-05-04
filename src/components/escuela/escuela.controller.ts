@@ -94,6 +94,7 @@ async function add(req: Request, res: Response) {
 async function update(req: Request, res: Response) {
   try {
     const id = req.params.id;
+    req.body.nombre = req.body.nombre.toUpperCase();
     const escuelaToUpdate = await em.findOne(Escuela, { id });
     if (!escuelaToUpdate) {
       return res.status(404).json({ message: 'School not found' });
