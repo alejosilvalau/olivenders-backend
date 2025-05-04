@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "fnm exec tsc -p ./tsconfig.json",
+    "build": "npx tsc -p ./tsconfig.json",
     "start:dev": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"fnm exec node dist/index.js\"",
     "test": "fnm exec cross-env NODE_OPTIONS=--experimental-vm-modules jest --forceExit",
     "test:coverage": "fnm exec cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage",
