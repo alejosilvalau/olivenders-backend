@@ -48,8 +48,34 @@ async function findOne(req: Request, res: Response) {
   }
 }
 
+async function findOneByName(req: Request, res: Response) {
+  try {
+    const nombre = req.params.nombre.toUpperCase();
+    const excludeEscuelaId = req.query.excludeEscueladId;
+
+    const query: any = {};
+
+    if (nombre) {
+      query.nombreEscuela = nombre;
+    }
+    if (excludeEscuelaId) {
+      query.id = { $ne: excludeEscuelaId };
+    }
+    const escuela = await em.findOne(Escuela, query);
+
+    if (!escuela) {
+      return res.status(200).json(null);
+    }
+
+    return res.status(200).json(escuela);
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
+}
+
 async function add(req: Request, res: Response) {
   try {
+    req.body.nombre = req.body.nombre.toUpperCase(); // Transform 'nombre' to uppercase
     const escuelaExistente = await em.findOne(Escuela, {
       email: req.body.email,
     });
@@ -95,4 +121,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { findAll, findOne, add, update, remove, validateEscuelaInput };
+export { findAll, findOne, findOneByName, add, update, remove, validateEscuelaInput };
