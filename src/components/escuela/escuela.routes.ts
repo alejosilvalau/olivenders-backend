@@ -105,7 +105,7 @@ escuelaRouter.get('/:id', findOne);
  *       500:
  *         description: Error retrieving the school
  */
-escuelaRouter.get('/byname/:name', findOneByName);
+escuelaRouter.get('/find-by-name/:name', findOneByName);
 
 /**
  * @swagger
