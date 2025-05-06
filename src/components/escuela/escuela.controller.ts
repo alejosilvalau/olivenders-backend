@@ -111,11 +111,12 @@ async function remove(req: Request, res: Response): Promise<void> {
   try {
     const id = req.params.id;
     const escuelaToDelete = await em.findOne(Escuela, { id });
-    if (escuelaToDelete) {
-      await em.removeAndFlush(escuelaToDelete);
+    if (!escuelaToDelete) {
+      res.status(404).json({ message: 'School not found' });
+    } else {
+      await em.removeAndFlush(escuelaToDelete!);
       res.status(200).json({ message: 'School deleted' });
     }
-    res.status(404).json({ message: 'School not found' });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
