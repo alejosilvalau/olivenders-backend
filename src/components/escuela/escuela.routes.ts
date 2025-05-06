@@ -189,6 +189,6 @@ escuelaRouter.put('/:id', validateEscuelaInput, sanitizeMongoQuery, update);
  *       500:
  *         description: Error deleting the school
  */
-escuelaRouter.delete('/:id', validateEscuelaInput, sanitizeMongoQuery, remove);
+escuelaRouter.delete('/:id', sanitizeMongoQuery, remove);
 
 export default escuelaRouter;
