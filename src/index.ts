@@ -53,9 +53,10 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use('/api/escuelas', escuelaRouter);
 
 
-app.use('*', (_, res) => {
+app.use((_, res) => {
   res.status(404).json({ message: 'Resource not found' });
 });
+
 
 async function startServer() {
   try {
