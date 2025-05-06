@@ -5,6 +5,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
 import { RequestContext } from '@mikro-orm/core';
 import { orm, syncSchema } from './shared/orm.js';
+import { escuelaRouter } from './components/escuela/escuela.routes.js';
 
 dotenv.config();
 
@@ -49,6 +50,7 @@ app.use((req, res, next) => {
   RequestContext.create(orm.em, next);
 });
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+app.use('/api/escuelas', escuelaRouter);
 
 
 app.use('*', (_, res) => {

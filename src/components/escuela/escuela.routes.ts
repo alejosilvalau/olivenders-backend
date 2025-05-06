@@ -82,7 +82,7 @@ escuelaRouter.get('/:id', findOne);
 
 /**
  * @swagger
- * /api/escuelas/byname/{name}:
+ * /api/escuelas/find-by-name/{name}:
  *   get:
  *     summary: Get a school by name
  *     tags: [Escuela]
@@ -189,6 +189,6 @@ escuelaRouter.put('/:id', validateEscuelaInput, sanitizeMongoQuery, update);
  *       500:
  *         description: Error deleting the school
  */
-escuelaRouter.delete('/:id', sanitizeMongoQuery, remove);
+escuelaRouter.delete('/:id', validateEscuelaInput, sanitizeMongoQuery, remove);
 
 export default escuelaRouter;
