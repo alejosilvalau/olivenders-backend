@@ -4,7 +4,7 @@ import { Escuela } from './escuela.entity.js';
 import { z } from 'zod';
 
 const escuelaZodSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string().uuid().optional(),
   nombre: z.string().trim().min(1),
   email: z.string().trim().email(),
   direccion: z.string().trim().min(1),
