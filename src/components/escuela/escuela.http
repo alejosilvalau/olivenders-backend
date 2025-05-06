@@ -1,0 +1,30 @@
+### Get all schools
+GET http://localhost:3000/api/escuelas
+
+### Get one school by ID
+GET http://localhost:3000/api/escuelas/669036a635d36ae88fc3dbf4
+
+### Create a new school
+POST http://localhost:3000/api/escuelas/
+Content-Type: application/json
+
+{
+    "nombre": "Hogwarts School of Witchcraft and Wizardry",
+    "email": "hogwarts@magic.com",
+    "direccion": "Magic Street 123",
+    "telefono": "123456789"
+}
+
+### Update an existing school
+PUT http://localhost:3000/api/escuelas/669036a635d36ae88fc3dbf4
+Content-Type: application/json
+
+{
+    "nombre": "Ilvermorny School of Witchcraft and Wizardry",
+    "email": "ilvermorny@magic.com",
+    "direccion": "Enchanted Avenue 456",
+    "telefono": "987654321"
+}
+
+### Delete a school
+DELETE http://localhost:3000/api/escuelas/66a25e0726cc7f88926de44c
