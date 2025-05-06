@@ -131,7 +131,7 @@ escuelaRouter.get('/byname/:name', findOneByName);
  *       500:
  *         description: Error creating the school
  */
-escuelaRouter.post('/', validateEscuelaInput, add);
+escuelaRouter.post('/', validateEscuelaInput, sanitizeMongoQuery, add);
 
 /**
  * @swagger
@@ -166,7 +166,7 @@ escuelaRouter.post('/', validateEscuelaInput, add);
  *       500:
  *         description: Error updating the school
  */
-escuelaRouter.put('/:id', validateEscuelaInput, update);
+escuelaRouter.put('/:id', validateEscuelaInput, sanitizeMongoQuery, update);
 
 /**
  * @swagger
@@ -189,6 +189,6 @@ escuelaRouter.put('/:id', validateEscuelaInput, update);
  *       500:
  *         description: Error deleting the school
  */
-escuelaRouter.delete('/:id', remove);
+escuelaRouter.delete('/:id', sanitizeMongoQuery, remove);
 
 export default escuelaRouter;

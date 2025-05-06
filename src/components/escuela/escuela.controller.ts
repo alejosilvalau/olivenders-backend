@@ -12,17 +12,16 @@ const escuelaZodSchema = z.object({
 });
 const em = orm.em;
 
-const validateEscuelaInput = (req: Request, res: Response, next: NextFunction) => {
+const validateEscuelaInput = (req: Request, res: Response, next: NextFunction): void => {
   try {
     req.body = escuelaZodSchema.parse(req.body);
     next();
-    return;
   } catch (error: any) {
     const formattedError = error.errors.map((err: z.ZodIssue) => ({
       field: err.path.join('.'),
       message: err.message,
     }));
-    return res.status(400).json({ errors: formattedError });
+    res.status(400).json({ errors: formattedError });
   }
 };
 
