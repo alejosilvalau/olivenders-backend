@@ -48,7 +48,7 @@ async function findOne(req: Request, res: Response, next: NextFunction): Promise
   }
 }
 
-async function findOneByName(req: Request, res: Response) {
+async function findOneByName(req: Request, res: Response): Promise<void> {
   try {
     const nombre = req.params.nombre.toUpperCase();
     const excludeEscuelaId = req.query.excludeEscueladId;
@@ -64,61 +64,61 @@ async function findOneByName(req: Request, res: Response) {
     const escuela = await em.findOne(Escuela, query);
 
     if (!escuela) {
-      return res.status(200).json(null);
+      res.status(200).json(null);
     }
 
-    return res.status(200).json(escuela);
+    res.status(200).json(escuela);
   } catch (error: any) {
-    return res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 }
 
-async function add(req: Request, res: Response) {
+async function add(req: Request, res: Response): Promise<void> {
   try {
     req.body.nombre = req.body.nombre.toUpperCase();
     const existingEscuela = await em.findOne(Escuela, {
       email: req.body.email,
     });
     if (existingEscuela) {
-      return res.status(409).json({ message: 'The school already exists' });
+      res.status(409).json({ message: 'The school already exists' });
     } else {
       const escuela = em.create(Escuela, req.body);
       await em.flush();
-      return res.status(201).json({ message: 'School created', data: escuela });
+      res.status(201).json({ message: 'School created', data: escuela });
     }
   } catch (error: any) {
-    return res.status(500).json({ message: 'An error occurred while creating the school' });
+    res.status(500).json({ message: 'An error occurred while creating the school' });
   }
 }
 
-async function update(req: Request, res: Response) {
+async function update(req: Request, res: Response): Promise<void> {
   try {
     const id = req.params.id;
     req.body.nombre = req.body.nombre.toUpperCase();
     const escuelaToUpdate = await em.findOne(Escuela, { id });
     if (!escuelaToUpdate) {
-      return res.status(404).json({ message: 'School not found' });
+      res.status(404).json({ message: 'School not found' });
     } else {
       em.assign(escuelaToUpdate, req.body);
       await em.flush();
-      return res.status(200).json({ message: 'School updated', data: escuelaToUpdate });
+      res.status(200).json({ message: 'School updated', data: escuelaToUpdate });
     }
   } catch (error: any) {
-    return res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 }
 
-async function remove(req: Request, res: Response) {
+async function remove(req: Request, res: Response): Promise<void> {
   try {
     const id = req.params.id;
     const escuelaToDelete = await em.findOne(Escuela, { id });
-    if (!escuelaToDelete) {
-      return res.status(404).json({ message: 'School not found' });
+    if (escuelaToDelete) {
+      await em.removeAndFlush(escuelaToDelete);
+      res.status(200).json({ message: 'School deleted' });
     }
-    await em.removeAndFlush(escuelaToDelete);
-    return res.status(200).json({ message: 'School deleted' });
+    res.status(404).json({ message: 'School not found' });
   } catch (error: any) {
-    return res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 }
 
