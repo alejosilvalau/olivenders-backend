@@ -16,7 +16,7 @@ Content-Type: application/json
 }
 
 ### Update an existing school
-PUT http://localhost:3000/api/schools/68330e7503f0d4d3a6021aeb
+PUT http://localhost:3000/api/schools/683312f1da820fff0e8ba0e6
 Content-Type: application/json
 
 {
