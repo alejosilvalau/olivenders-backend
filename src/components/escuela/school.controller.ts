@@ -10,6 +10,7 @@ const schoolZodSchema = z.object({
   address: z.string().trim().min(1),
   phone: z.string().trim().min(1),
 });
+
 const em = orm.em;
 
 const sanitizeSchoolInput = (req: Request, res: Response, next: NextFunction): void => {
