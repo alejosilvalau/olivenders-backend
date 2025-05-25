@@ -15,7 +15,22 @@ const em = orm.em;
 
 const sanitizeSchoolInput = (req: Request, res: Response, next: NextFunction): void => {
   try {
-    req.body = schoolZodSchema.parse(req.body);
+    const validatedInput = schoolZodSchema.parse(req.body);
+
+    req.body.sanitizedInput = {
+      id: validatedInput.id,
+      name: validatedInput.name,
+      email: validatedInput.email,
+      address: validatedInput.address,
+      phone: validatedInput.phone,
+    };
+
+    Object.keys(req.body.sanitizedInput).forEach(key => {
+      if (req.body.sanitizedInput[key] === undefined) {
+        delete req.body.sanitizedInput[key];
+      }
+    });
+
     next();
   } catch (error: any) {
     const formattedError = error.errors.map((err: z.ZodIssue) => ({
@@ -77,14 +92,16 @@ async function findOneByName(req: Request, res: Response): Promise<void> {
 
 async function add(req: Request, res: Response): Promise<void> {
   try {
-    req.body.name = req.body.name.toUpperCase();
+    const input = req.body.sanitizedInput;
+    input.name = input.name.toUpperCase();
+
     const existingSchool = await em.findOne(School, {
-      email: req.body.email,
+      email: input.email,
     });
     if (existingSchool) {
       res.status(409).json({ message: 'The school already exists', data: null });
     } else {
-      const school = em.create(School, req.body);
+      const school = em.create(School, input);
       await em.flush();
       res.status(201).json({ message: 'School created', data: school });
     }
@@ -96,12 +113,14 @@ async function add(req: Request, res: Response): Promise<void> {
 async function update(req: Request, res: Response): Promise<void> {
   try {
     const id = req.params.id;
-    req.body.name = req.body.name.toUpperCase();
+    const input = req.body.sanitizedInput;
+    input.name = input.name.toUpperCase();
+
     const schoolToUpdate = await em.findOne(School, { id });
     if (!schoolToUpdate) {
       res.status(404).json({ message: 'School not found', data: null });
     } else {
-      em.assign(schoolToUpdate, req.body);
+      em.assign(schoolToUpdate, input);
       await em.flush();
       res.status(200).json({ message: 'School updated', data: schoolToUpdate });
     }
