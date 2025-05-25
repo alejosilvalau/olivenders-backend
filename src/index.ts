@@ -5,7 +5,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
 import { RequestContext } from '@mikro-orm/core';
 import { orm, syncSchema } from './shared/orm.js';
-import { schoolRouter } from './components/escuela/school.routes.js';
+import { schoolRouter } from './components/school/school.routes.js';
 
 dotenv.config();
 
