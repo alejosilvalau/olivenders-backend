@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/schools
 
 ### Get one school by ID
-GET http://localhost:3000/api/schools/681a5877757f26d3b364cef2
+GET http://localhost:3000/api/schools/68330d3edbffba04856c4045
 
 ### Create a new school
 POST http://localhost:3000/api/schools/
@@ -27,4 +27,4 @@ Content-Type: application/json
 }
 
 ### Delete a school
-DELETE http://localhost:3000/api/schools/681a5877757f26d3b364cef2
+DELETE http://localhost:3000/api/schools/68330d3edbffba04856c4045
