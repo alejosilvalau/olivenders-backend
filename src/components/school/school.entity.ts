@@ -17,5 +17,5 @@ export class School extends BaseEntity {
   phone!: string;
 
   @OneToMany(() => Mage, mage => mage.school, { nullable: true, cascade: [Cascade.REMOVE] })
-  usuarios = new Collection<Mage>(this);
+  mages = new Collection<Mage>(this);
 }
