@@ -1,44 +1,44 @@
 import { Router } from 'express';
-import { validateEscuelaInput, findAll, findOne, add, update, remove, findOneByName } from './escuela.controller.js';
+import { sanitizeSchoolInput, findAll, findOne, findOneByName, add, update, remove } from './school.controller.js';
 import { sanitizeMongoQuery } from '../../shared/sanitizeMongoQuery.js';
 
-export const escuelaRouter = Router();
+export const schoolRouter = Router();
 
 /**
  * @swagger
  * components:
  *   schemas:
- *     Escuela:
+ *     School:
  *       type: object
  *       properties:
  *         id:
  *           type: string
  *           description: Unique identifier for the school
- *         nombre:
+ *         name:
  *           type: string
  *           description: Name of the school
  *         email:
  *           type: string
  *           description: Email of the school
- *         direccion:
+ *         address:
  *           type: string
  *           description: Address of the school
- *         telefono:
+ *         phone:
  *           type: string
  *           description: Phone number of the school
  *       required:
- *         - nombre
+ *         - name
  *         - email
- *         - direccion
- *         - telefono
+ *         - address
+ *         - phone
  */
 
 /**
  * @swagger
- * /api/escuelas:
+ * /api/schools:
  *   get:
  *     summary: Get all schools
- *     tags: [Escuela]
+ *     tags: [School]
  *     responses:
  *       200:
  *         description: List of schools
@@ -47,18 +47,18 @@ export const escuelaRouter = Router();
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Escuela'
+ *                 $ref: '#/components/schemas/School'
  *       500:
  *         description: Error retrieving schools
  */
-escuelaRouter.get('/', findAll);
+schoolRouter.get('/', findAll);
 
 /**
  * @swagger
- * /api/escuelas/{id}:
+ * /api/schools/{id}:
  *   get:
  *     summary: Get a school by ID
- *     tags: [Escuela]
+ *     tags: [School]
  *     parameters:
  *       - in: path
  *         name: id
@@ -72,20 +72,20 @@ escuelaRouter.get('/', findAll);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Escuela'
+ *               $ref: '#/components/schemas/School'
  *       404:
  *         description: School not found
  *       500:
  *         description: Error retrieving the school
  */
-escuelaRouter.get('/:id', findOne);
+schoolRouter.get('/:id', findOne);
 
 /**
  * @swagger
- * /api/escuelas/find-by-name/{name}:
+ * /api/schools/find-by-name/{name}:
  *   get:
  *     summary: Get a school by name
- *     tags: [Escuela]
+ *     tags: [School]
  *     parameters:
  *       - in: path
  *         name: name
@@ -99,46 +99,46 @@ escuelaRouter.get('/:id', findOne);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Escuela'
+ *               $ref: '#/components/schemas/School'
  *       404:
  *         description: School not found
  *       500:
  *         description: Error retrieving the school
  */
-escuelaRouter.get('/find-by-name/:name', findOneByName);
+schoolRouter.get('/find-by-name/:name', findOneByName);
 
 /**
  * @swagger
- * /api/escuelas:
+ * /api/schools:
  *   post:
  *     summary: Create a new school
- *     tags: [Escuela]
+ *     tags: [School]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Escuela'
+ *             $ref: '#/components/schemas/School'
  *     responses:
  *       201:
  *         description: School created
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Escuela'
+ *               $ref: '#/components/schemas/School'
  *       400:
  *         description: Validation error
  *       500:
  *         description: Error creating the school
  */
-escuelaRouter.post('/', validateEscuelaInput, sanitizeMongoQuery, add);
+schoolRouter.post('/', sanitizeSchoolInput, sanitizeMongoQuery, add);
 
 /**
  * @swagger
- * /api/escuelas/{id}:
+ * /api/schools/{id}:
  *   put:
  *     summary: Update an existing school
- *     tags: [Escuela]
+ *     tags: [School]
  *     parameters:
  *       - in: path
  *         name: id
@@ -151,14 +151,14 @@ escuelaRouter.post('/', validateEscuelaInput, sanitizeMongoQuery, add);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Escuela'
+ *             $ref: '#/components/schemas/School'
  *     responses:
  *       200:
  *         description: School updated
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Escuela'
+ *               $ref: '#/components/schemas/School'
  *       404:
  *         description: School not found
  *       400:
@@ -166,14 +166,14 @@ escuelaRouter.post('/', validateEscuelaInput, sanitizeMongoQuery, add);
  *       500:
  *         description: Error updating the school
  */
-escuelaRouter.put('/:id', validateEscuelaInput, sanitizeMongoQuery, update);
+schoolRouter.put('/:id', sanitizeSchoolInput, sanitizeMongoQuery, update);
 
 /**
  * @swagger
- * /api/escuelas/{id}:
+ * /api/schools/{id}:
  *   delete:
  *     summary: Delete a school
- *     tags: [Escuela]
+ *     tags: [School]
  *     parameters:
  *       - in: path
  *         name: id
@@ -189,6 +189,6 @@ escuelaRouter.put('/:id', validateEscuelaInput, sanitizeMongoQuery, update);
  *       500:
  *         description: Error deleting the school
  */
-escuelaRouter.delete('/:id', sanitizeMongoQuery, remove);
+schoolRouter.delete('/:id', sanitizeMongoQuery, remove);
 
-export default escuelaRouter;
+export default schoolRouter;

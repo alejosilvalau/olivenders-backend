@@ -1,20 +1,20 @@
 import { Request, Response, NextFunction } from 'express';
 import { orm } from '../../shared/orm.js';
-import { Escuela } from './escuela.entity.js';
+import { School } from './school.entity.js';
 import { z } from 'zod';
 
-const escuelaZodSchema = z.object({
+const schoolZodSchema = z.object({
   id: z.string().uuid().optional(),
-  nombre: z.string().trim().min(1),
+  name: z.string().trim().min(1),
   email: z.string().trim().email(),
-  direccion: z.string().trim().min(1),
-  telefono: z.string().trim().min(1),
+  address: z.string().trim().min(1),
+  phone: z.string().trim().min(1),
 });
 const em = orm.em;
 
-const validateEscuelaInput = (req: Request, res: Response, next: NextFunction): void => {
+const sanitizeSchoolInput = (req: Request, res: Response, next: NextFunction): void => {
   try {
-    req.body = escuelaZodSchema.parse(req.body);
+    req.body = schoolZodSchema.parse(req.body);
     next();
   } catch (error: any) {
     const formattedError = error.errors.map((err: z.ZodIssue) => ({
@@ -27,8 +27,8 @@ const validateEscuelaInput = (req: Request, res: Response, next: NextFunction): 
 
 async function findAll(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
-    const escuelas = await em.find(Escuela, {});
-    res.status(200).json(escuelas);
+    const schools = await em.find(School, {});
+    res.status(200).json(schools);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
@@ -37,11 +37,12 @@ async function findAll(req: Request, res: Response, next: NextFunction): Promise
 async function findOne(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const id = req.params.id;
-    const escuela = await em.findOne(Escuela, { id });
-    if (!escuela) {
+    const school = await em.findOne(School, { id });
+    if (!school) {
       res.status(404).json({ message: 'School not found' });
+      return;
     }
-    res.status(200).json(escuela);
+    res.status(200).json(school);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
@@ -49,24 +50,25 @@ async function findOne(req: Request, res: Response, next: NextFunction): Promise
 
 async function findOneByName(req: Request, res: Response): Promise<void> {
   try {
-    const nombre = req.params.nombre.toUpperCase();
-    const excludeEscuelaId = req.query.excludeEscueladId;
+    const name = req.params.name.toUpperCase();
+    const excludeSchoolId = req.query.excludeSchoolId;
 
     const query: any = {};
 
-    if (nombre) {
-      query.nombreEscuela = nombre;
+    if (name) {
+      query.name = name;
     }
-    if (excludeEscuelaId) {
-      query.id = { $ne: excludeEscuelaId };
+    if (excludeSchoolId) {
+      query.id = { $ne: excludeSchoolId };
     }
-    const escuela = await em.findOne(Escuela, query);
+    const school = await em.findOne(School, query);
 
-    if (!escuela) {
+    if (!school) {
       res.status(200).json(null);
+      return;
     }
 
-    res.status(200).json(escuela);
+    res.status(200).json(school);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
@@ -74,16 +76,16 @@ async function findOneByName(req: Request, res: Response): Promise<void> {
 
 async function add(req: Request, res: Response): Promise<void> {
   try {
-    req.body.nombre = req.body.nombre.toUpperCase();
-    const existingEscuela = await em.findOne(Escuela, {
+    req.body.name = req.body.name.toUpperCase();
+    const existingSchool = await em.findOne(School, {
       email: req.body.email,
     });
-    if (existingEscuela) {
+    if (existingSchool) {
       res.status(409).json({ message: 'The school already exists' });
     } else {
-      const escuela = em.create(Escuela, req.body);
+      const school = em.create(School, req.body);
       await em.flush();
-      res.status(201).json({ message: 'School created', data: escuela });
+      res.status(201).json({ message: 'School created', data: school });
     }
   } catch (error: any) {
     res.status(500).json({ message: 'An error occurred while creating the school' });
@@ -93,14 +95,14 @@ async function add(req: Request, res: Response): Promise<void> {
 async function update(req: Request, res: Response): Promise<void> {
   try {
     const id = req.params.id;
-    req.body.nombre = req.body.nombre.toUpperCase();
-    const escuelaToUpdate = await em.findOne(Escuela, { id });
-    if (!escuelaToUpdate) {
+    req.body.name = req.body.name.toUpperCase();
+    const schoolToUpdate = await em.findOne(School, { id });
+    if (!schoolToUpdate) {
       res.status(404).json({ message: 'School not found' });
     } else {
-      em.assign(escuelaToUpdate, req.body);
+      em.assign(schoolToUpdate, req.body);
       await em.flush();
-      res.status(200).json({ message: 'School updated', data: escuelaToUpdate });
+      res.status(200).json({ message: 'School updated', data: schoolToUpdate });
     }
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -110,11 +112,11 @@ async function update(req: Request, res: Response): Promise<void> {
 async function remove(req: Request, res: Response): Promise<void> {
   try {
     const id = req.params.id;
-    const escuelaToDelete = await em.findOne(Escuela, { id });
-    if (!escuelaToDelete) {
+    const schoolToDelete = await em.findOne(School, { id });
+    if (!schoolToDelete) {
       res.status(404).json({ message: 'School not found' });
     } else {
-      await em.removeAndFlush(escuelaToDelete!);
+      await em.removeAndFlush(schoolToDelete!);
       res.status(200).json({ message: 'School deleted' });
     }
   } catch (error: any) {
@@ -122,4 +124,4 @@ async function remove(req: Request, res: Response): Promise<void> {
   }
 }
 
-export { findAll, findOne, findOneByName, add, update, remove, validateEscuelaInput };
+export { findAll, findOne, findOneByName, add, update, remove, sanitizeSchoolInput };

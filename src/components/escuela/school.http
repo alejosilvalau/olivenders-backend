@@ -9,10 +9,10 @@ POST http://localhost:3000/api/escuelas/
 Content-Type: application/json
 
 {
-    "nombre": "Hogwarts School of Witchcraft and Wizardry",
+    "name": "Hogwarts School of Witchcraft and Wizardry",
     "email": "hogwarts@magic.com",
-    "direccion": "Magic Street 123",
-    "telefono": "123456789"
+    "address": "Magic Street 123",
+    "phone": "123456789"
 }
 
 ### Update an existing school
@@ -20,10 +20,10 @@ PUT http://localhost:3000/api/escuelas/681a5877757f26d3b364cef2
 Content-Type: application/json
 
 {
-    "nombre": "Ilvermorny School of Witchcraft and Wizardry",
+    "name": "Ilvermorny School of Witchcraft and Wizardry",
     "email": "ilvermorny@magic.com",
-    "direccion": "Enchanted Avenue 456",
-    "telefono": "987654321"
+    "address": "Enchanted Avenue 456",
+    "phone": "987654321"
 }
 
 ### Delete a school
