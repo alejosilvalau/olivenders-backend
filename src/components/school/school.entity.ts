@@ -1,5 +1,6 @@
 import { Entity, Property, Collection, OneToMany, Cascade } from '@mikro-orm/core';
-import { BaseEntity } from '../../shared/baseEntity.entity.js';
+import { BaseEntity } from '../../shared/baseEntity.entity.js';\
+import { Mage } from '../mage/mage.entity.js';
 
 @Entity()
 export class School extends BaseEntity {
@@ -15,6 +16,6 @@ export class School extends BaseEntity {
   @Property({ nullable: false })
   phone!: string;
 
-  // @OneToMany(() => Mago, mago => mago.escuela, { nullable: true, cascade: [Cascade.ALL] })
-  // usuarios = new Collection<Mago>(this);
+  @OneToMany(() => Mage, mage => mage.school, { nullable: true, cascade: [Cascade.REMOVE] })
+  usuarios = new Collection<Mage>(this);
 }
