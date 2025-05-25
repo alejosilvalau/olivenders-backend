@@ -1,5 +1,6 @@
-import { Entity, Property, Collection, OneToMany, Cascade } from '@mikro-orm/core';
+import { Entity, Property, ManyToOne, Cascade, Ref } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/baseEntity.entity.js';
+import { School } from '../school/school.entity.js';
 
 @Entity()
 export class Mage extends BaseEntity {
@@ -27,5 +28,6 @@ export class Mage extends BaseEntity {
   @Property({ nullable: false })
   role!: string;
 
-  // Faltan las relaciones con las otras entidades
+  @ManyToOne(() => School, { nullable: false, cascade: [Cascade.PERSIST] })
+  school!: Ref<School>;
 }
