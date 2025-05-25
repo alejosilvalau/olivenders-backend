@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { sanitizeSchoolInput, findAll, findOne, findOneByName, add, update, remove } from './school.controller.js';
+import { sanitizeSchoolInput, findAll, findOne, add, update, remove, findOneByName } from './school.controller.js';
 import { sanitizeMongoQuery } from '../../shared/sanitizeMongoQuery.js';
 
 export const schoolRouter = Router();
@@ -79,33 +79,6 @@ schoolRouter.get('/', findAll);
  *         description: Error retrieving the school
  */
 schoolRouter.get('/:id', findOne);
-
-/**
- * @swagger
- * /api/schools/find-by-name/{name}:
- *   get:
- *     summary: Get a school by name
- *     tags: [School]
- *     parameters:
- *       - in: path
- *         name: name
- *         schema:
- *           type: string
- *         required: true
- *         description: Name of the school
- *     responses:
- *       200:
- *         description: School found
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/School'
- *       404:
- *         description: School not found
- *       500:
- *         description: Error retrieving the school
- */
-schoolRouter.get('/find-by-name/:name', findOneByName);
 
 /**
  * @swagger
@@ -190,5 +163,32 @@ schoolRouter.put('/:id', sanitizeSchoolInput, sanitizeMongoQuery, update);
  *         description: Error deleting the school
  */
 schoolRouter.delete('/:id', sanitizeMongoQuery, remove);
+
+/**
+ * @swagger
+ * /api/schools/find-by-name/{name}:
+ *   get:
+ *     summary: Get a school by name
+ *     tags: [School]
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Name of the school
+ *     responses:
+ *       200:
+ *         description: School found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/School'
+ *       404:
+ *         description: School not found
+ *       500:
+ *         description: Error retrieving the school
+ */
+schoolRouter.get('/find-by-name/:name', findOneByName);
 
 export default schoolRouter;

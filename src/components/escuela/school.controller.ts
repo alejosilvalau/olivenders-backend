@@ -64,32 +64,6 @@ async function findOne(req: Request, res: Response, next: NextFunction): Promise
   }
 }
 
-async function findOneByName(req: Request, res: Response): Promise<void> {
-  try {
-    const name = req.params.name.toUpperCase();
-    const excludeSchoolId = req.query.excludeSchoolId;
-
-    const query: any = {};
-
-    if (name) {
-      query.name = name;
-    }
-    if (excludeSchoolId) {
-      query.id = { $ne: excludeSchoolId };
-    }
-    const school = await em.findOne(School, query);
-
-    if (!school) {
-      res.status(200).json({ message: 'School not found', data: null });
-      return;
-    }
-
-    res.status(200).json({ message: 'School fetched', data: school });
-  } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
-  }
-}
-
 async function add(req: Request, res: Response): Promise<void> {
   try {
     const input = req.body.sanitizedInput;
@@ -144,4 +118,30 @@ async function remove(req: Request, res: Response): Promise<void> {
   }
 }
 
-export { findAll, findOne, findOneByName, add, update, remove, sanitizeSchoolInput };
+async function findOneByName(req: Request, res: Response): Promise<void> {
+  try {
+    const name = req.params.name.toUpperCase();
+    const excludeSchoolId = req.query.excludeSchoolId;
+
+    const query: any = {};
+
+    if (name) {
+      query.name = name;
+    }
+    if (excludeSchoolId) {
+      query.id = { $ne: excludeSchoolId };
+    }
+    const school = await em.findOne(School, query);
+
+    if (!school) {
+      res.status(200).json({ message: 'School not found', data: null });
+      return;
+    }
+
+    res.status(200).json({ message: 'School fetched', data: school });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message, data: null });
+  }
+}
+
+export { sanitizeSchoolInput, findAll, findOne, add, update, remove, findOneByName };
