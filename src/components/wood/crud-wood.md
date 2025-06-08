@@ -4,6 +4,7 @@
 
 - Encargado: **Lucas Egea**
 - Fecha limite: **22/08/2025**
+- Hacerlo en la rama **crud-wood**
 
 ## Paso a paso: creación de la entidad "wood" y su CRUD
 
@@ -36,9 +37,9 @@
   - `GET /` que use la función **findAll**
   - `GET /:id` que use la función **findOne**
   - `POST /` que use la función **add**
-    - Tiene que usar las funciones **sanitizeSchoolInput** y **sanitizeMongoQuery**
+    - Tiene que usar las funciones **sanitizeWoodInput** y **sanitizeMongoQuery**
   - `PUT /:id` que use la función **update**
-    - Tiene que usar las funciones **sanitizeSchoolInput** y **sanitizeMongoQuery**
+    - Tiene que usar las funciones **sanitizeWoodInput** y **sanitizeMongoQuery**
   - `DELETE /:id` que use la función **remove**
     - Tiene que usar la función **sanitizeMongoQuery**
   - `GET /:name` que use la función **findOneByName**
