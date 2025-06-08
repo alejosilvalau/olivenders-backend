@@ -3,7 +3,7 @@
 ### Datos de la tarea:
 
 - Encargado: **Lucas Egea**
-- Fecha limite: **22/08/2025**
+- Fecha limite: **22/06/2025**
 - Hacerlo en la rama **crud-wood**
 
 ## Paso a paso: creación de la entidad "wood" y su CRUD
