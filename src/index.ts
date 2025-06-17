@@ -6,7 +6,7 @@ import swaggerUI from 'swagger-ui-express';
 import { RequestContext } from '@mikro-orm/core';
 import { orm, syncSchema } from './shared/orm.js';
 import { schoolRouter } from './components/school/school.routes.js';
-
+import { woodRouter } from './components/wood/wood.routes.js';
 dotenv.config();
 
 const app = express();
@@ -57,6 +57,7 @@ app.use((_, res) => {
   res.status(404).json({ message: 'Resource not found' });
 });
 
+app.use('/api/woods', woodRouter);
 
 async function startServer() {
   try {
