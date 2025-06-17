@@ -84,3 +84,64 @@ async function add(req: Request, res: Response): Promise<void> {
   }
 }
 
+async function update(req: Request, res: Response): Promise<void> {
+  try {
+    const id = req.params.id;
+    const input = req.body.sanitizedInput;
+    input.name = input.name.toUpperCase();
+
+    const woodToUpdate = await em.findOne(Wood, { id });
+    if (!woodToUpdate) {
+      res.status(404).json({ message: 'Wood not found', data: null });
+    } else {
+      em.assign(woodToUpdate, input);
+      await em.flush();
+      res.status(200).json({ message: 'Wood updated', data: woodToUpdate });
+    }
+  } catch (error: any) {
+    res.status(500).json({ message: error.message, data: null });
+  }
+}
+
+async function remove(req: Request, res: Response): Promise<void> {
+  try {
+    const id = req.params.id;
+    const woodToDelete = await em.findOne(Wood, { id });
+    if (!woodToDelete) {
+      res.status(404).json({ message: 'Wood not found', data: null });
+    } else {
+      await em.removeAndFlush(woodToDelete!);
+      res.status(200).json({ message: 'Wood deleted', data: null });
+    }
+  } catch (error: any) {
+    res.status(500).json({ message: error.message, data: null });
+  }
+}
+
+async function findOneByName(req: Request, res: Response): Promise<void> {
+  try {
+    const name = req.params.name.toUpperCase();
+    const excludeWoodId = req.query.excludeWoodId;
+
+    const query: any = {};
+
+    if (name) {
+      query.name = name;
+    }
+    if (excludeWoodId) {
+      query.id = { $ne: excludeWoodId };
+    }
+    const wood = await em.findOne(Wood, query);
+
+    if (!Wood) {
+      res.status(200).json({ message: 'Wood not found', data: null });
+      return;
+    }
+
+    res.status(200).json({ message: 'Wood fetched', data: Wood });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message, data: null });
+  }
+}
+
+export { sanitizeWoodInput, findAll, findOne, add, update, remove, findOneByName };
