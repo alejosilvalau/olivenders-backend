@@ -11,9 +11,8 @@ Content-Type: application/json
 {
     "name": "Alder wood",
     "binomial_name": "none",
-    "description": "Alder wands are said to be suited to non-verbal spell work and are often 
-    associated with the most advanced witches and wizards",
-    "price": "555555"
+    "description": "Alder wands are said to be suited to non-verbal spell work and are often associated with the most advanced witches and wizards",
+    "price": 555555
 }
 
 ### Update an existing wood
@@ -24,7 +23,7 @@ Content-Type: application/json
     "name": "Alder wood",
     "binomial_name": "none",
     "description": "Alder wands are said to be suited to non-verbal spell work and are often associated with the most advanced witches and wizards",
-    "price": "777777"
+    "price": 777777
 }
 
 ### Delete a wood

@@ -52,12 +52,13 @@ app.use((req, res, next) => {
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use('/api/schools', schoolRouter);
 
+app.use('/api/woods', woodRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: 'Resource not found' });
 });
 
-app.use('/api/woods', woodRouter);
+
 
 async function startServer() {
   try {
