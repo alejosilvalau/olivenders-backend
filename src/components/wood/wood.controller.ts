@@ -8,7 +8,7 @@ const woodZodSchema = z.object({
   name: z.string().trim().min(1),
   binomial_name: z.string().trim().min(1),
   description: z.string().trim().min(1),
-  price: z.number().min(1)
+  price: z.number()
 });
 
 const em = orm.em;
@@ -69,15 +69,16 @@ async function add(req: Request, res: Response): Promise<void> {
     const input = req.body.sanitizedInput;
     input.name = input.name.toUpperCase();
 
-    const existingWood = await em.findOne(Wood, {
+    const existingWood = await em.findOne(Wood, { name: input.name
   
     });
     if (existingWood) {
       res.status(409).json({ message: 'The Wood already exists', data: null });
     } else {
       const wood = em.create(Wood, input);
+      
       await em.flush();
-      res.status(201).json({ message: 'Wood created', data: Wood });
+      res.status(201).json({ message: 'Wood created', data: wood });
     }
   } catch (error: any) {
     res.status(500).json({ message: 'An error occurred while creating the Wood', data: null });
