@@ -58,7 +58,7 @@ async function findOne(req: Request, res: Response, next: NextFunction): Promise
       res.status(404).json({ message: 'Wood not found', data: null });
       return;
     }
-    res.status(200).json({ message: 'Wood fetched', data: Wood });
+    res.status(200).json({ message: 'Wood fetched', data: wood });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
