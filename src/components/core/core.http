@@ -1,0 +1,44 @@
+### Listar todas las entidades Core
+GET http://localhost:3000/api/cores
+Accept: application/json
+
+###
+
+### Obtener una entidad Core por ID
+GET http://localhost:3000/api/cores/{id}
+Accept: application/json
+
+###
+
+### Crear una entidad Core
+POST http://localhost:3000/api/cores
+Content-Type: application/json
+
+{
+    "name": "new core name",
+    "desciption": "new core description",
+    "price": "150"
+}
+
+### 
+
+### Actualizar una entidad Core
+PUT http://localhost:3000/api/cores/{id}
+Content-Type: application/json
+
+{
+  "name": "updated core name",
+  "description": "updated description",
+  "price": 175
+}
+
+###
+
+### Eliminar una entidad Core
+DELETE http://localhost:3000/api/cores/{id}
+
+###
+
+### Obtener una entidad Core por nombre
+GET http://localhost:3000/api/cores/find-by-name/{name}
+Accept: application/json
