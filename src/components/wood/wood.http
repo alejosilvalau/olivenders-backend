@@ -1,0 +1,33 @@
+### Get all woods
+GET http://localhost:3000/api/woods
+
+### Get one wood by ID
+GET http://localhost:3000/api/woods/68548f06a38d38d62213055a
+
+### Create a new wood
+POST http://localhost:3000/api/woods/
+Content-Type: application/json
+
+{
+    "name": "Apple",
+    "binomial_name": "Malus domestica",
+    "description": "Applewood wands are not made in great numbers. They are powerful and best suited to an owner of high aims and ideals, as this wood mixes poorly with Dark magic.",
+    "price": 490
+}
+
+### Update an existing wood
+PUT http://localhost:3000/api/woods/68548f06a38d38d62213055a
+Content-Type: application/json
+
+{
+    "name": "Alder",
+    "binomial_name": "Alnus",
+    "description": "Alder is an unyielding wood, yet I have discovered that its ideal owner is not stubborn or obstinate, but often helpful, considerate and most likeable. Alder wood is well suited for making flutes and pipes, and for building bridges. Alder people are adventurous travellers and confident decision makers who trust their inner voices. Alder people should work hard to maintain a balance between work and play.",
+    "price": 750
+}
+
+### Delete a wood
+DELETE http://localhost:3000/api/woods/68548bd2e5a2ed3827653956
+
+### Find wood by name
+GET http://localhost:3000/api/woods/find-by-name/Apple
