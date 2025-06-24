@@ -131,12 +131,12 @@ async function findOneByName(req: Request, res: Response): Promise<void> {
     }
     const wood = await em.findOne(Wood, query);
 
-    if (!Wood) {
+    if (!wood) {
       res.status(200).json({ message: 'Wood not found', data: null });
       return;
     }
 
-    res.status(200).json({ message: 'Wood fetched', data: Wood });
+    res.status(200).json({ message: 'Wood fetched', data: wood });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
