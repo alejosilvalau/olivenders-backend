@@ -43,8 +43,8 @@ const sanitizeWoodInput = (req: Request, res: Response, next: NextFunction): voi
 
 async function findAll(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
-    const Woods = await em.find(Wood, {});
-    res.status(200).json({ message: 'Woods fetched', data: Woods });
+    const woods = await em.find(Wood, {});
+    res.status(200).json({ message: 'Woods fetched', data: woods });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
