@@ -69,19 +69,16 @@ async function add(req: Request, res: Response): Promise<void> {
     const input = req.body.sanitizedInput;
     input.name = input.name.toUpperCase();
 
-    const existingWood = await em.findOne(Wood, { name: input.name
-  
-    });
+    const existingWood = await em.findOne(Wood, { name: input.name });
     if (existingWood) {
-      res.status(409).json({ message: 'The Wood already exists', data: null });
+      res.status(409).json({ message: 'The wood already exists', data: null });
     } else {
       const wood = em.create(Wood, input);
-      
       await em.flush();
       res.status(201).json({ message: 'Wood created', data: wood });
     }
   } catch (error: any) {
-    res.status(500).json({ message: 'An error occurred while creating the Wood', data: null });
+    res.status(500).json({ message: 'An error occurred while creating the wood', data: null });
   }
 }
 
