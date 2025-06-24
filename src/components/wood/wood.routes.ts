@@ -51,7 +51,6 @@ export const woodRouter = Router();
  *       500:
  *         description: Error retrieving Woods
  */
-
 woodRouter.get('/',findAll);
 
 
@@ -80,7 +79,6 @@ woodRouter.get('/',findAll);
  *       500:
  *         description: Error retrieving the Wood
  */
-
 woodRouter.get('/:id',findOne);
 
 /**
@@ -107,7 +105,6 @@ woodRouter.get('/:id',findOne);
  *       500:
  *         description: Error creating the Wood
  */
-
 woodRouter.post('/', sanitizeWoodInput, sanitizeMongoQuery, add);
 
 /**
@@ -143,7 +140,6 @@ woodRouter.post('/', sanitizeWoodInput, sanitizeMongoQuery, add);
  *       500:
  *         description: Error updating the Wood
  */
-
 woodRouter.put('/:id', sanitizeWoodInput, sanitizeMongoQuery, update);
 
 /**
@@ -167,7 +163,6 @@ woodRouter.put('/:id', sanitizeWoodInput, sanitizeMongoQuery, update);
  *       500:
  *         description: Error deleting the Wood
  */
-
 woodRouter.delete('/:id', sanitizeMongoQuery, remove);
 
 /**
@@ -195,7 +190,6 @@ woodRouter.delete('/:id', sanitizeMongoQuery, remove);
  *       500:
  *         description: Error retrieving the Wood
  */
-
 woodRouter.get('/find-by-name/:name', findOneByName);
 
 
