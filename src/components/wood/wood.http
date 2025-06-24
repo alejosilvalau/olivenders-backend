@@ -27,7 +27,7 @@ Content-Type: application/json
 }
 
 ### Delete a wood
-DELETE http://localhost:3000/api/woods/68548bd2e5a2ed3827653956
+DELETE http://localhost:3000/api/woods/6859fc146729d215e74349b6
 
 ### Find wood by name
-GET http://localhost:3000/api/woods/find-by-name/Apple
+GET http://localhost:3000/api/woods/find-by-name/apple
