@@ -51,7 +51,6 @@ app.use((req, res, next) => {
 });
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use('/api/schools', schoolRouter);
-
 app.use('/api/woods', woodRouter);
 
 app.use((_, res) => {
