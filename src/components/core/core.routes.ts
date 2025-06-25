@@ -52,6 +52,8 @@ export const coreRouter = Router();
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Core'
+ *       500:
+ *         description: Error retrieving cores
  */
 coreRouter.get('/', findAll);
 
@@ -77,6 +79,8 @@ coreRouter.get('/', findAll);
  *               $ref: '#/components/schemas/Core'
  *       404:
  *         description: Core not found
+ *      500:
+ *        description: Error retrieving the core
  */
 coreRouter.get('/:id', findOne);
 
