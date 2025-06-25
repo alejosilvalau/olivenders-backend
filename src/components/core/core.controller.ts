@@ -4,42 +4,40 @@ import { Core } from './core.entity.js';
 import { z } from 'zod';
 
 const coreZodSchema = z.object({
-    id: z.string().uuid().optional(),
-    name: z.string().trim().min(1),
-    description: z.string().trim().min(1),
-    price: z.number().positive(),
-    wand: z.string().uuid().optional(),
-  });
+  id: z.string().uuid().optional(),
+  name: z.string().trim().min(1),
+  description: z.string().trim().min(1),
+  price: z.number().positive(),
+});
 
-  const em = orm.em;
+const em = orm.em;
 
-  const sanitizeCoreInput = (req: Request, res: Response, next: NextFunction): void => {
-    try {
-      const validatedInput = coreZodSchema.parse(req.body);
-  
-      req.body.sanitizedInput = {
-        id: validatedInput.id,
-        name: validatedInput.name,
-        description: validatedInput.description,
-        price: validatedInput.price,
-        wand: validatedInput.wand,
-      };
-  
-      Object.keys(req.body.sanitizedInput).forEach(key => {
-        if (req.body.sanitizedInput[key] === undefined) {
-          delete req.body.sanitizedInput[key];
-        }
-      });
-  
-      next();
-    } catch (error: any) {
-      const formattedError = error.errors.map((err: z.ZodIssue) => ({
-        field: err.path.join('.'),
-        message: err.message,
-      }));
-      res.status(400).json({ errors: formattedError });
-    }
-  };
+const sanitizeCoreInput = (req: Request, res: Response, next: NextFunction): void => {
+  try {
+    const validatedInput = coreZodSchema.parse(req.body);
+
+    req.body.sanitizedInput = {
+      id: validatedInput.id,
+      name: validatedInput.name,
+      description: validatedInput.description,
+      price: validatedInput.price,
+    };
+
+    Object.keys(req.body.sanitizedInput).forEach(key => {
+      if (req.body.sanitizedInput[key] === undefined) {
+        delete req.body.sanitizedInput[key];
+      }
+    });
+
+    next();
+  } catch (error: any) {
+    const formattedError = error.errors.map((err: z.ZodIssue) => ({
+      field: err.path.join('.'),
+      message: err.message,
+    }));
+    res.status(400).json({ errors: formattedError });
+  }
+};
   
   async function findAll(req: Request, res: Response): Promise<void> {
     try {

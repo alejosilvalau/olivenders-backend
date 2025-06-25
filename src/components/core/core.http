@@ -2,43 +2,33 @@
 GET http://localhost:3000/api/cores
 Accept: application/json
 
-###
-
 ### Obtener una entidad Core por ID
-GET http://localhost:3000/api/cores/{id}
+GET http://localhost:3000/api/cores/685bc3301a3177f61f647ef2
 Accept: application/json
 
-###
-
 ### Crear una entidad Core
-POST http://localhost:3000/api/cores
+POST http://localhost:3000/api/cores/
 Content-Type: application/json
 
 {
-    "name": "new core name",
-    "desciption": "new core description",
-    "price": "150"
+    "name": "Phoenix feather",
+    "description": "This was the rarest core type. Phoenix feather wands were capable of the greatest range of magic, though they may have taken longer to reveal this. They showed the most initiative, sometimes acting of their own accord, a quality that many witches and wizards disliked. They were the most picky about potential owners, their allegiance was usually hard won and they were the most difficult to tame and personalise, a reflection of the independent and detached nature of the bird itself.",
+    "price": 400
 }
 
-### 
-
 ### Actualizar una entidad Core
-PUT http://localhost:3000/api/cores/{id}
+PUT http://localhost:3000/api/cores/685bc3301a3177f61f647ef2
 Content-Type: application/json
 
 {
-  "name": "updated core name",
-  "description": "updated description",
+  "name": "Unicorn hair",
+  "description": "Unicorn hair wands were not very powerful, but they were the least prone to accidents and the least likely to change loyalties. They were also the most difficult to turn to the dark arts. They were prone to wilting if mishandled.",
   "price": 175
 }
 
-###
-
 ### Eliminar una entidad Core
-DELETE http://localhost:3000/api/cores/{id}
-
-###
+DELETE http://localhost:3000/api/cores/685bc3301a3177f61f647ef2
 
 ### Obtener una entidad Core por nombre
-GET http://localhost:3000/api/cores/find-by-name/{name}
+GET http://localhost:3000/api/cores/find-by-name/Unicorn%20hair
 Accept: application/json
