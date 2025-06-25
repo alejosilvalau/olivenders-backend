@@ -1,9 +1,9 @@
-import { Entity, Property, ManyToOne } from '@mikro-orm/core';
+// import { Entity, Property, ManyToOne } from '@mikro-orm/core';
 
-@Entity()
-export class Wand {
-  @Property()
-  name!: string;
+// @Entity()
+// export class Wand {
+//   @Property()
+//   name!: string;
 
-  // otras propiedades...
-}
+//   // otras propiedades...
+// }
