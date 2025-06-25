@@ -68,37 +68,34 @@ const coreZodSchema = z.object({
   async function add(req: Request, res: Response): Promise<void> {
     try {
       const input = req.body.sanitizedInput;
-  
+      input.name = input.name.toUpperCase();
+
       const existingCore = await em.findOne(Core, {
-        name: input.name.toUpperCase(),
+        name: input.name,
       });
-  
+
       if (existingCore) {
-        res.status(409).json({ message: 'Core already exists', data: null });
+        res.status(409).json({ message: 'The core already exists', data: null });
       } else {
-        input.name = input.name.toUpperCase();
-  
         const core = em.create(Core, input);
         await em.flush();
-  
         res.status(201).json({ message: 'Core created', data: core });
       }
     } catch (error: any) {
-      res.status(500).json({ message: 'Error creating core', data: null });
+      res.status(500).json({ message: 'An error occurred while creating the core', data: null });
     }
   }
 
-  
   async function update(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params.id;
       const input = req.body.sanitizedInput;
-  
+      input.name = input.name.toUpperCase();
+
       const coreToUpdate = await em.findOne(Core, { id });
       if (!coreToUpdate) {
         res.status(404).json({ message: 'Core not found', data: null });
       } else {
-        input.name = input.name.toUpperCase();
         em.assign(coreToUpdate, input);
         await em.flush();
         res.status(200).json({ message: 'Core updated', data: coreToUpdate });
@@ -115,7 +112,7 @@ const coreZodSchema = z.object({
       if (!coreToDelete) {
         res.status(404).json({ message: 'Core not found', data: null });
       } else {
-        await em.removeAndFlush(coreToDelete);
+        await em.removeAndFlush(coreToDelete!);
         res.status(200).json({ message: 'Core deleted', data: null });
       }
     } catch (error: any) {
@@ -127,13 +124,19 @@ const coreZodSchema = z.object({
     try {
       const name = req.params.name.toUpperCase();
       const excludeCoreId = req.query.excludeCoreId;
-  
+
       const query: any = {};
       if (name) query.name = name;
       if (excludeCoreId) query.id = { $ne: excludeCoreId };
-  
+
       const core = await em.findOne(Core, query);
-      res.status(200).json({ message: 'Core fetched', data: core ?? null });
+
+      if (!core) {
+        res.status(200).json({ message: 'Core not found', data: null });
+        return;
+      }
+
+      res.status(200).json({ message: 'Core fetched', data: core });
     } catch (error: any) {
       res.status(500).json({ message: error.message, data: null });
     }
