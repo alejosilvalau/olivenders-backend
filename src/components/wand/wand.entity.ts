@@ -1,9 +1,10 @@
-// import { Entity, Property, ManyToOne } from '@mikro-orm/core';
+import { Entity, Property, ManyToOne } from '@mikro-orm/core';
+import { BaseEntity } from '../../shared/baseEntity.entity.js';
 
-// @Entity()
-// export class Wand {
-//   @Property()
-//   name!: string;
+@Entity()
+export class Wand extends BaseEntity {
+  @Property()
+  name!: string;
 
-//   // otras propiedades...
-// }
+  // otras propiedades...
+}

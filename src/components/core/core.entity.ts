@@ -1,7 +1,6 @@
-// core.entity.ts
 import { Entity, Property, OneToOne, Ref } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/baseEntity.entity.js';
-import { Wand} from '../wand/wand.entity.js';
+// import { Wand} from '../wand/wand.entity.js';
 
 @Entity()
 export class Core extends BaseEntity {
