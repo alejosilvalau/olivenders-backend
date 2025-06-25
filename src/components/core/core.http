@@ -1,0 +1,34 @@
+### Listar todas las entidades Core
+GET http://localhost:3000/api/cores
+Accept: application/json
+
+### Obtener una entidad Core por ID
+GET http://localhost:3000/api/cores/685bc3301a3177f61f647ef2
+Accept: application/json
+
+### Crear una entidad Core
+POST http://localhost:3000/api/cores/
+Content-Type: application/json
+
+{
+  "name": "Veela hair",
+  "description": "Wandmaker Garrick Ollivander mentioned that he did not use Veela hair because it made for temperamental wands.",
+  "price": 700
+}
+
+### Actualizar una entidad Core
+PUT http://localhost:3000/api/cores/685bc3301a3177f61f647ef2
+Content-Type: application/json
+
+{
+  "name": "Unicorn hair",
+  "description": "Unicorn hair wands were not very powerful, but they were the least prone to accidents and the least likely to change loyalties. They were also the most difficult to turn to the dark arts. They were prone to wilting if mishandled.",
+  "price": 175
+}
+
+### Eliminar una entidad Core
+DELETE http://localhost:3000/api/cores/685bc3301a3177f61f647ef2
+
+### Obtener una entidad Core por nombre
+GET http://localhost:3000/api/cores/find-by-name/Unicorn%20hair
+Accept: application/json

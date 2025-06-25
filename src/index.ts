@@ -7,6 +7,8 @@ import { RequestContext } from '@mikro-orm/core';
 import { orm, syncSchema } from './shared/orm.js';
 import { schoolRouter } from './components/school/school.routes.js';
 import { woodRouter } from './components/wood/wood.routes.js';
+import { coreRouter } from './components/core/core.routes.js';
+
 dotenv.config();
 
 const app = express();
@@ -52,12 +54,11 @@ app.use((req, res, next) => {
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use('/api/schools', schoolRouter);
 app.use('/api/woods', woodRouter);
+app.use('/api/cores', coreRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: 'Resource not found' });
 });
-
-
 
 async function startServer() {
   try {
