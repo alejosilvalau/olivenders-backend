@@ -11,9 +11,9 @@ POST http://localhost:3000/api/cores/
 Content-Type: application/json
 
 {
-    "name": "Phoenix feather",
-    "description": "This was the rarest core type. Phoenix feather wands were capable of the greatest range of magic, though they may have taken longer to reveal this. They showed the most initiative, sometimes acting of their own accord, a quality that many witches and wizards disliked. They were the most picky about potential owners, their allegiance was usually hard won and they were the most difficult to tame and personalise, a reflection of the independent and detached nature of the bird itself.",
-    "price": 400
+  "name": "Veela hair",
+  "description": "Wandmaker Garrick Ollivander mentioned that he did not use Veela hair because it made for temperamental wands.",
+  "price": 700
 }
 
 ### Actualizar una entidad Core

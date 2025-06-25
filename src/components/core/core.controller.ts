@@ -4,7 +4,7 @@ import { Core } from './core.entity.js';
 import { z } from 'zod';
 
 const coreZodSchema = z.object({
-  id: z.string().uuid().optional(),
+  id: z.string().optional(),
   name: z.string().trim().min(1),
   description: z.string().trim().min(1),
   price: z.number().positive(),
@@ -38,51 +38,48 @@ const sanitizeCoreInput = (req: Request, res: Response, next: NextFunction): voi
     res.status(400).json({ errors: formattedError });
   }
 };
-  
-  async function findAll(req: Request, res: Response): Promise<void> {
-    try {
-      const cores = await em.find(Core, {});
-      res.status(200).json({ message: 'Cores fetched', data: cores });
-    } catch (error: any) {
-      res.status(500).json({ message: error.message, data: null });
-    }
+
+async function findAll(req: Request, res: Response): Promise<void> {
+  try {
+    const cores = await em.find(Core, {});
+    res.status(200).json({ message: 'Cores fetched', data: cores });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message, data: null });
   }
+}
 
-
-  async function findOne(req: Request, res: Response): Promise<void> {
-    try {
-      const id = req.params.id;
-      const core = await em.findOne(Core, { id });
-      if (!core) {
-        res.status(404).json({ message: 'Core not found', data: null });
-        return;
-      }
-      res.status(200).json({ message: 'Core fetched', data: core });
-    } catch (error: any) {
-      res.status(500).json({ message: error.message, data: null });
+async function findOne(req: Request, res: Response): Promise<void> {
+  try {
+    const id = req.params.id;
+    const core = await em.findOne(Core, { id });
+    if (!core) {
+      res.status(404).json({ message: 'Core not found', data: null });
+      return;
     }
+    res.status(200).json({ message: 'Core fetched', data: core });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message, data: null });
   }
+}
 
-  async function add(req: Request, res: Response): Promise<void> {
-    try {
-      const input = req.body.sanitizedInput;
-      input.name = input.name.toUpperCase();
+async function add(req: Request, res: Response): Promise<void> {
+  try {
+    const input = req.body.sanitizedInput;
+    input.name = input.name.toUpperCase();
 
-      const existingCore = await em.findOne(Core, {
-        name: input.name,
-      });
-
-      if (existingCore) {
-        res.status(409).json({ message: 'The core already exists', data: null });
-      } else {
-        const core = em.create(Core, input);
-        await em.flush();
-        res.status(201).json({ message: 'Core created', data: core });
-      }
-    } catch (error: any) {
-      res.status(500).json({ message: 'An error occurred while creating the core', data: null });
+    const existingCore = await em.findOne(Core, { name: input.name });
+    if (existingCore) {
+      res.status(409).json({ message: 'The core already exists', data: null });
+    } else {
+      const core = em.create(Core, input);
+      await em.flush();
+      res.status(201).json({ message: 'Core created', data: core });
     }
+  } catch (error: any) {
+    console.error('Error creating core:', error);
+    res.status(500).json({ message: 'An error occurred while creating the core', data: null });
   }
+}
 
   async function update(req: Request, res: Response): Promise<void> {
     try {
