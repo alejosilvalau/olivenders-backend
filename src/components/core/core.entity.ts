@@ -14,6 +14,6 @@ export class Core extends BaseEntity {
   @Property({ nullable: false })
   price!: number;
 
-  @OneToOne(() => Wand, { nullable: false}) // Nucleo tiene una varita obligatoriamente
-  wand!: Ref<Wand>;
+  // @OneToOne(() => Wand, { nullable: false}) // Nucleo tiene una varita obligatoriamente
+  // wand!: Ref<Wand>;
 }
