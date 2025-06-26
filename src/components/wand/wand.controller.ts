@@ -62,6 +62,7 @@ async function findAll(req: Request, res: Response) {
   }
 }
 
+// TODO: Check the methods below for potential issues
 async function findAllByUser(req: Request, res: Response) {
   try {
     em.clear();
