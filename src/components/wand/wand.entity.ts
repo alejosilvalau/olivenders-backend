@@ -14,13 +14,10 @@ export class Wand extends BaseEntity {
   length!: string;
 
   @Property({ nullable: false })
-  flexibility!: string;
-
-  @Property({ nullable: false })
   description!: string;
 
   @Property({ nullable: false })
-  state!: string;
+  status!: string;
 
   @Property({ nullable: false })
   image!: string;
