@@ -11,7 +11,7 @@ export class Wand extends BaseEntity {
   email!: string;
 
   @Property({ nullable: false })
-  length!: string;
+  length!: number;
 
   @Property({ nullable: false })
   description!: string;
