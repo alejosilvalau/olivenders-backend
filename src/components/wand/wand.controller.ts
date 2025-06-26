@@ -19,25 +19,38 @@ const wandZodSchema = z.object({
 const em = orm.em;
 
 function sanitizeWandInput(req: Request, res: Response, next: NextFunction) {
-  req.body.sanitizedInput = {
-    name: req.body.name,
-    email: req.body.email,
-    length: req.body.length,
-    flexibility: req.body.flexibility,
-    description: req.body.description,
-    status: req.body.state,
-    image: req.body.image,
-    profit_margin: req.body.profit_margin !== '' ? Number(req.body.profit_margin) : 0,
-    total_price: req.body.total_price !== '' ? Number(req.body.total_price) : 0,
-  };
+  try {
+    const validatedInput = wandZodSchema.parse(req.body);
 
-  Object.keys(req.body.sanitizedInput).forEach(key => {
-    if (req.body.sanitizedInput[key] === undefined) {
-      delete req.body.sanitizedInput[key];
-    }
-  });
-  next();
+    req.body.sanitizedInput = {
+      id: validatedInput.id,
+      name: validatedInput.name,
+      email: validatedInput.email,
+      length: validatedInput.length,
+      flexibility: validatedInput.flexibility,
+      description: validatedInput.description,
+      status: validatedInput.status,
+      image: validatedInput.image,
+      profit_margin: validatedInput.profit_margin,
+      total_price: validatedInput.total_price,
+    };
+
+    Object.keys(req.body.sanitizedInput).forEach(key => {
+      if (req.body.sanitizedInput[key] === undefined) {
+        delete req.body.sanitizedInput[key];
+      }
+    });
+    next();
+  } catch (error: any) {
+    const formattedError = error.errors.map((err: z.ZodIssue) => ({
+      field: err.path.join('.'),
+      message: err.message,
+    }));
+    res.status(400).json({ errors: formattedError });
+  }
 }
+
+
 
 async function findAll(req: Request, res: Response) {
   try {
