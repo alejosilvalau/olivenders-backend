@@ -56,9 +56,9 @@ async function findAll(req: Request, res: Response) {
   try {
     em.clear();
     const wands = await em.find(Wand, {});
-    res.status(200).json(wands);
+    res.status(200).json({ message: 'Wands fetched', data: wands });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message, data: null });
   }
 }
 
