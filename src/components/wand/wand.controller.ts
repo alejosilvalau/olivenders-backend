@@ -149,26 +149,29 @@ async function logicRemove(req: Request, res: Response) {
     const id = req.params.id;
     const wand = await em.findOne(Wand, { id });
     if (!wand) {
-      return res.status(404).json({ message: 'Wand not found' });
+      return res.status(404).json({ message: 'Wand not found', data: null });
     }
     wand.status = 'inactive';
     await em.flush();
     res.status(200).json({ message: 'Wand deactivated', data: wand });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message, data: null });
   }
 }
 
-async function remove(wandId: string): Promise<void> {
+async function remove(req: Request, res: Response): Promise<void> {
   try {
-    const wand = await em.findOne(Wand, { id: wandId });
-    if (!wand) {
-      throw new Error('Wand not found');
+    const id = req.params.id;
+    const wandToDelete = await em.findOne(Wand, { id });
+    if (!wandToDelete) {
+      res.status(404).json({ message: 'Wand not found', data: null });
+    } else {
+      await em.removeAndFlush(wandToDelete!);
+      res.status(200).json({ message: 'Wand deleted', data: null });
     }
-    await em.removeAndFlush(wand);
   } catch (error: any) {
-    console.error('Error deleting wand:', error);
+    res.status(500).json({ message: error.message, data: null });
   }
 }
 
-export { sanitizeWandInput, findAll, findOne, add, update, remove, logicRemove, findOneById, findAllByCategory };
+export { sanitizeWandInput, findAll, findOne, add, update, remove, logicRemove, findOneById };
