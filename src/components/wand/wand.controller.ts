@@ -72,7 +72,6 @@ async function findAll(req: Request, res: Response) {
       //   }
       // }
       
-// TODO: Check the methods below for potential issues
 async function findOne(req: Request, res: Response) {
   try {
     const id = req.params.id;
@@ -87,16 +86,17 @@ async function findOne(req: Request, res: Response) {
   }
 }
 
-async function findAllByCategory(req: Request, res: Response) {
-  try {
-    em.clear();
-    const status = req.params.id;
-    const wands = await em.find(Wand, { status });
-    res.status(200).json(wands);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-}
+// TODO: Implement the function when doing the relationships
+// async function findAllByCategory(req: Request, res: Response) {
+//   try {
+//     em.clear();
+//     const status = req.params.id;
+//     const wands = await em.find(Wand, { status });
+//     res.status(200).json(wands);
+//   } catch (error: any) {
+//     res.status(500).json({ message: error.message });
+//   }
+// }
 
 async function findOneById(id: string) {
   const wand = await em.findOne(Wand, { id });
@@ -107,35 +107,43 @@ async function findOneById(id: string) {
   }
 }
 
-async function add(req: Request, res: Response) {
+async function add(req: Request, res: Response): Promise<void> {
   try {
-    const wandData = {
-      ...req.body.sanitizedInput,
-    };
-    const wand = em.create(Wand, wandData);
+    const input = req.body.sanitizedInput;
+    input.name = input.name.toUpperCase();
 
-    await em.flush();
-    res.status(201).json({ message: 'Wand created', data: wand });
+    const existingWand = await em.findOne(Wand, {
+      id: input.id,
+    });
+    if (existingWand) {
+      res.status(409).json({ message: 'The wand already exists', data: null });
+    } else {
+      const wand = em.create(Wand, input);
+      await em.flush();
+      res.status(201).json({ message: 'Wand created', data: wand });
+    }
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: 'An error occurred while creating the wand', data: null });
   }
 }
 
 async function update(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const wand = await em.findOneOrFail(Wand, { id });
-    if (!wand) {
+    const wandToUpdate = await em.findOneOrFail(Wand, { id });
+    if (!wandToUpdate) {
       return res.status(404).json({ message: 'Wand not found' });
     }
-    em.assign(wand, req.body.sanitizedInput);
+    em.assign(wandToUpdate, req.body.sanitizedInput);
     await em.flush();
-    res.status(200).json({ message: 'Wand updated', data: wand });
+    res.status(200).json({ message: 'Wand updated', data: wandToUpdate });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 }
 
+
+// TODO: Check the methods below
 async function logicRemove(req: Request, res: Response) {
   try {
     const id = req.params.id;
