@@ -78,11 +78,12 @@ async function findOne(req: Request, res: Response) {
     const id = req.params.id;
     const wand = await em.findOneOrFail(Wand, { id });
     if (!wand) {
-      return res.status(404).json({ message: 'Wand not found' });
+      res.status(404).json({ message: 'Wand not found', data: null });
+      return;
     }
-    res.status(200).json(wand);
+    res.status(200).json({ message: 'Wand fetched', data: wand });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message, data: null });
   }
 }
 
@@ -162,15 +163,4 @@ async function remove(wandId: string): Promise<void> {
   }
 }
 
-export {
-  sanitizeWandInput,
-  findAll,
-  findAllByUser,
-  findOne,
-  add,
-  update,
-  remove,
-  logicRemove,
-  findOneById,
-  findAllByCategory,
-};
+export { sanitizeWandInput, findAll, findOne, add, update, remove, logicRemove, findOneById, findAllByCategory };
