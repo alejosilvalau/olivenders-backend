@@ -6,7 +6,6 @@ import { z } from 'zod';
 const wandZodSchema = z.object({
   id: z.string().uuid().optional(),
   name: z.string().trim().min(1),
-  email: z.string().trim().email(),
   length: z.number().positive(),
   flexibility: z.string().trim().min(1),
   description: z.string().trim().min(1),
@@ -25,7 +24,6 @@ function sanitizeWandInput(req: Request, res: Response, next: NextFunction) {
     req.body.sanitizedInput = {
       id: validatedInput.id,
       name: validatedInput.name,
-      email: validatedInput.email,
       length: validatedInput.length,
       flexibility: validatedInput.flexibility,
       description: validatedInput.description,
@@ -62,18 +60,19 @@ async function findAll(req: Request, res: Response) {
   }
 }
 
+// TODO: Implement the function when doing the relationships
+// async function findAllByUser(req: Request, res: Response) {
+  //   try {
+    //     em.clear();
+    //     const email = req.params.id;
+    //     const wands = await em.find(Wand, { email });
+    //     res.status(200).json(wands);
+    //   } catch (error: any) {
+      //     res.status(500).json({ message: error.message });
+      //   }
+      // }
+      
 // TODO: Check the methods below for potential issues
-async function findAllByUser(req: Request, res: Response) {
-  try {
-    em.clear();
-    const email = req.params.id;
-    const wands = await em.find(Wand, { email });
-    res.status(200).json(wands);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-}
-
 async function findOne(req: Request, res: Response) {
   try {
     const id = req.params.id;

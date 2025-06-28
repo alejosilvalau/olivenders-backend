@@ -8,9 +8,6 @@ export class Wand extends BaseEntity {
   name!: string;
 
   @Property({ nullable: false })
-  email!: string;
-
-  @Property({ nullable: false })
   length!: number;
 
   @Property({ nullable: false })
