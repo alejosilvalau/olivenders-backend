@@ -1,0 +1,32 @@
+### Get all wands
+GET http://localhost:3000/api/wands
+
+### Get one school by ID
+GET http://localhost:3000/api/wands/68330e7503f0d4d3a6021aeb
+
+### Create a new school
+POST http://localhost:3000/api/wands/
+Content-Type: application/json
+
+{
+  "name": "Elder Wand",
+  "length": 15,
+  "description": "The most powerful wand in existence",
+  "status": "active",
+  "image": "https://example.com/elder-wand.jpg",
+  "profit_margin": 1000,
+}
+
+### Update an existing school
+PUT http://localhost:3000/api/wands/683312f1da820fff0e8ba0e6
+Content-Type: application/json
+
+# {
+#     "name": "Ilvermorny School of Witchcraft and Wizardry",
+#     "email": "ilvermorny@magic.com",
+#     "address": "Enchanted Avenue 456",
+#     "phone": "987654321"
+# }
+
+### Delete a school
+DELETE http://localhost:3000/api/wands/68330d3edbffba04856c4045
