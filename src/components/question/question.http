@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/questions
 
 ### Get one question by ID
-GET http://localhost:3000/api/questions/{question_id}
+GET http://localhost:3000/api/questions/68558450cfe2e4430e27aa8e
 
 ### Create a new question
 POST http://localhost:3000/api/questions/
@@ -13,7 +13,7 @@ Content-Type: application/json
 }
 
 ### Update an existing question
-PUT http://localhost:3000/api/questions/{question_id}
+PUT http://localhost:3000/api/questions/68625740720b449b17e17e50
 Content-Type: application/json
 
 {
@@ -21,4 +21,4 @@ Content-Type: application/json
 }
 
 ### Delete a question
-DELETE http://localhost:3000/api/questions/{question_id}
+DELETE http://localhost:3000/api/questions/68625740720b449b17e17e50
