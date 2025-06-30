@@ -61,7 +61,7 @@ async function findOne(req: Request, res: Response, next: NextFunction): Promise
 async function add(req: Request, res: Response): Promise<void> {
   try {
     const input = req.body.sanitizedInput;
-    input.name = input.name.toUpperCase();
+    input.question = input.question.toLowerCase();
 
     const existingQuestion = await em.findOne(Question, {
       id: input.id,
@@ -82,6 +82,7 @@ async function update(req: Request, res: Response): Promise<void> {
   try {
     const id = req.params.id;
     const input = req.body.sanitizedInput;
+    input.question = input.question.toLowerCase();
 
     const questionToUpdate = await em.findOne(Question, { id });
     if (!questionToUpdate) {
