@@ -1,194 +1,208 @@
 import { Router } from 'express';
-import { sanitizeSchoolInput, findAll, findOne, add, update, remove, findOneByName } from './school.controller.js';
+import { sanitizeWandInput, findAll, findOne, add, update, remove, logicRemove } from './wand.controller.js';
 import { sanitizeMongoQuery } from '../../shared/sanitizeMongoQuery.js';
 
-export const schoolRouter = Router();
+export const wandRouter = Router();
 
 /**
  * @swagger
  * components:
  *   schemas:
- *     School:
+ *     Wand:
  *       type: object
  *       properties:
  *         id:
  *           type: string
- *           description: Unique identifier for the school
+ *           description: Unique identifier for the wand
  *         name:
  *           type: string
- *           description: Name of the school
- *         email:
+ *           description: Name of the wand
+ *         length:
+ *           type: number
+ *           description: Length of the wand in inches
+ *         description:
  *           type: string
- *           description: Email of the school
- *         address:
+ *           description: Detailed description of the wand
+ *         status:
  *           type: string
- *           description: Address of the school
- *         phone:
+ *           description: Status of the wand (active, sold, inactive)
+ *         image:
  *           type: string
- *           description: Phone number of the school
+ *           description: Image URL of the wand
+ *         profit_margin:
+ *           type: number
+ *           description: Profit margin percentage for the wand
+ *         total_price:
+ *           type: number
+ *           description: Total price of the wand
  *       required:
  *         - name
- *         - email
- *         - address
- *         - phone
+ *         - length
+ *         - description
+ *         - status
+ *         - image
+ *         - profit_margin
+ *         - total_price
  */
 
 /**
  * @swagger
- * /api/schools:
+ * /api/wands:
  *   get:
- *     summary: Get all schools
- *     tags: [School]
+ *     summary: Get all wands
+ *     tags: [Wand]
  *     responses:
  *       200:
- *         description: List of schools
+ *         description: List of wands
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/School'
+ *                 $ref: '#/components/schemas/Wand'
  *       500:
- *         description: Error retrieving schools
+ *         description: Error retrieving wands
  */
-schoolRouter.get('/', findAll);
+wandRouter.get('/', findAll);
 
 /**
  * @swagger
- * /api/schools/{id}:
+ * /api/wands/{id}:
  *   get:
- *     summary: Get a school by ID
- *     tags: [School]
+ *     summary: Get a wand by ID
+ *     tags: [Wand]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: ID of the school
+ *         description: ID of the wand
  *     responses:
  *       200:
- *         description: School found
+ *         description: Wand found
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/School'
+ *               $ref: '#/components/schemas/Wand'
  *       404:
- *         description: School not found
+ *         description: Wand not found
  *       500:
- *         description: Error retrieving the school
+ *         description: Error retrieving the wand
  */
-schoolRouter.get('/:id', findOne);
+wandRouter.get('/:id', findOne);
 
 /**
  * @swagger
- * /api/schools:
+ * /api/wands:
  *   post:
- *     summary: Create a new school
- *     tags: [School]
+ *     summary: Create a new wand
+ *     tags: [Wand]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/School'
+ *             $ref: '#/components/schemas/Wand'
  *     responses:
  *       201:
- *         description: School created
+ *         description: Wand created
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/School'
+ *               $ref: '#/components/schemas/Wand'
  *       400:
  *         description: Validation error
+ *       409:
+ *         description: Wand already exists
  *       500:
- *         description: Error creating the school
+ *         description: Error creating the wand
  */
-schoolRouter.post('/', sanitizeSchoolInput, sanitizeMongoQuery, add);
+wandRouter.post('/', sanitizeWandInput, sanitizeMongoQuery, add);
 
 /**
  * @swagger
- * /api/schools/{id}:
+ * /api/wands/{id}:
  *   put:
- *     summary: Update an existing school
- *     tags: [School]
+ *     summary: Update an existing wand
+ *     tags: [Wand]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: ID of the school
+ *         description: ID of the wand
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/School'
+ *             $ref: '#/components/schemas/Wand'
  *     responses:
  *       200:
- *         description: School updated
+ *         description: Wand updated
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/School'
+ *               $ref: '#/components/schemas/Wand'
  *       404:
- *         description: School not found
+ *         description: Wand not found
  *       400:
  *         description: Validation error
  *       500:
- *         description: Error updating the school
+ *         description: Error updating the wand
  */
-schoolRouter.put('/:id', sanitizeSchoolInput, sanitizeMongoQuery, update);
+wandRouter.put('/:id', sanitizeWandInput, sanitizeMongoQuery, update);
 
 /**
  * @swagger
- * /api/schools/{id}:
+ * /api/wands/{id}:
  *   delete:
- *     summary: Delete a school
- *     tags: [School]
+ *     summary: Delete a wand
+ *     tags: [Wand]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: ID of the school
+ *         description: ID of the wand
  *     responses:
  *       200:
- *         description: School deleted
+ *         description: Wand deleted
  *       404:
- *         description: School not found
+ *         description: Wand not found
  *       500:
- *         description: Error deleting the school
+ *         description: Error deleting the wand
  */
-schoolRouter.delete('/:id', sanitizeMongoQuery, remove);
+wandRouter.delete('/:id', sanitizeMongoQuery, remove);
 
 /**
  * @swagger
- * /api/schools/find-by-name/{name}:
- *   get:
- *     summary: Get a school by name
- *     tags: [School]
+ * /api/wands/{id}/deactivate:
+ *   put:
+ *     summary: Deactivate a wand (logical removal)
+ *     tags: [Wand]
  *     parameters:
  *       - in: path
- *         name: name
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: Name of the school
+ *         description: ID of the wand
  *     responses:
  *       200:
- *         description: School found
+ *         description: Wand deactivated
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/School'
+ *               $ref: '#/components/schemas/Wand'
  *       404:
- *         description: School not found
+ *         description: Wand not found
  *       500:
- *         description: Error retrieving the school
+ *         description: Error deactivating the wand
  */
-schoolRouter.get('/find-by-name/:name', findOneByName);
+wandRouter.patch('/:id', sanitizeMongoQuery, logicRemove);
 
-export default schoolRouter;
+export default wandRouter;
