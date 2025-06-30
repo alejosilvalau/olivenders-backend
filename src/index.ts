@@ -9,6 +9,7 @@ import { orm, syncSchema } from './shared/orm.js';
 import { schoolRouter } from './components/school/school.routes.js';
 import { woodRouter } from './components/wood/wood.routes.js';
 import { coreRouter } from './components/core/core.routes.js';
+import { wandRouter } from './components/wand/wand.routes.js';
 
 dotenv.config();
 
@@ -56,6 +57,7 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use('/api/schools', schoolRouter);
 app.use('/api/woods', woodRouter);
 app.use('/api/cores', coreRouter);
+app.use('/api/wands', wandRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: 'Resource not found' });
