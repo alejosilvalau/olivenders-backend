@@ -1,0 +1,24 @@
+### Get all questions
+GET http://localhost:3000/api/questions
+
+### Get one question by ID
+GET http://localhost:3000/api/questions/{question_id}
+
+### Create a new question
+POST http://localhost:3000/api/questions/
+Content-Type: application/json
+
+{
+  "question": "What is your favorite wand type?"
+}
+
+### Update an existing question
+PUT http://localhost:3000/api/questions/{question_id}
+Content-Type: application/json
+
+{
+  "question": "What is your preferred wand core?"
+}
+
+### Delete a question
+DELETE http://localhost:3000/api/questions/{question_id}
