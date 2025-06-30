@@ -126,14 +126,17 @@ async function add(req: Request, res: Response): Promise<void> {
 async function update(req: Request, res: Response): Promise<void> {
   try {
     const id = req.params.id;
+    const input = req.body.sanitizedInput;
+    input.name = input.name.toUpperCase();
+
     const wandToUpdate = await em.findOneOrFail(Wand, { id });
     if (!wandToUpdate) {
       res.status(404).json({ message: 'Wand not found' });
-      return;
+    } else {
+      em.assign(wandToUpdate, req.body.sanitizedInput);
+      await em.flush();
+      res.status(200).json({ message: 'Wand updated', data: wandToUpdate });
     }
-    em.assign(wandToUpdate, req.body.sanitizedInput);
-    await em.flush();
-    res.status(200).json({ message: 'Wand updated', data: wandToUpdate });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
