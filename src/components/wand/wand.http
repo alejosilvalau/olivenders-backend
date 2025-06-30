@@ -1,10 +1,10 @@
 ### Get all wands
 GET http://localhost:3000/api/wands
 
-### Get one school by ID
+### Get one wand by ID
 GET http://localhost:3000/api/wands/68330e7503f0d4d3a6021aeb
 
-### Create a new school
+### Create a new wand
 POST http://localhost:3000/api/wands/
 Content-Type: application/json
 
@@ -15,18 +15,25 @@ Content-Type: application/json
   "status": "active",
   "image": "https://example.com/elder-wand.jpg",
   "profit_margin": 1000,
+  "total_price": 5000
 }
 
-### Update an existing school
-PUT http://localhost:3000/api/wands/683312f1da820fff0e8ba0e6
+### Update an existing wand
+PUT http://localhost:3000/api/wands/6861ea904621e1d6ae9b8434
 Content-Type: application/json
 
-# {
-#     "name": "Ilvermorny School of Witchcraft and Wizardry",
-#     "email": "ilvermorny@magic.com",
-#     "address": "Enchanted Avenue 456",
-#     "phone": "987654321"
-# }
+{
+  "name": "Phoenix Feather Wand",
+  "length": 11,
+  "description": "A wand with a phoenix feather core",
+  "status": "active",
+  "image": "https://example.com/phoenix-wand.jpg",
+  "profit_margin": 500,
+  "total_price": 1500
+}
 
-### Delete a school
-DELETE http://localhost:3000/api/wands/68330d3edbffba04856c4045
+### Delete a wand
+DELETE http://localhost:3000/api/wands/6861ea904621e1d6ae9b8434
+
+### Deactivate a wand (logical removal)
+PATCH http://localhost:3000/api/wands/6861ea9a4621e1d6ae9b8435
