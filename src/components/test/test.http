@@ -10,16 +10,16 @@ Content-Type: application/json
 
 {
   "name": "Advanced Spellcasting",
-  "date": "2025-07-15T10:00:00.000Z"
+  "date": "2025-07-15T10:00:00Z"
 }
 
 ### Update an existing test
-PUT http://localhost:3000/api/tests/68625b411ccf0f2835c9e75a
+PUT http://localhost:3000/api/tests/68330e7503f0d4d3a6021aeb
 Content-Type: application/json
 
 {
   "name": "Intermediate Potion Making",
-  "date": "2025-08-20T14:30:00.000Z"
+  "date": "2025-08-20T14:30:00Z"
 }
 
 ### Delete a test

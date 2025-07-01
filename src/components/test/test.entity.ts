@@ -6,6 +6,6 @@ export class Test extends BaseEntity {
   @Property({ nullable: false })
   name!: string;
 
-  @Property({ nullable: false, type: Types.date })
+  @Property({ nullable: false, type: types.date })
   date!: Date;
 }

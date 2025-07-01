@@ -6,24 +6,28 @@ import { Test } from './test.entity.js';
 const testZodSchema = z.object({
   id: z.string().uuid().optional(),
   name: z.string().trim().min(1),
-  date: z.date().or(z.string().datetime()),
+  date: z.date().or(z.date()),
 });
 
 const em = orm.em;
 
-const sanitizeTestInput = (req: Request, res: Response, next: NextFunction): void => {
+function sanitizeTestInput(req: Request, res: Response, next: NextFunction): void {
   try {
-    // Parse date string to Date object if it's a string
-    if (req.body.date && typeof req.body.date === 'string') {
-      req.body.date = new Date(req.body.date);
-    }
-
     const validatedInput = testZodSchema.parse(req.body);
+
+    // Always ensure date is a Date object for consistent processing
+    let dateValue = validatedInput.date;
+    if (typeof dateValue === 'string') {
+      dateValue = new Date(dateValue);
+      if (isNaN(dateValue.getTime())) {
+        throw new Error('Invalid date format');
+      }
+    }
 
     req.body.sanitizedInput = {
       id: validatedInput.id,
       name: validatedInput.name,
-      date: validatedInput.date,
+      date: dateValue,
     };
 
     Object.keys(req.body.sanitizedInput).forEach(key => {
@@ -34,13 +38,17 @@ const sanitizeTestInput = (req: Request, res: Response, next: NextFunction): voi
 
     next();
   } catch (error: any) {
-    const formattedError = error.errors.map((err: z.ZodIssue) => ({
-      field: err.path.join('.'),
-      message: err.message,
-    }));
-    res.status(400).json({ errors: formattedError });
+    if (error.errors) {
+      const formattedError = error.errors.map((err: z.ZodIssue) => ({
+        field: err.path.join('.'),
+        message: err.message,
+      }));
+      res.status(400).json({ message: formattedError, data: null });
+    } else {
+      res.status(400).json({ message: [{ message: error.message }], data: null });
+    }
   }
-};
+}
 
 async function findAll(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
