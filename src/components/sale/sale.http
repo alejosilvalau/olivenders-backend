@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/sales
 
 ### Get one sale by ID
-GET http://localhost:3000/api/sales/68625b411ccf0f2835c9e75a
+GET http://localhost:3000/api/sales/6863acd3b0aaf7a0dfb5128e
 
 ### Get sale by payment ID
 GET http://localhost:3000/api/sales/payment/12345
@@ -15,14 +15,14 @@ POST http://localhost:3000/api/sales/
 Content-Type: application/json
 
 {
-  "payment_id": 12345,
+  "payment_id": 59494,
   "date": "2025-07-01T10:00:00.000Z",
   "status": "completed",
   "review": "Excellent wand, works perfectly for my spells!"
 }
 
 ### Update an existing sale
-PUT http://localhost:3000/api/sales/68625b411ccf0f2835c9e75a
+PUT http://localhost:3000/api/sales/6863ad09b0aaf7a0dfb5128f
 Content-Type: application/json
 
 {
@@ -33,4 +33,4 @@ Content-Type: application/json
 }
 
 ### Delete a sale
-DELETE http://localhost:3000/api/sales/68625b411ccf0f2835c9e75a
+DELETE http://localhost:3000/api/sales/6863ad09b0aaf7a0dfb5128f
