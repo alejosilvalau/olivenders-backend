@@ -3,7 +3,7 @@ import { BaseEntity } from '../../shared/baseEntity.entity.js';
 import { School } from '../school/school.entity.js';
 
 @Entity()
-export class Mage extends BaseEntity {
+export class Wizard extends BaseEntity {
   @Property({ nullable: false })
   username!: string;
 

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { orm } from '../../shared/orm.js';
-import { Mage } from './wizzard.entity.js';
+import { Mage } from './wizard.entity.js';
 import { z } from 'zod';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';

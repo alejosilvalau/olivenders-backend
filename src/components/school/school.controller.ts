@@ -9,7 +9,7 @@ const schoolZodSchema = z.object({
   email: z.string().trim().email(),
   address: z.string().trim().min(1),
   phone: z.string().trim().min(1),
-  mages: z.array(z.string().uuid()).optional(),
+  wizzards: z.array(z.string().uuid()).optional(),
 });
 
 const em = orm.em;
