@@ -6,7 +6,10 @@ import { Test } from './test.entity.js';
 const testZodSchema = z.object({
   id: z.string().uuid().optional(),
   name: z.string().trim().min(1),
-  date: z.date().or(z.date()),
+  date: z
+    .string()
+    .transform(val => new Date(val))
+    .or(z.date()),
 });
 
 const em = orm.em;
@@ -16,18 +19,14 @@ function sanitizeTestInput(req: Request, res: Response, next: NextFunction): voi
     const validatedInput = testZodSchema.parse(req.body);
 
     // Always ensure date is a Date object for consistent processing
-    let dateValue = validatedInput.date;
-    if (typeof dateValue === 'string') {
-      dateValue = new Date(dateValue);
-      if (isNaN(dateValue.getTime())) {
-        throw new Error('Invalid date format');
-      }
+    if (validatedInput.date && isNaN(validatedInput.date.getTime())) {
+      throw new Error('Invalid date format');
     }
 
     req.body.sanitizedInput = {
       id: validatedInput.id,
       name: validatedInput.name,
-      date: dateValue,
+      date: validatedInput.date,
     };
 
     Object.keys(req.body.sanitizedInput).forEach(key => {

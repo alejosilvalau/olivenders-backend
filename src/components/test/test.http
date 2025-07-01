@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/tests
 
 ### Get one test by ID
-GET http://localhost:3000/api/tests/68330e7503f0d4d3a6021aeb
+GET http://localhost:3000/api/tests/68625b411ccf0f2835c9e75a
 
 ### Create a new test
 POST http://localhost:3000/api/tests/
