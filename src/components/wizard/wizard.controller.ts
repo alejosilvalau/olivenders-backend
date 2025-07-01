@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { orm } from '../../shared/orm.js';
-import { Mage } from './wizard.entity.js';
+import { Wizard } from './wizard.entity.js';
 import { z } from 'zod';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
@@ -8,7 +8,7 @@ import bcrypt from 'bcrypt';
 
 dotenv.config();
 
-const mageZodSchema = z.object({
+const wizardZodSchema = z.object({
   id: z.string().uuid().optional(),
   username: z.string(),
   password: z.string(),
@@ -24,7 +24,7 @@ const mageZodSchema = z.object({
 const em = orm.em;
 
 function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
-  const validatedInput = mageZodSchema.parse(req.body);
+  const validatedInput = wizardZodSchema.parse(req.body);
 
   req.body.sanitizedInput = {
     username: validatedInput.username,
@@ -48,8 +48,8 @@ function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
 
 async function findAll(req: Request, res: Response) {
   try {
-    const mages = await em.find(Mage, {}, { populate: ['school'] });
-    res.status(200).json({ message: 'Mages fetched', data: mages });
+    const wizards = await em.find(Wizard, {}, { populate: ['school'] });
+    res.status(200).json({ message: 'Wizards fetched', data: wizards });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
@@ -58,21 +58,21 @@ async function findAll(req: Request, res: Response) {
 async function findOneByEmailOrUsername(req: Request, res: Response) {
   try {
     const { username, email } = req.params;
-    const excludeMageId = req.query.excludeMageId;
+    const excludeWizardId = req.query.excludeWizardId;
 
     const query: any = { $or: [] };
 
     if (username) query.$or.push({ username });
     if (email) query.$or.push({ email });
-    if (excludeMageId) query.id = { $ne: excludeMageId };
+    if (excludeWizardId) query.id = { $ne: excludeWizardId };
 
-    const mageFound = await em.findOne(Mage, query, { populate: ['school'] });
+    const wizardFound = await em.findOne(Wizard, query, { populate: ['school'] });
 
-    if (!mageFound) {
-      return res.status(200).json({ message: 'Mage not found', data: null });
+    if (!wizardFound) {
+      return res.status(200).json({ message: 'Wizard not found', data: null });
     }
 
-    return res.status(200).json({ message: 'Mage found', data: mageFound });
+    return res.status(200).json({ message: 'Wizard found', data: wizardFound });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
@@ -81,11 +81,11 @@ async function findOneByEmailOrUsername(req: Request, res: Response) {
 async function findOneByEmailRecipient(req: Request, res: Response) {
   try {
     const email = req.params.email;
-    const mageFound = await em.findOneOrFail(Mage, { email }, { populate: ['school'] });
-    if (!mageFound) {
-      return res.status(409).json({ message: 'Mage not found', data: null });
+    const wizardFound = await em.findOneOrFail(Wizard, { email }, { populate: ['school'] });
+    if (!wizardFound) {
+      return res.status(409).json({ message: 'Wizard not found', data: null });
     }
-    res.status(200).json({ message: 'Mage found', data: mageFound });
+    res.status(200).json({ message: 'Wizard found', data: wizardFound });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
@@ -94,11 +94,11 @@ async function findOneByEmailRecipient(req: Request, res: Response) {
 async function findOneById(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const mage = await em.findOneOrFail(Mage, { id }, { populate: ['school'] });
-    if (!mage) {
-      return res.status(404).json({ message: 'Mage not found', data: null });
+    const wizard = await em.findOneOrFail(Wizard, { id }, { populate: ['school'] });
+    if (!wizard) {
+      return res.status(404).json({ message: 'Wizard not found', data: null });
     }
-    res.status(200).json({ message: 'Mage found', data: mage });
+    res.status(200).json({ message: 'Wizard found', data: wizard });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
@@ -106,8 +106,8 @@ async function findOneById(req: Request, res: Response) {
 
 async function findOneByEmail(email: string) {
   try {
-    const mage = await em.findOne(Mage, { email }, { populate: ['school'] });
-    return mage;
+    const wizard = await em.findOne(Wizard, { email }, { populate: ['school'] });
+    return wizard;
   } catch (error: any) {
     return error.message;
   }
@@ -116,11 +116,11 @@ async function findOneByEmail(email: string) {
 async function findOneByUser(req: Request, res: Response) {
   try {
     const username = req.params.username;
-    const mage = await em.findOne(Mage, { username }, { populate: ['school'] });
-    if (!mage) {
-      return res.status(404).json({ message: 'Mage not found', data: null });
+    const wizard = await em.findOne(Wizard, { username }, { populate: ['school'] });
+    if (!wizard) {
+      return res.status(404).json({ message: 'Wizard not found', data: null });
     } else {
-      res.status(200).json({ message: 'Mage found', data: mage });
+      res.status(200).json({ message: 'Wizard found', data: wizard });
     }
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
@@ -131,20 +131,20 @@ async function login(req: Request, res: Response) {
   try {
     const username = req.body.username;
     const password = req.body.password;
-    const mageFound = await em.findOne(Mage, { username }, { populate: ['school'] });
+    const wizardFound = await em.findOne(Wizard, { username }, { populate: ['school'] });
 
-    if (!mageFound) {
-      return res.status(404).json({ message: 'Mage not found', data: null });
+    if (!wizardFound) {
+      return res.status(404).json({ message: 'Wizard not found', data: null });
     } else {
-      const isMatch = await bcrypt.compare(password, mageFound.password);
+      const isMatch = await bcrypt.compare(password, wizardFound.password);
       if (!isMatch) {
         return res.status(401).json({ message: 'Incorrect password', data: null });
       }
-      const token = jwt.sign({ id: mageFound.id, role: mageFound.role }, process.env.SECRET_KEY_WEBTOKEN!, {
+      const token = jwt.sign({ id: wizardFound.id, role: wizardFound.role }, process.env.SECRET_KEY_WEBTOKEN!, {
         expiresIn: '1h',
       });
 
-      res.status(200).json({ message: 'Login successful', data: { user: mageFound, token: token } });
+      res.status(200).json({ message: 'Login successful', data: { user: wizardFound, token: token } });
     }
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
@@ -153,13 +153,13 @@ async function login(req: Request, res: Response) {
 
 async function validatePassword(req: Request, res: Response) {
   try {
-    const mageId = req.params.id;
+    const wizardId = req.params.id;
     const currentPassword = req.body.password;
-    const mage = await em.findOne(Mage, { id: mageId }, { populate: ['school'] });
-    if (!mage) {
-      return res.status(404).json({ message: 'Mage not found', data: null });
+    const wizard = await em.findOne(Wizard, { id: wizardId }, { populate: ['school'] });
+    if (!wizard) {
+      return res.status(404).json({ message: 'Wizard not found', data: null });
     } else {
-      const isMatch = await bcrypt.compare(currentPassword, mage.password);
+      const isMatch = await bcrypt.compare(currentPassword, wizard.password);
       res.status(200).json({ message: 'Password validation completed', data: isMatch });
     }
   } catch (error: any) {
@@ -184,8 +184,8 @@ async function validatePassword(req: Request, res: Response) {
 async function checkUsername(req: Request, res: Response) {
   try {
     const username = req.params.username;
-    const mageFound = await em.findOne(Mage, { username });
-    if (!mageFound) {
+    const wizardFound = await em.findOne(Wizard, { username });
+    if (!wizardFound) {
       return res.status(200).json({ message: 'Username available', data: false });
     } else {
       return res.status(200).json({ message: 'Username already exists', data: true });
@@ -198,8 +198,8 @@ async function checkUsername(req: Request, res: Response) {
 async function checkEmail(req: Request, res: Response) {
   try {
     const email = req.params.email;
-    const mageFound = await em.findOne(Mage, { email });
-    if (!mageFound) {
+    const wizardFound = await em.findOne(Wizard, { email });
+    if (!wizardFound) {
       return res.status(200).json({ message: 'Email available', data: false });
     } else {
       return res.status(200).json({ message: 'Email already exists', data: true });
@@ -211,18 +211,18 @@ async function checkEmail(req: Request, res: Response) {
 
 async function add(req: Request, res: Response) {
   try {
-    const existingMage = await em.findOne(Mage, {
+    const existingWizard = await em.findOne(Wizard, {
       $or: [{ username: req.body.sanitizedInput.username }, { email: req.body.sanitizedInput.email }],
     });
 
-    if (existingMage) {
-      return res.status(409).json({ message: 'Mage already exists', data: null });
+    if (existingWizard) {
+      return res.status(409).json({ message: 'Wizard already exists', data: null });
     }
     if (req.body.sanitizedInput.password.length >= 6) {
       const hashRounds = 10;
       const hashedPassword = await bcrypt.hash(req.body.sanitizedInput.password, hashRounds);
 
-      const mage = em.create(Mage, {
+      const wizard = em.create(Wizard, {
         ...req.body.sanitizedInput,
         password: hashedPassword,
       });
@@ -230,8 +230,8 @@ async function add(req: Request, res: Response) {
       await em.flush();
 
       // Remove password from response for security
-      const mageData = { ...mage, password: undefined };
-      res.status(201).json({ message: 'Mage created successfully', data: mageData });
+      const wizardData = { ...wizard, password: undefined };
+      res.status(201).json({ message: 'Wizard created successfully', data: wizardData });
     } else {
       res.status(400).json({ message: 'Password must be at least 6 characters', data: null });
     }
@@ -244,28 +244,28 @@ async function add(req: Request, res: Response) {
 async function update(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const mageToUpdate = await em.findOneOrFail(Mage, { id }, { populate: ['school'] });
+    const wizardToUpdate = await em.findOneOrFail(Wizard, { id }, { populate: ['school'] });
 
-    if (!mageToUpdate) {
-      return res.status(404).json({ message: 'Mage not found', data: null });
+    if (!wizardToUpdate) {
+      return res.status(404).json({ message: 'Wizard not found', data: null });
     } else {
       if (req.body.sanitizedInput.password) {
         return res.status(400).json({ message: 'Cannot modify password from update endpoint', data: null });
       }
 
       // Ensure phone number is stored as string
-      const mageData = {
+      const wizardData = {
         ...req.body.sanitizedInput,
-        phone: req.body.sanitizedInput.phone ? req.body.sanitizedInput.phone.toString() : mageToUpdate.phone,
+        phone: req.body.sanitizedInput.phone ? req.body.sanitizedInput.phone.toString() : wizardToUpdate.phone,
       };
 
-      em.assign(mageToUpdate, mageData);
+      em.assign(wizardToUpdate, wizardData);
 
       await em.flush();
 
       // Remove password from response for security
-      const responseData = { ...mageToUpdate, password: undefined };
-      res.status(200).json({ message: 'Mage updated successfully', data: responseData });
+      const responseData = { ...wizardToUpdate, password: undefined };
+      res.status(200).json({ message: 'Wizard updated successfully', data: responseData });
     }
   } catch (error: any) {
     console.error('Detailed error:', error);
@@ -282,18 +282,18 @@ async function resetPasswordWithoutToken(req: Request, res: Response) {
       return res.status(400).json({ message: 'Password must be at least 6 characters', data: null });
     }
 
-    const mage = await em.findOne(Mage, { id }, { populate: ['school'] });
-    if (!mage) {
-      return res.status(404).json({ message: 'Mage not found', data: null });
+    const wizard = await em.findOne(Wizard, { id }, { populate: ['school'] });
+    if (!wizard) {
+      return res.status(404).json({ message: 'Wizard not found', data: null });
     }
     const hashRounds = 10;
     const hashedPassword = await bcrypt.hash(newPassword, hashRounds);
-    mage.password = hashedPassword;
-    await em.persistAndFlush(mage);
+    wizard.password = hashedPassword;
+    await em.persistAndFlush(wizard);
 
     // Remove password from response for security
-    const mageData = { ...mage, password: undefined };
-    return res.status(200).json({ message: 'Password updated successfully', data: mageData });
+    const wizardData = { ...wizard, password: undefined };
+    return res.status(200).json({ message: 'Password updated successfully', data: wizardData });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
@@ -330,13 +330,13 @@ async function resetPasswordWithoutToken(req: Request, res: Response) {
 async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const mage = await em.findOne(Mage, { id }, { populate: ['school'] });
+    const wizard = await em.findOne(Wizard, { id }, { populate: ['school'] });
 
-    if (!mage) {
-      return res.status(404).json({ message: 'Mage not found', data: null });
+    if (!wizard) {
+      return res.status(404).json({ message: 'Wizard not found', data: null });
     } else {
-      await em.removeAndFlush(mage);
-      res.status(200).json({ message: 'Mage deleted successfully', data: null });
+      await em.removeAndFlush(wizard);
+      res.status(200).json({ message: 'Wizard deleted successfully', data: null });
     }
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
