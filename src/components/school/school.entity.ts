@@ -1,6 +1,6 @@
 import { Entity, Property, Collection, OneToMany, Cascade } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/baseEntity.entity.js';
-import { Mage } from '../mage/mage.entity.js';
+import { Mage } from '../wizzard/wizzard.entity.js';
 
 @Entity()
 export class School extends BaseEntity {
