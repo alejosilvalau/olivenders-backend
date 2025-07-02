@@ -21,7 +21,7 @@ Content-Type: application/json
 
 
 ### Update wizard
-PUT http://localhost:3000/api/wizards/66fd592821f0f4df023497b5
+PUT http://localhost:3000/api/wizards/686504f8cc6d7ba855a9575d
 Content-Type: application/json
 
 {
