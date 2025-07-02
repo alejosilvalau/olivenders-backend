@@ -2,7 +2,7 @@ import { Entity, Property, Collection, OneToMany, Cascade, types } from '@mikro-
 import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
 
 @Entity()
-export class Test extends BaseEntity {
+export class Quiz extends BaseEntity {
   @Property({ nullable: false })
   name!: string;
 

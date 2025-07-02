@@ -1,11 +1,11 @@
-### Get all tests
-GET http://localhost:3000/api/tests
+### Get all quizzes
+GET http://localhost:3000/api/quizzes
 
 ### Get one test by ID
-GET http://localhost:3000/api/tests/68625b411ccf0f2835c9e75a
+GET http://localhost:3000/api/quizzes/68625b411ccf0f2835c9e75a
 
 ### Create a new test
-POST http://localhost:3000/api/tests/
+POST http://localhost:3000/api/quizzes/
 Content-Type: application/json
 
 {
@@ -14,7 +14,7 @@ Content-Type: application/json
 }
 
 ### Update an existing test
-PUT http://localhost:3000/api/tests/68330e7503f0d4d3a6021aeb
+PUT http://localhost:3000/api/quizzes/68330e7503f0d4d3a6021aeb
 Content-Type: application/json
 
 {
@@ -23,4 +23,4 @@ Content-Type: application/json
 }
 
 ### Delete a test
-DELETE http://localhost:3000/api/tests/68330e7503f0d4d3a6021aeb
+DELETE http://localhost:3000/api/quizzes/68330e7503f0d4d3a6021aeb

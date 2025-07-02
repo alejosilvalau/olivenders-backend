@@ -11,7 +11,7 @@ import { woodRouter } from './components/wood/wood.routes.js';
 import { coreRouter } from './components/core/core.routes.js';
 import { wandRouter } from './components/wand/wand.routes.js';
 import { questionRouter } from './components/question/question.routes.js';
-import { testRouter } from './components/test/test.routes.js';
+import { quizRouter } from './components/quiz/quiz.routes.js';
 import { saleRouter } from './components/sale/sale.routes.js';
 import { wizardRouter } from './components/wizard/wizard.routes.js';
 
@@ -63,7 +63,7 @@ app.use('/api/woods', woodRouter);
 app.use('/api/cores', coreRouter);
 app.use('/api/wands', wandRouter);
 app.use('/api/questions', questionRouter);
-app.use('/api/tests', testRouter);
+app.use('/api/quizzes', quizRouter);
 app.use('/api/sales', saleRouter);
 app.use('/api/wizards', wizardRouter);
 

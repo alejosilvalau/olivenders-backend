@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { orm } from '../../shared/db/orm.js';
 import { z } from 'zod';
-import { Test } from './test.entity.js';
+import { Quiz } from './quiz.entity.js';
 
-const testZodSchema = z.object({
+const quizZodSchema = z.object({
   id: z.string().uuid().optional(),
   name: z.string().trim().min(1),
   date: z
@@ -14,9 +14,9 @@ const testZodSchema = z.object({
 
 const em = orm.em;
 
-function sanitizeTestInput(req: Request, res: Response, next: NextFunction): void {
+function sanitizeQuizInput(req: Request, res: Response, next: NextFunction): void {
   try {
-    const validatedInput = testZodSchema.parse(req.body);
+    const validatedInput = quizZodSchema.parse(req.body);
 
     // Always ensure date is a Date object for consistent processing
     if (validatedInput.date && isNaN(validatedInput.date.getTime())) {
@@ -52,8 +52,8 @@ function sanitizeTestInput(req: Request, res: Response, next: NextFunction): voi
 async function findAll(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     em.clear();
-    const tests = await em.find(Test, {});
-    res.status(200).json({ message: 'Tests fetched', data: tests });
+    const quizzes = await em.find(Quiz, {});
+    res.status(200).json({ message: 'Quizzes fetched', data: quizzes });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
@@ -62,12 +62,12 @@ async function findAll(req: Request, res: Response, next: NextFunction): Promise
 async function findOne(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const id = req.params.id;
-    const test = await em.findOne(Test, { id });
-    if (!test) {
-      res.status(404).json({ message: 'Test not found', data: null });
+    const quiz = await em.findOne(Quiz, { id });
+    if (!quiz) {
+      res.status(404).json({ message: 'Quiz not found', data: null });
       return;
     }
-    res.status(200).json({ message: 'Test fetched', data: test });
+    res.status(200).json({ message: 'Quiz fetched', data: quiz });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
@@ -75,8 +75,8 @@ async function findOne(req: Request, res: Response, next: NextFunction): Promise
 
 async function findOneById(id: string) {
   try {
-    const test = await em.findOne(Test, { id });
-    return test;
+    const quiz = await em.findOne(Quiz, { id });
+    return quiz;
   } catch (error: any) {
     return error.message;
   }
@@ -87,19 +87,19 @@ async function add(req: Request, res: Response): Promise<void> {
     const input = req.body.sanitizedInput;
     input.name = input.name.toUpperCase();
 
-    const existingTest = await em.findOne(Test, {
+    const existingQuiz = await em.findOne(Quiz, {
       id: input.id,
     });
 
-    if (existingTest) {
-      res.status(409).json({ message: 'The test already exists', data: null });
+    if (existingQuiz) {
+      res.status(409).json({ message: 'The quiz already exists', data: null });
     } else {
-      const test = em.create(Test, input);
+      const quiz = em.create(Quiz, input);
       await em.flush();
-      res.status(201).json({ message: 'Test created', data: test });
+      res.status(201).json({ message: 'Quiz created', data: quiz });
     }
   } catch (error: any) {
-    res.status(500).json({ message: 'An error occurred while creating the test', data: null });
+    res.status(500).json({ message: 'An error occurred while creating the quiz', data: null });
   }
 }
 
@@ -113,15 +113,15 @@ async function update(req: Request, res: Response): Promise<void> {
       input.name = input.name.toUpperCase();
     }
 
-    const testToUpdate = await em.findOne(Test, { id });
-    if (!testToUpdate) {
-      res.status(404).json({ message: 'Test not found', data: null });
+    const quizToUpdate = await em.findOne(Quiz, { id });
+    if (!quizToUpdate) {
+      res.status(404).json({ message: 'Quiz not found', data: null });
       return;
     }
 
-    em.assign(testToUpdate, input);
+    em.assign(quizToUpdate, input);
     await em.flush();
-    res.status(200).json({ message: 'Test updated', data: testToUpdate });
+    res.status(200).json({ message: 'Quiz updated', data: quizToUpdate });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
@@ -130,17 +130,17 @@ async function update(req: Request, res: Response): Promise<void> {
 async function remove(req: Request, res: Response): Promise<void> {
   try {
     const id = req.params.id;
-    const testToDelete = await em.findOne(Test, { id });
-    if (!testToDelete) {
-      res.status(404).json({ message: 'Test not found', data: null });
+    const quizToDelete = await em.findOne(Quiz, { id });
+    if (!quizToDelete) {
+      res.status(404).json({ message: 'Quiz not found', data: null });
       return;
     }
 
-    await em.removeAndFlush(testToDelete);
-    res.status(200).json({ message: 'Test deleted', data: null });
+    await em.removeAndFlush(quizToDelete);
+    res.status(200).json({ message: 'Quiz deleted', data: null });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
 }
 
-export { sanitizeTestInput, findAll, findOne, findOneById, add, update, remove };
+export { sanitizeQuizInput as sanitizeTestInput, findAll, findOne, findOneById, add, update, remove };
