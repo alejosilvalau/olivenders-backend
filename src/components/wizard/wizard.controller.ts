@@ -18,7 +18,6 @@ const wizardZodSchema = z.object({
   address: z.string(),
   phone: z.string(),
   role: z.string(),
-  school: z.string().uuid(),
 });
 
 const em = orm.em;
@@ -35,7 +34,6 @@ function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
     address: validatedInput.address,
     phone: validatedInput.phone,
     role: validatedInput.role,
-    school: validatedInput.school,
   };
 
   Object.keys(req.body.sanitizedInput).forEach(key => {
@@ -48,7 +46,7 @@ function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
 
 async function findAll(req: Request, res: Response) {
   try {
-    const wizards = await em.find(Wizard, {}, { populate: ['school'] });
+    const wizards = await em.find(Wizard, {});
     res.status(200).json({ message: 'Wizards fetched', data: wizards });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
@@ -66,7 +64,7 @@ async function findOneByEmailOrUsername(req: Request, res: Response) {
     if (email) query.$or.push({ email });
     if (excludeWizardId) query.id = { $ne: excludeWizardId };
 
-    const wizardFound = await em.findOne(Wizard, query, { populate: ['school'] });
+    const wizardFound = await em.findOne(Wizard, query);
 
     if (!wizardFound) {
       return res.status(200).json({ message: 'Wizard not found', data: null });
@@ -81,7 +79,7 @@ async function findOneByEmailOrUsername(req: Request, res: Response) {
 async function findOneByEmailRecipient(req: Request, res: Response) {
   try {
     const email = req.params.email;
-    const wizardFound = await em.findOneOrFail(Wizard, { email }, { populate: ['school'] });
+    const wizardFound = await em.findOneOrFail(Wizard, { email });
     if (!wizardFound) {
       return res.status(409).json({ message: 'Wizard not found', data: null });
     }
@@ -94,7 +92,7 @@ async function findOneByEmailRecipient(req: Request, res: Response) {
 async function findOneById(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const wizard = await em.findOneOrFail(Wizard, { id }, { populate: ['school'] });
+    const wizard = await em.findOneOrFail(Wizard, { id });
     if (!wizard) {
       return res.status(404).json({ message: 'Wizard not found', data: null });
     }
@@ -106,7 +104,7 @@ async function findOneById(req: Request, res: Response) {
 
 async function findOneByEmail(email: string) {
   try {
-    const wizard = await em.findOne(Wizard, { email }, { populate: ['school'] });
+    const wizard = await em.findOne(Wizard, { email });
     return wizard;
   } catch (error: any) {
     return error.message;
@@ -116,7 +114,7 @@ async function findOneByEmail(email: string) {
 async function findOneByUser(req: Request, res: Response) {
   try {
     const username = req.params.username;
-    const wizard = await em.findOne(Wizard, { username }, { populate: ['school'] });
+    const wizard = await em.findOne(Wizard, { username });
     if (!wizard) {
       return res.status(404).json({ message: 'Wizard not found', data: null });
     } else {
@@ -131,7 +129,7 @@ async function login(req: Request, res: Response) {
   try {
     const username = req.body.username;
     const password = req.body.password;
-    const wizardFound = await em.findOne(Wizard, { username }, { populate: ['school'] });
+    const wizardFound = await em.findOne(Wizard, { username });
 
     if (!wizardFound) {
       return res.status(404).json({ message: 'Wizard not found', data: null });
@@ -155,7 +153,7 @@ async function validatePassword(req: Request, res: Response) {
   try {
     const wizardId = req.params.id;
     const currentPassword = req.body.password;
-    const wizard = await em.findOne(Wizard, { id: wizardId }, { populate: ['school'] });
+    const wizard = await em.findOne(Wizard, { id: wizardId });
     if (!wizard) {
       return res.status(404).json({ message: 'Wizard not found', data: null });
     } else {
@@ -244,7 +242,7 @@ async function add(req: Request, res: Response) {
 async function update(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const wizardToUpdate = await em.findOneOrFail(Wizard, { id }, { populate: ['school'] });
+    const wizardToUpdate = await em.findOneOrFail(Wizard, { id });
 
     if (!wizardToUpdate) {
       return res.status(404).json({ message: 'Wizard not found', data: null });
@@ -282,7 +280,7 @@ async function resetPasswordWithoutToken(req: Request, res: Response) {
       return res.status(400).json({ message: 'Password must be at least 6 characters', data: null });
     }
 
-    const wizard = await em.findOne(Wizard, { id }, { populate: ['school'] });
+    const wizard = await em.findOne(Wizard, { id });
     if (!wizard) {
       return res.status(404).json({ message: 'Wizard not found', data: null });
     }
@@ -330,7 +328,7 @@ async function resetPasswordWithoutToken(req: Request, res: Response) {
 async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const wizard = await em.findOne(Wizard, { id }, { populate: ['school'] });
+    const wizard = await em.findOne(Wizard, { id });
 
     if (!wizard) {
       return res.status(404).json({ message: 'Wizard not found', data: null });

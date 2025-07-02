@@ -28,6 +28,6 @@ export class Wizard extends BaseEntity {
   @Property({ nullable: false })
   role!: string;
 
-  @ManyToOne(() => School, { nullable: false, cascade: [Cascade.PERSIST] })
-  school!: Ref<School>;
+  // @ManyToOne(() => School, { nullable: false, cascade: [Cascade.PERSIST] })
+  // school!: Ref<School>;
 }
