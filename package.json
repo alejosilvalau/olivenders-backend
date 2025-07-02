@@ -21,7 +21,7 @@
     "@mikro-orm/core": "^6.4.13",
     "@mikro-orm/mongo-highlighter": "^1.0.0",
     "@mikro-orm/mongodb": "^6.4.13",
-    "bcrypt": "^5.1.1",
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
