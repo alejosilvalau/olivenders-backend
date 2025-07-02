@@ -57,7 +57,7 @@ app.use(express.json());
 app.use((req, res, next) => {
   RequestContext.create(orm.em, next);
 });
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use('/api/schools', schoolRouter);
 app.use('/api/woods', woodRouter);
 app.use('/api/cores', coreRouter);
