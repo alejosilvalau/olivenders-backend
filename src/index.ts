@@ -76,10 +76,6 @@ async function startServer() {
     console.log('Initializing MikroORM...');
     await orm.em.getConnection().connect();
 
-    console.log('Syncing database schema...');
-    await syncSchema();
-    console.log('Database schema synced successfully.');
-
     app.listen(process.env.DEFAULT_PORT, () => {
       console.log(`Server is listening to port ${process.env.DEFAULT_PORT}`);
     });
