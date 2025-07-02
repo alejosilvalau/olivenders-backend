@@ -8,7 +8,7 @@ import {
   remove,
   findOneByName,
 } from './core.controller.js';
-import { sanitizeMongoQuery } from '../../shared/sanitizeMongoQuery.js';
+import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
 
 export const coreRouter = Router();
 

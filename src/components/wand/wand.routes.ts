@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { sanitizeWandInput, findAll, findOne, add, update, remove, logicRemove } from './wand.controller.js';
-import { sanitizeMongoQuery } from '../../shared/sanitizeMongoQuery.js';
+import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
 
 export const wandRouter = Router();
 

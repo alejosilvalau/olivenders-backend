@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { sanitizeSchoolInput, findAll, findOne, add, update, remove, findOneByName } from './school.controller.js';
-import { sanitizeMongoQuery } from '../../shared/sanitizeMongoQuery.js';
+import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
 
 export const schoolRouter = Router();
 

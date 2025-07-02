@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { sanitizeQuestionInput, findAll, findOne, add, update, remove } from './question.controller.js';
-import { sanitizeMongoQuery } from '../../shared/sanitizeMongoQuery.js';
+import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
 
 export const questionRouter = Router();
 

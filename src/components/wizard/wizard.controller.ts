@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { orm } from '../../shared/orm.js';
+import { orm } from '../../shared/db/orm.js';
 import { Wizard } from './wizard.entity.js';
 import { z } from 'zod';
 import dotenv from 'dotenv';

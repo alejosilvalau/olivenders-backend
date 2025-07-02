@@ -9,7 +9,7 @@ import {
   update,
   remove,
 } from './sale.controller.js';
-import { sanitizeMongoQuery } from '../../shared/sanitizeMongoQuery.js';
+import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
 
 export const saleRouter = Router();
 

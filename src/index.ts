@@ -5,7 +5,7 @@ import cors from 'cors';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
 import { RequestContext } from '@mikro-orm/core';
-import { orm, syncSchema } from './shared/orm.js';
+import { orm, syncSchema } from './shared/db/orm.js';
 import { schoolRouter } from './components/school/school.routes.js';
 import { woodRouter } from './components/wood/wood.routes.js';
 import { coreRouter } from './components/core/core.routes.js';
