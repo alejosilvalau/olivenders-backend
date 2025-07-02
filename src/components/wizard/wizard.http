@@ -1,0 +1,55 @@
+### Get all wizards
+GET http://localhost:3000/api/wizards 
+
+### Get one wizard by ID
+GET http://localhost:3000/api/wizards/66a26a56c2d60a2b531e553b
+
+### Create wizard
+POST http://localhost:3000/api/wizards/
+Content-Type: application/json
+
+{
+    "username": "harrypotter",
+    "password": "expelliarmus123",
+    "name": "Harry",
+    "last_name": "Potter",
+    "email": "harry.potter@hogwarts.edu",
+    "phone": "5550123456",
+    "address": "4 Privet Drive, Little Whinging",
+    "role": "WIZARD"
+}
+
+
+### Update wizard
+PUT http://localhost:3000/api/wizards/66fd592821f0f4df023497b5
+Content-Type: application/json
+
+{
+    "username": "harrypotter",
+    "name": "Harry",
+    "last_name": "Potter",
+    "email": "harry.potter@hogwarts.edu",
+    "phone": "5551234567",
+    "address": "12 Grimmauld Place",
+    "role": "WIZARD"
+}
+
+### Login
+POST http://localhost:3000/api/wizards/login
+Content-Type: application/json
+
+{
+    "username": "harrypotter",
+    "password": "expelliarmus123"
+}
+
+### Reset password
+PATCH http://localhost:3000/api/wizards/66fd592821f0f4df023497b5
+Content-Type: application/json
+
+{
+    "newPassword": "alohomora456"
+}
+
+### Delete wizard
+DELETE http://localhost:3000/api/wizards/66a292b9167e1190e60640d1

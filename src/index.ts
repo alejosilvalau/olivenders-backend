@@ -13,6 +13,7 @@ import { wandRouter } from './components/wand/wand.routes.js';
 import { questionRouter } from './components/question/question.routes.js';
 import { testRouter } from './components/test/test.routes.js';
 import { saleRouter } from './components/sale/sale.routes.js';
+import { wizardRouter } from './components/wizard/wizard.routes.js';
 
 dotenv.config();
 
@@ -64,6 +65,7 @@ app.use('/api/wands', wandRouter);
 app.use('/api/questions', questionRouter);
 app.use('/api/tests', testRouter);
 app.use('/api/sales', saleRouter);
+app.use('/api/wizards', wizardRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: 'Resource not found' });
