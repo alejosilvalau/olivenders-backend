@@ -2,20 +2,20 @@
 GET http://localhost:3000/api/wizards 
 
 ### Get one wizard by ID
-GET http://localhost:3000/api/wizards/66a26a56c2d60a2b531e553b
+GET http://localhost:3000/api/wizards/686504f8cc6d7ba855a9575d
 
 ### Create wizard
 POST http://localhost:3000/api/wizards/
 Content-Type: application/json
 
 {
-    "username": "harrypotter",
-    "password": "expelliarmus123",
-    "name": "Harry",
-    "last_name": "Potter",
-    "email": "harry.potter@hogwarts.edu",
-    "phone": "5550123456",
-    "address": "4 Privet Drive, Little Whinging",
+    "username": "dracomalfoy",
+    "password": "expelio123",
+    "name": "Draco",
+    "last_name": "Malfoy",
+    "email": "draco.malfoy@hogwarts.edu",
+    "phone": "445345678",
+    "address": "5 Manor Drive, Malfoy Manor",
     "role": "WIZARD"
 }
 
