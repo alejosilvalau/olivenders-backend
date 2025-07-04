@@ -78,7 +78,7 @@ woodRouter.get('/',findAll);
  *       500:
  *         description: Error retrieving the Wood
  */
-woodRouter.get('/name/:name', findOneByName);
+woodRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
 
 /**
  * @swagger
@@ -105,7 +105,7 @@ woodRouter.get('/name/:name', findOneByName);
  *       500:
  *         description: Error retrieving the Wood
  */
-woodRouter.get('/:id',findOne);
+woodRouter.get('/:id', sanitizeMongoQuery, findOne);
 
 /**
  * @swagger
@@ -131,7 +131,7 @@ woodRouter.get('/:id',findOne);
  *       500:
  *         description: Error creating the Wood
  */
-woodRouter.post('/', sanitizeWoodInput, sanitizeMongoQuery, add);
+woodRouter.post('/', sanitizeMongoQuery, sanitizeWoodInput, add);
 
 /**
  * @swagger
@@ -166,7 +166,7 @@ woodRouter.post('/', sanitizeWoodInput, sanitizeMongoQuery, add);
  *       500:
  *         description: Error updating the Wood
  */
-woodRouter.put('/:id', sanitizeWoodInput, sanitizeMongoQuery, update);
+woodRouter.put('/:id', sanitizeMongoQuery, sanitizeWoodInput, update);
 
 /**
  * @swagger
@@ -189,4 +189,4 @@ woodRouter.put('/:id', sanitizeWoodInput, sanitizeMongoQuery, update);
  *       500:
  *         description: Error deleting the Wood
  */
-woodRouter.delete('/:id', remove);
+woodRouter.delete('/:id', sanitizeMongoQuery, remove);
