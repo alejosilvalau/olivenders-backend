@@ -10,7 +10,7 @@ export const orm = await MikroORM.init({
   entitiesTs: ['src/**/*.entity.ts'],
   dbName: 'olivenders',
   driver: MongoDriver,
-  clientUrl: process.env.MONGO_URL,
+  clientUrl: `${process.env.MONGO_URL}?retryWrites=true&w=majority`,
   highlighter: new MongoHighlighter(),
   debug: true,
 });
