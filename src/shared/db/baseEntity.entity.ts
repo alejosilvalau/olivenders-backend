@@ -3,7 +3,7 @@ import { ObjectId } from '@mikro-orm/mongodb';
 
 export abstract class BaseEntity {
   @PrimaryKey()
-  _id?: ObjectId = new ObjectId();
+  _id?: ObjectId;
 
   @SerializedPrimaryKey()
   id?: string;

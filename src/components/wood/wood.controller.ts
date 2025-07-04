@@ -18,21 +18,7 @@ const em = orm.em;
 const sanitizeWoodInput = (req: Request, res: Response, next: NextFunction): void => {
   try {
     const validatedInput = woodZodSchema.parse(req.body);
-
-    req.body.sanitizedInput = {
-      id: validatedInput.id,
-      name: validatedInput.name,
-      binomial_name: validatedInput.binomial_name,
-      description: validatedInput.description,
-      price: validatedInput.price,
-    };
-
-    Object.keys(req.body.sanitizedInput).forEach(key => {
-      if (req.body.sanitizedInput[key] === undefined) {
-        delete req.body.sanitizedInput[key];
-      }
-    });
-
+    req.body.sanitizedInput = { ...validatedInput };
     next();
   } catch (error: any) {
     const formattedError = error.errors.map((err: z.ZodIssue) => ({
@@ -84,6 +70,7 @@ async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput;
     input.name = input.name.toLowerCase();
+    input.binomial_name = input.binomial_name.toLowerCase();
 
     const wood = em.create(Wood, input);
     await em.flush();
@@ -110,6 +97,7 @@ async function update(req: Request, res: Response) {
 
     const input = req.body.sanitizedInput;
     input.name = input.name.toLowerCase();
+    input.binomial_name = input.binomial_name.toLowerCase();
 
     const woodToUpdate = em.getReference(Wood, id);
     em.assign(woodToUpdate, input);
@@ -122,7 +110,7 @@ async function update(req: Request, res: Response) {
 
 async function remove(req: Request, res: Response) {
   try {
-    const id = new ObjectId(req.params.id);
+    const id = req.params.id;
     const woodToDelete = em.getReference(Wood, id);
     await em.removeAndFlush(woodToDelete);
     res.status(200).json({ message: 'Wood deleted', data: null });

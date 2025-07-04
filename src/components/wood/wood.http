@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/woods
 
 ### Get one wood by ID
-GET http://localhost:3000/api/woods/6859fcf56729d215e74349b7
+GET http://localhost:3000/api/woods/68680f7e64d234d4ad5af33a
 
 ### Create a new wood
 POST http://localhost:3000/api/woods/

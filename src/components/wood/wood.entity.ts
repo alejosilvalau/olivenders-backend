@@ -6,7 +6,7 @@ class Wood extends BaseEntity {
   @Property({ nullable: false, unique: true })
   name!: string;
 
-  @Property({ nullable: false })
+  @Property({ nullable: false, unique: true })
   binomial_name!: string;
 
   @Property({ nullable: false })
