@@ -13,14 +13,4 @@ export const orm = await MikroORM.init({
   clientUrl: process.env.MONGO_URL,
   highlighter: new MongoHighlighter(),
   debug: true,
-  schemaGenerator: {
-    disableForeignKeys: true,
-    createForeignKeyConstraints: true,
-    ignoreSchema: [],
-  },
 });
-
-export const syncSchema = async () => {
-  const generator = orm.getSchemaGenerator();
-  await generator.updateSchema();
-};
