@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { orm } from '../../shared/db/orm.js';
 import { School } from './school.entity.js';
 import { z } from 'zod';
-import objectIdSchema from '../../shared/db/objectIdSchema.js';
+import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 
 const schoolZodSchema = z.object({
   id: objectIdSchema.optional(),

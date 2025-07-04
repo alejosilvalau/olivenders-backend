@@ -2,7 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import { orm } from '../../shared/db/orm.js';
 import { z } from 'zod';
 import Wood from './wood.entity.js';
-import objectIdSchema from '../../shared/db/objectIdSchema.js';
+import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
+import { ObjectId } from '@mikro-orm/mongodb';
 
 const woodZodSchema = z.object({
   id: objectIdSchema.optional(),
@@ -23,7 +24,7 @@ const sanitizeWoodInput = (req: Request, res: Response, next: NextFunction): voi
       name: validatedInput.name,
       binomial_name: validatedInput.binomial_name,
       description: validatedInput.description,
-      price: validatedInput.price
+      price: validatedInput.price,
     };
 
     Object.keys(req.body.sanitizedInput).forEach(key => {
@@ -121,11 +122,12 @@ async function update(req: Request, res: Response) {
 
 async function remove(req: Request, res: Response) {
   try {
-    const id = req.params.id;
+    const id = new ObjectId(req.params.id);
     const woodToDelete = em.getReference(Wood, id);
     await em.removeAndFlush(woodToDelete);
     res.status(200).json({ message: 'Wood deleted', data: null });
   } catch (error: any) {
+    console.error('Delete error:', error);
     res.status(500).json({ message: error.message, data: null });
   }
 }

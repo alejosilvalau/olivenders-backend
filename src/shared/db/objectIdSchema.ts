@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { ObjectId } from '@mikro-orm/mongodb';
 
 // Custom validator for ObjectId
-const objectIdSchema = z.string().refine(
+export const objectIdSchema = z.string().refine(
   val => {
     try {
       return ObjectId.isValid(val);
@@ -14,5 +14,3 @@ const objectIdSchema = z.string().refine(
     message: 'Invalid ObjectId format',
   }
 );
-
-export default objectIdSchema;
