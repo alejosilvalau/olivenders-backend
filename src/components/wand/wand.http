@@ -34,8 +34,8 @@ Content-Type: application/json
   "wood": "68681375f9e4fcf1d48bf08f"
 }
 
+### Deactivate a wand (logical removal)
+PATCH http://localhost:3000/api/wands/6861ea9a4621e1d6ae9b8435/deactivate
+
 ### Delete a wand
 DELETE http://localhost:3000/api/wands/6861ea904621e1d6ae9b8434
-
-### Deactivate a wand (logical removal)
-PATCH http://localhost:3000/api/wands/6861ea9a4621e1d6ae9b8435

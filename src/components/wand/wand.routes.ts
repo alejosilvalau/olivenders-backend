@@ -157,29 +157,6 @@ wandRouter.put('/:id', sanitizeMongoQuery, sanitizeWandInput, update);
 
 /**
  * @swagger
- * /api/wands/{id}:
- *   delete:
- *     summary: Delete a wand
- *     tags: [Wand]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: ID of the wand
- *     responses:
- *       200:
- *         description: Wand deleted
- *       404:
- *         description: Wand not found
- *       500:
- *         description: Error deleting the wand
- */
-wandRouter.delete('/:id', sanitizeMongoQuery, remove);
-
-/**
- * @swagger
  * /api/wands/{id}/deactivate:
  *   put:
  *     summary: Deactivate a wand (logical removal)
@@ -203,4 +180,27 @@ wandRouter.delete('/:id', sanitizeMongoQuery, remove);
  *       500:
  *         description: Error deactivating the wand
  */
-wandRouter.patch('/:id', sanitizeMongoQuery, logicRemove);
+wandRouter.patch('/:id/deactivate', sanitizeMongoQuery, logicRemove);
+
+/**
+ * @swagger
+ * /api/wands/{id}:
+ *   delete:
+ *     summary: Delete a wand
+ *     tags: [Wand]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID of the wand
+ *     responses:
+ *       200:
+ *         description: Wand deleted
+ *       404:
+ *         description: Wand not found
+ *       500:
+ *         description: Error deleting the wand
+ */
+wandRouter.delete('/:id', sanitizeMongoQuery, remove);
