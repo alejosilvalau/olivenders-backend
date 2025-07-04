@@ -25,6 +25,6 @@ export class Wand extends BaseEntity {
   @Property({ nullable: false })
   total_price!: number;
 
-  // @ManyToOne(() => Wood, { nullable: false })
-  // wood!: Rel<Wood>;
+  @ManyToOne(() => Wood, { nullable: false })
+  wood!: Rel<Wood>;
 }

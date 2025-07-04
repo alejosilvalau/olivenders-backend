@@ -16,8 +16,8 @@ class Wood extends BaseEntity {
   @Property({ nullable: false })
   price!: number;
 
-  // @OneToMany(() => Wand, wand => wand.wood, { cascade: [Cascade.ALL] })
-  // wands = new Collection<Wand>(this);
+  @OneToMany(() => Wand, wand => wand.wood, { cascade: [Cascade.REMOVE] })
+  wands = new Collection<Wand>(this);
 }
 
 export default Wood;

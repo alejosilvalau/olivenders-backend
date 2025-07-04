@@ -20,7 +20,7 @@ Content-Type: application/json
 }
 
 ### Update an existing wand
-PUT http://localhost:3000/api/wands/68683ed4508f3212ea14e89a
+PUT http://localhost:3000/api/wands/68683ed4508eae12ea14e89a
 Content-Type: application/json
 
 {
@@ -38,4 +38,4 @@ Content-Type: application/json
 PATCH http://localhost:3000/api/wands/68683ed4508f3212ea14e89a/deactivate
 
 ### Delete a wand
-DELETE http://localhost:3000/api/wands/6867321425e64f49255e5a7e
+DELETE http://localhost:3000/api/wands/68683ed4508eae12ea14e89a

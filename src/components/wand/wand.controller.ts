@@ -13,7 +13,7 @@ const wandZodSchema = z.object({
   image: z.string().trim().min(1),
   profit_margin: z.number().nonnegative(),
   total_price: z.number().positive(),
-  // wood: objectIdSchema,
+  wood: objectIdSchema,
 });
 
 const em = orm.em;
@@ -35,7 +35,7 @@ function sanitizeWandInput(req: Request, res: Response, next: NextFunction) {
 
 async function findAll(req: Request, res: Response) {
   try {
-    const wands = await em.findAll(Wand, {});
+    const wands = await em.find(Wand, {}, { populate: ['wood'] });
     res.status(200).json({ message: 'wands fetched', data: wands });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
@@ -57,7 +57,7 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const wand = await em.findOneOrFail(Wand, { id });
+    const wand = await em.findOneOrFail(Wand, { id }, { populate: ['wood'] });
     if (!wand) {
       res.status(404).json({ message: 'wand not found', data: null });
       return;
@@ -108,7 +108,7 @@ async function update(req: Request, res: Response) {
     const input = req.body.sanitizedInput;
     input.name = input.name.toLowerCase();
 
-    const wandToUpdate = em.getReference(Wand, id);
+    const wandToUpdate = em.findOneOrFail(Wand, id);
     em.assign(wandToUpdate, req.body.sanitizedInput);
     await em.flush();
     res.status(200).json({ message: 'wand updated', data: wandToUpdate });
@@ -119,7 +119,7 @@ async function update(req: Request, res: Response) {
 async function logicRemove(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const wandToUpdate = em.getReference(Wand, id);
+    const wandToUpdate = await em.findOneOrFail(Wand, { id });
     em.assign(wandToUpdate, { status: 'inactive' });
     await em.flush();
     res.status(200).json({ message: 'wand deactivated', data: wandToUpdate });
@@ -131,7 +131,7 @@ async function logicRemove(req: Request, res: Response) {
 async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const wandToDelete = em.getReference(Wand, id);
+    const wandToDelete = await em.findOneOrFail(Wand, { id });
     await em.removeAndFlush(wandToDelete);
     res.status(200).json({ message: 'wand deleted', data: null });
   } catch (error: any) {

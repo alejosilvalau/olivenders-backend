@@ -10,7 +10,7 @@ const woodZodSchema = z.object({
   binomial_name: z.string().trim().min(1),
   description: z.string().trim().min(1),
   price: z.number(),
-  // wands: z.array(objectIdSchema).optional(),
+  wands: z.array(objectIdSchema).optional(),
 });
 
 const em = orm.em;
@@ -99,7 +99,7 @@ async function update(req: Request, res: Response) {
     input.name = input.name.toLowerCase();
     input.binomial_name = input.binomial_name.toLowerCase();
 
-    const woodToUpdate = em.getReference(Wood, id);
+    const woodToUpdate = await em.findOneOrFail(Wood, { id });
     em.assign(woodToUpdate, input);
     await em.flush();
     res.status(200).json({ message: 'wood updated', data: woodToUpdate });
@@ -111,7 +111,7 @@ async function update(req: Request, res: Response) {
 async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const woodToDelete = em.getReference(Wood, id);
+    const woodToDelete = await em.findOneOrFail(Wood, { id });
     await em.removeAndFlush(woodToDelete);
     res.status(200).json({ message: 'wood deleted', data: null });
   } catch (error: any) {
