@@ -15,10 +15,11 @@ const woodZodSchema = z.object({
 
 const em = orm.em;
 
-const sanitizeWoodInput = (req: Request, res: Response, _: NextFunction): void => {
+const sanitizeWoodInput = (req: Request, res: Response, next: NextFunction): void => {
   try {
     const validatedInput = woodZodSchema.parse(req.body);
     req.body.sanitizedInput = { ...validatedInput };
+    next();
   } catch (error: any) {
     const formattedError = error.errors.map((err: z.ZodIssue) => ({
       field: err.path.join('.'),
