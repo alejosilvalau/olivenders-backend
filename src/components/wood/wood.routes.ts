@@ -83,6 +83,33 @@ woodRouter.get('/:id',findOne);
 
 /**
  * @swagger
+ * /api/woods/find-by-name/{name}:
+ *   get:
+ *     summary: Get a Wood by name
+ *     tags: [Wood]
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Name of the Wood
+ *     responses:
+ *       200:
+ *         description: Wood found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Wood'
+ *       404:
+ *         description: Wood not found
+ *       500:
+ *         description: Error retrieving the Wood
+ */
+woodRouter.get('/name/:name', findOneByName);
+
+/**
+ * @swagger
  * /api/woods:
  *   post:
  *     summary: Create a new Wood
@@ -164,33 +191,5 @@ woodRouter.put('/:id', sanitizeWoodInput, sanitizeMongoQuery, update);
  *         description: Error deleting the Wood
  */
 woodRouter.delete('/:id', sanitizeMongoQuery, remove);
-
-/**
- * @swagger
- * /api/woods/find-by-name/{name}:
- *   get:
- *     summary: Get a Wood by name
- *     tags: [Wood]
- *     parameters:
- *       - in: path
- *         name: name
- *         schema:
- *           type: string
- *         required: true
- *         description: Name of the Wood
- *     responses:
- *       200:
- *         description: Wood found
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Wood'
- *       404:
- *         description: Wood not found
- *       500:
- *         description: Error retrieving the Wood
- */
-woodRouter.get('/find-by-name/:name', findOneByName);
-
 
 export default woodRouter;

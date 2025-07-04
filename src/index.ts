@@ -5,15 +5,15 @@ import cors from 'cors';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
 import { RequestContext } from '@mikro-orm/core';
-import { orm } from './shared/db/orm.js';
-import { schoolRouter } from './components/school/school.routes.js';
-import { woodRouter } from './components/wood/wood.routes.js';
-import { coreRouter } from './components/core/core.routes.js';
-import { wandRouter } from './components/wand/wand.routes.js';
-import { questionRouter } from './components/question/question.routes.js';
-import { quizRouter } from './components/quiz/quiz.routes.js';
-import { saleRouter } from './components/sale/sale.routes.js';
-import { wizardRouter } from './components/wizard/wizard.routes.js';
+import orm from './shared/db/orm.js';
+import schoolRouter from './components/school/school.routes.js';
+import woodRouter from './components/wood/wood.routes.js';
+import coreRouter from './components/core/core.routes.js';
+import wandRouter from './components/wand/wand.routes.js';
+import questionRouter from './components/question/question.routes.js';
+import quizRouter from './components/quiz/quiz.routes.js';
+import saleRouter from './components/sale/sale.routes.js';
+import wizardRouter from './components/wizard/wizard.routes.js';
 
 dotenv.config();
 
