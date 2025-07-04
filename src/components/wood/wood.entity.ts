@@ -1,10 +1,9 @@
 import { Entity, Property, ManyToOne, Cascade, Ref } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
 
-
 @Entity()
 export class Wood extends BaseEntity {
-  @Property({ nullable: false })
+  @Property({ nullable: false, unique: true })
   name!: string;
 
   @Property({ nullable: false })
@@ -15,6 +14,4 @@ export class Wood extends BaseEntity {
 
   @Property({ nullable: false })
   price!: number;
-
-  
 }
