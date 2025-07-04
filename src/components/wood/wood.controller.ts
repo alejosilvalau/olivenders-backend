@@ -69,6 +69,7 @@ async function add(req: Request, res: Response): Promise<void> {
   try {
     const input = req.body.sanitizedInput;
     input.name = input.name.toLowerCase();
+
     const wood = em.create(Wood, input);
     await em.flush();
     res.status(201).json({ message: 'Wood created', data: wood });
@@ -91,17 +92,14 @@ async function add(req: Request, res: Response): Promise<void> {
 async function update(req: Request, res: Response): Promise<void> {
   try {
     const id = req.params.id;
-    const input = req.body.sanitizedInput;
-    input.name = input.name.toUpperCase();
 
-    const woodToUpdate = await em.findOne(Wood, { id });
-    if (!woodToUpdate) {
-      res.status(404).json({ message: 'Wood not found', data: null });
-    } else {
-      em.assign(woodToUpdate, input);
-      await em.flush();
-      res.status(200).json({ message: 'Wood updated', data: woodToUpdate });
-    }
+    const input = req.body.sanitizedInput;
+    input.name = input.name.toLowerCase();
+
+    const woodToUpdate = em.getReference(Wood, id);
+    em.assign(woodToUpdate, input);
+    await em.flush();
+    res.status(200).json({ message: 'Wood updated', data: woodToUpdate });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
