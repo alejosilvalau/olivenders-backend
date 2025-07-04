@@ -111,7 +111,7 @@ async function update(req: Request, res: Response) {
 async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const woodToDelete = await em.findOneOrFail(Wood, { id });
+    const woodToDelete = await em.findOneOrFail(Wood, { id }, { populate: ['wands'] });
     await em.removeAndFlush(woodToDelete);
     res.status(200).json({ message: 'wood deleted', data: null });
   } catch (error: any) {
