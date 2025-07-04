@@ -90,7 +90,7 @@ wandRouter.get('/', findAll);
  *       500:
  *         description: Error retrieving the wand
  */
-wandRouter.get('/:id', findOne);
+wandRouter.get('/:id', sanitizeMongoQuery, findOne);
 
 /**
  * @swagger
@@ -118,7 +118,7 @@ wandRouter.get('/:id', findOne);
  *       500:
  *         description: Error creating the wand
  */
-wandRouter.post('/', sanitizeWandInput, sanitizeMongoQuery, add);
+wandRouter.post('/', sanitizeMongoQuery, sanitizeWandInput, add);
 
 /**
  * @swagger
@@ -153,7 +153,7 @@ wandRouter.post('/', sanitizeWandInput, sanitizeMongoQuery, add);
  *       500:
  *         description: Error updating the wand
  */
-wandRouter.put('/:id', sanitizeWandInput, sanitizeMongoQuery, update);
+wandRouter.put('/:id', sanitizeMongoQuery, sanitizeWandInput, update);
 
 /**
  * @swagger
