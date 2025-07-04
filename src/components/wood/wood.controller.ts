@@ -65,7 +65,7 @@ async function findOne(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-async function findOneByName(req: Request, res: Response): Promise<void> {
+async function findOneByName(req: Request, res: Response) {
   try {
     const name = req.params.name.toLowerCase();
     const wood = await em.findOneOrFail(Wood, { name });
