@@ -191,5 +191,3 @@ woodRouter.put('/:id', sanitizeWoodInput, sanitizeMongoQuery, update);
  *         description: Error deleting the Wood
  */
 woodRouter.delete('/:id', sanitizeMongoQuery, remove);
-
-export default woodRouter;

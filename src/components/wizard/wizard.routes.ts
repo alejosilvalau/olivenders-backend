@@ -661,5 +661,3 @@ wizardRouter.patch('/:id', sanitizeUsuarioInput, resetPasswordWithoutToken);
  *                   example: Error al eliminar el usuario
  */
 wizardRouter.delete('/:id', remove);
-
-export default wizardRouter;

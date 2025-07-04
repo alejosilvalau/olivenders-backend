@@ -190,5 +190,3 @@ schoolRouter.delete('/:id', sanitizeMongoQuery, remove);
  *         description: Error retrieving the school
  */
 schoolRouter.get('/find-by-name/:name', findOneByName);
-
-export default schoolRouter;

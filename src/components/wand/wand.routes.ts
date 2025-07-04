@@ -204,5 +204,3 @@ wandRouter.delete('/:id', sanitizeMongoQuery, remove);
  *         description: Error deactivating the wand
  */
 wandRouter.patch('/:id', sanitizeMongoQuery, logicRemove);
-
-export default wandRouter;

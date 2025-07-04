@@ -153,5 +153,3 @@ questionRouter.put('/:id', sanitizeQuestionInput, sanitizeMongoQuery, update);
  *         description: Error deleting the question
  */
 questionRouter.delete('/:id', sanitizeMongoQuery, remove);
-
-export default questionRouter;

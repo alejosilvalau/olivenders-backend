@@ -158,5 +158,3 @@ quizRouter.put('/:id', sanitizeTestInput, sanitizeMongoQuery, update);
  *         description: Error deleting the quiz
  */
 quizRouter.delete('/:id', sanitizeMongoQuery, remove);
-
-export default quizRouter;

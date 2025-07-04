@@ -229,5 +229,3 @@ saleRouter.put('/:id', sanitizeSaleInput, sanitizeMongoQuery, update);
  *         description: Error deleting the sale
  */
 saleRouter.delete('/:id', sanitizeMongoQuery, remove);
-
-export default saleRouter;

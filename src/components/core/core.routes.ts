@@ -194,4 +194,3 @@ coreRouter.delete('/:id', sanitizeMongoQuery, remove);
  *         description: Error retrieving the core
  */
 coreRouter.get('/find-by-name/:name', findOneByName);
-export default coreRouter;

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import orm from '../../shared/db/orm.js';
+import { orm } from '../../shared/db/orm.js';
 import { z } from 'zod';
 import Wood from './wood.entity.js';
 import objectIdSchema from '../../shared/db/objectIdSchema.js';

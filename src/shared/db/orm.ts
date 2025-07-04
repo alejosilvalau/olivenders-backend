@@ -5,7 +5,7 @@ import { MongoDriver } from '@mikro-orm/mongodb';
 
 dotenv.config();
 
-const orm = await MikroORM.init({
+export const orm = await MikroORM.init({
   entities: ['dist/**/*.entity.js'],
   entitiesTs: ['src/**/*.entity.ts'],
   dbName: 'olivenders',
@@ -14,5 +14,3 @@ const orm = await MikroORM.init({
   highlighter: new MongoHighlighter(),
   debug: true,
 });
-
-export default orm;
