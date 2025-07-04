@@ -15,7 +15,8 @@ Content-Type: application/json
   "status": "active",
   "image": "https://example.com/elder-wand.jpg",
   "profit_margin": 1000,
-  "total_price": 5000
+  "total_price": 5000,
+  "wood": "68681375f9e4fcf1d48bf08f"
 }
 
 ### Update an existing wand
@@ -29,7 +30,8 @@ Content-Type: application/json
   "status": "active",
   "image": "https://example.com/phoenix-wand.jpg",
   "profit_margin": 500,
-  "total_price": 1500
+  "total_price": 1500,
+  "wood": "68681375f9e4fcf1d48bf08f"
 }
 
 ### Delete a wand

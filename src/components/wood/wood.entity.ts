@@ -1,5 +1,6 @@
-import { Entity, Property, ManyToOne, Cascade, Ref } from '@mikro-orm/core';
+import { Entity, Property, Cascade, OneToMany, Collection } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
+import { Wand } from '../wand/wand.entity.js';
 
 @Entity()
 class Wood extends BaseEntity {
@@ -14,6 +15,9 @@ class Wood extends BaseEntity {
 
   @Property({ nullable: false })
   price!: number;
+
+  // @OneToMany(() => Wand, wand => wand.wood, { cascade: [Cascade.ALL] })
+  // wands = new Collection<Wand>(this);
 }
 
 export default Wood;

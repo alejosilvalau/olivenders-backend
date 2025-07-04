@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
+import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 import { orm } from '../../shared/db/orm.js';
 import { Wand } from './wand.entity.js';
 import { z } from 'zod';
 
 const wandZodSchema = z.object({
-  id: z.string().uuid().optional(),
+  id: objectIdSchema.optional(),
   name: z.string().trim().min(1),
   length: z.number().positive(),
   description: z.string().trim().min(1),
@@ -12,6 +13,7 @@ const wandZodSchema = z.object({
   image: z.string().trim().min(1),
   profit_margin: z.number().nonnegative(),
   total_price: z.number().positive(),
+  // wood: objectIdSchema,
 });
 
 const em = orm.em;
@@ -20,22 +22,7 @@ function sanitizeWandInput(req: Request, res: Response, next: NextFunction) {
   try {
     const validatedInput = wandZodSchema.parse(req.body);
 
-    req.body.sanitizedInput = {
-      id: validatedInput.id,
-      name: validatedInput.name,
-      length: validatedInput.length,
-      description: validatedInput.description,
-      status: validatedInput.status,
-      image: validatedInput.image,
-      profit_margin: validatedInput.profit_margin,
-      total_price: validatedInput.total_price,
-    };
-
-    Object.keys(req.body.sanitizedInput).forEach(key => {
-      if (req.body.sanitizedInput[key] === undefined) {
-        delete req.body.sanitizedInput[key];
-      }
-    });
+    req.body.sanitizedInput = { ...validatedInput };
     next();
   } catch (error: any) {
     const formattedError = error.errors.map((err: z.ZodIssue) => ({
@@ -48,9 +35,8 @@ function sanitizeWandInput(req: Request, res: Response, next: NextFunction) {
 
 async function findAll(req: Request, res: Response) {
   try {
-    em.clear();
-    const wands = await em.findOneOrFail(Wand, {});
-    res.status(200).json({ message: 'Wands fetched', data: wands });
+    const wands = await em.findAll(Wand, {});
+    res.status(200).json({ message: 'wands fetched', data: wands });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
@@ -68,15 +54,15 @@ async function findAll(req: Request, res: Response) {
 //   }
 // }
 
-async function findOne(req: Request, res: Response): Promise<void> {
+async function findOne(req: Request, res: Response) {
   try {
     const id = req.params.id;
     const wand = await em.findOneOrFail(Wand, { id });
     if (!wand) {
-      res.status(404).json({ message: 'Wand not found', data: null });
+      res.status(404).json({ message: 'wand not found', data: null });
       return;
     }
-    res.status(200).json({ message: 'Wand fetched', data: wand });
+    res.status(200).json({ message: 'wand fetched', data: wand });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
@@ -94,84 +80,63 @@ async function findOne(req: Request, res: Response): Promise<void> {
 //   }
 // }
 
-async function findOneById(id: string) {
-  const wand = await em.findOne(Wand, { id });
-  try {
-    return wand;
-  } catch (error: any) {
-    return error.message;
-  }
-}
-
-async function add(req: Request, res: Response): Promise<void> {
+async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput;
-    input.name = input.name.toUpperCase();
+    input.name = input.name.toLowerCase();
 
-    const existingWand = await em.findOne(Wand, {
-      id: input.id,
-    });
-    if (existingWand) {
-      res.status(409).json({ message: 'The wand already exists', data: null });
-    } else {
-      const wand = em.create(Wand, input);
-      await em.flush();
-      res.status(201).json({ message: 'Wand created', data: wand });
-    }
-  } catch (error: any) {
-    res.status(500).json({ message: 'An error occurred while creating the wand', data: null });
-  }
-}
-
-async function update(req: Request, res: Response): Promise<void> {
-  try {
-    const id = req.params.id;
-    const input = req.body.sanitizedInput;
-    input.name = input.name.toUpperCase();
-
-    const wandToUpdate = await em.findOneOrFail(Wand, { id });
-    if (!wandToUpdate) {
-      res.status(404).json({ message: 'Wand not found' });
-    } else {
-      em.assign(wandToUpdate, req.body.sanitizedInput);
-      await em.flush();
-      res.status(200).json({ message: 'Wand updated', data: wandToUpdate });
-    }
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-}
-
-// TODO: Check the methods below
-async function logicRemove(req: Request, res: Response): Promise<void> {
-  try {
-    const id = req.params.id;
-    const wand = await em.findOne(Wand, { id });
-    if (!wand) {
-      res.status(404).json({ message: 'Wand not found', data: null });
-      return;
-    }
-    wand.status = 'inactive';
+    const wand = em.create(Wand, input);
     await em.flush();
-    res.status(200).json({ message: 'Wand deactivated', data: wand });
+    res.status(201).json({ message: 'wand created', data: wand });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    if (error.code === 11000) {
+      // MongoDB duplicate key error code
+      res.status(409).json({
+        message: 'a wand with this name already exists',
+        data: null,
+      });
+    } else {
+      res.status(500).json({ message: 'an error occurred while creating the wand', data: null });
+    }
   }
 }
 
-async function remove(req: Request, res: Response): Promise<void> {
+async function update(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const wandToDelete = await em.findOne(Wand, { id });
-    if (!wandToDelete) {
-      res.status(404).json({ message: 'Wand not found', data: null });
-    } else {
-      await em.removeAndFlush(wandToDelete!);
-      res.status(200).json({ message: 'Wand deleted', data: null });
-    }
+
+    const input = req.body.sanitizedInput;
+    input.name = input.name.toLowerCase();
+
+    const wandToUpdate = em.getReference(Wand, id);
+    em.assign(wandToUpdate, req.body.sanitizedInput);
+    await em.flush();
+    res.status(200).json({ message: 'wand updated', data: wandToUpdate });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message, data: null });
+  }
+}
+async function logicRemove(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const wandToUpdate = em.getReference(Wand, id);
+    em.assign(wandToUpdate, { status: 'inactive' });
+    await em.flush();
+    res.status(200).json({ message: 'wand deactivated', data: wandToUpdate });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
 }
 
-export { sanitizeWandInput, findAll, findOne, add, update, remove, logicRemove, findOneById };
+async function remove(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const wandToDelete = em.getReference(Wand, id);
+    await em.removeAndFlush(wandToDelete);
+    res.status(200).json({ message: 'wand deleted', data: null });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message, data: null });
+  }
+}
+
+export { sanitizeWandInput, findAll, findOne, add, update, remove, logicRemove };

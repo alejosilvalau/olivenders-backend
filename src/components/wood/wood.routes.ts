@@ -107,7 +107,6 @@ woodRouter.get('/name/:name', findOneByName);
  */
 woodRouter.get('/:id',findOne);
 
-
 /**
  * @swagger
  * /api/woods:
@@ -190,4 +189,4 @@ woodRouter.put('/:id', sanitizeWoodInput, sanitizeMongoQuery, update);
  *       500:
  *         description: Error deleting the Wood
  */
-woodRouter.delete('/:id', sanitizeMongoQuery, remove);
+woodRouter.delete('/:id', remove);

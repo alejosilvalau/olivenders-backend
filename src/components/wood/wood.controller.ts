@@ -3,7 +3,6 @@ import { orm } from '../../shared/db/orm.js';
 import { z } from 'zod';
 import Wood from './wood.entity.js';
 import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
-import { ObjectId } from '@mikro-orm/mongodb';
 
 const woodZodSchema = z.object({
   id: objectIdSchema.optional(),
@@ -11,6 +10,7 @@ const woodZodSchema = z.object({
   binomial_name: z.string().trim().min(1),
   description: z.string().trim().min(1),
   price: z.number(),
+  // wands: z.array(objectIdSchema).optional(),
 });
 
 const em = orm.em;
@@ -115,7 +115,6 @@ async function remove(req: Request, res: Response) {
     await em.removeAndFlush(woodToDelete);
     res.status(200).json({ message: 'wood deleted', data: null });
   } catch (error: any) {
-    console.error('delete error:', error);
     res.status(500).json({ message: error.message, data: null });
   }
 }
