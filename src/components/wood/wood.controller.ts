@@ -54,7 +54,7 @@ async function findAll(req: Request, res: Response, next: NextFunction): Promise
 async function findOne(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const id = req.params.id;
-    const wood = await em.findOne(Wood, { id });
+    const wood = await em.findOneOrFail(Wood, { id });
     if (!wood) {
       res.status(404).json({ message: 'Wood not found', data: null });
       return;
@@ -68,18 +68,23 @@ async function findOne(req: Request, res: Response, next: NextFunction): Promise
 async function add(req: Request, res: Response): Promise<void> {
   try {
     const input = req.body.sanitizedInput;
-    input.name = input.name.toUpperCase();
-
-    const existingWood = await em.findOne(Wood, { name: input.name });
-    if (existingWood) {
-      res.status(409).json({ message: 'The wood already exists', data: null });
-    } else {
-      const wood = em.create(Wood, input);
-      await em.flush();
-      res.status(201).json({ message: 'Wood created', data: wood });
-    }
+    input.name = input.name.toLowerCase();
+    const wood = em.create(Wood, input);
+    await em.flush();
+    res.status(201).json({ message: 'Wood created', data: wood });
   } catch (error: any) {
-    res.status(500).json({ message: 'An error occurred while creating the wood', data: null });
+    if (error.code === 11000) {
+      // MongoDB duplicate key error code
+      res.status(409).json({
+        message: 'A wood with this name already exists',
+        data: null,
+      });
+    } else {
+      res.status(500).json({
+        message: 'An error occurred while creating the wood',
+        data: null,
+      });
+    }
   }
 }
 
