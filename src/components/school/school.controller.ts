@@ -2,14 +2,15 @@ import { Request, Response, NextFunction } from 'express';
 import { orm } from '../../shared/db/orm.js';
 import { School } from './school.entity.js';
 import { z } from 'zod';
+import objectIdSchema from '../../shared/db/objectIdSchema.js';
 
 const schoolZodSchema = z.object({
-  id: z.string().uuid().optional(),
+  id: objectIdSchema.optional(),
   name: z.string().trim().min(1),
   email: z.string().trim().email(),
   address: z.string().trim().min(1),
   phone: z.string().trim().min(1),
-  wizzards: z.array(z.string().uuid()).optional(),
+  wizzards: z.array(objectIdSchema).optional(),
 });
 
 const em = orm.em;
