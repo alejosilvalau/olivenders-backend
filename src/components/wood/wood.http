@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/woods
 
 ### Get one wood by ID
-GET http://localhost:3000/api/woods/68680f7e64d234d4ad5af33a
+GET http://localhost:3000/api/woods/68681374f9e4fcf1d48bf08e
 
 ### Create a new wood
 POST http://localhost:3000/api/woods/
@@ -27,7 +27,7 @@ Content-Type: application/json
 }
 
 ### Delete a wood
-DELETE http://localhost:3000/api/woods/6859fcf56729d215e74349b7
+DELETE http://localhost:3000/api/woods/68681374f9e4fcf1d48bf08e
 
 ### Find wood by name
 GET http://localhost:3000/api/woods/name/apple

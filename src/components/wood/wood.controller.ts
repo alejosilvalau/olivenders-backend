@@ -15,11 +15,10 @@ const woodZodSchema = z.object({
 
 const em = orm.em;
 
-const sanitizeWoodInput = (req: Request, res: Response, next: NextFunction): void => {
+const sanitizeWoodInput = (req: Request, res: Response, _: NextFunction): void => {
   try {
     const validatedInput = woodZodSchema.parse(req.body);
     req.body.sanitizedInput = { ...validatedInput };
-    next();
   } catch (error: any) {
     const formattedError = error.errors.map((err: z.ZodIssue) => ({
       field: err.path.join('.'),
@@ -32,7 +31,7 @@ const sanitizeWoodInput = (req: Request, res: Response, next: NextFunction): voi
 async function findAll(req: Request, res: Response, next: NextFunction) {
   try {
     const woods = await em.find(Wood, {});
-    res.status(200).json({ message: 'Woods fetched', data: woods });
+    res.status(200).json({ message: 'woods fetched', data: woods });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
@@ -43,10 +42,10 @@ async function findOne(req: Request, res: Response, next: NextFunction) {
     const id = req.params.id;
     const wood = await em.findOneOrFail(Wood, { id });
     if (!wood) {
-      res.status(404).json({ message: 'Wood not found', data: null });
+      res.status(404).json({ message: 'wood not found', data: null });
       return;
     }
-    res.status(200).json({ message: 'Wood fetched', data: wood });
+    res.status(200).json({ message: 'wood fetched', data: wood });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
@@ -57,10 +56,10 @@ async function findOneByName(req: Request, res: Response) {
     const name = req.params.name.toLowerCase();
     const wood = await em.findOneOrFail(Wood, { name });
     if (!wood) {
-      res.status(404).json({ message: 'Wood not found', data: null });
+      res.status(404).json({ message: 'wood not found', data: null });
       return;
     }
-    res.status(200).json({ message: 'Wood fetched', data: wood });
+    res.status(200).json({ message: 'wood fetched', data: wood });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
@@ -74,17 +73,17 @@ async function add(req: Request, res: Response) {
 
     const wood = em.create(Wood, input);
     await em.flush();
-    res.status(201).json({ message: 'Wood created', data: wood });
+    res.status(201).json({ message: 'wood created', data: wood });
   } catch (error: any) {
     if (error.code === 11000) {
       // MongoDB duplicate key error code
       res.status(409).json({
-        message: 'A wood with this name already exists',
+        message: 'a wood with this name already exists',
         data: null,
       });
     } else {
       res.status(500).json({
-        message: 'An error occurred while creating the wood',
+        message: 'an error occurred while creating the wood',
         data: null,
       });
     }
@@ -102,7 +101,7 @@ async function update(req: Request, res: Response) {
     const woodToUpdate = em.getReference(Wood, id);
     em.assign(woodToUpdate, input);
     await em.flush();
-    res.status(200).json({ message: 'Wood updated', data: woodToUpdate });
+    res.status(200).json({ message: 'wood updated', data: woodToUpdate });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
@@ -113,9 +112,9 @@ async function remove(req: Request, res: Response) {
     const id = req.params.id;
     const woodToDelete = em.getReference(Wood, id);
     await em.removeAndFlush(woodToDelete);
-    res.status(200).json({ message: 'Wood deleted', data: null });
+    res.status(200).json({ message: 'wood deleted', data: null });
   } catch (error: any) {
-    console.error('Delete error:', error);
+    console.error('delete error:', error);
     res.status(500).json({ message: error.message, data: null });
   }
 }

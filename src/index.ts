@@ -5,7 +5,7 @@ import cors from 'cors';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
 import { RequestContext } from '@mikro-orm/core';
-import { orm } from './shared/db/orm.js';
+import { orm, syncSchema } from './shared/db/orm.js';
 import { schoolRouter } from './components/school/school.routes.js';
 import { woodRouter } from './components/wood/wood.routes.js';
 import { coreRouter } from './components/core/core.routes.js';
@@ -75,6 +75,12 @@ async function startServer() {
   try {
     console.log('Initializing MikroORM...');
     await orm.em.getConnection().connect();
+
+    if (process.env.NODE_ENV == 'development') {
+      console.log('Synchronizing database schema...');
+      syncSchema();
+      console.log('Database schema synchronized successfully');
+    }
 
     app.listen(process.env.DEFAULT_PORT, () => {
       console.log(`Server is listening to port ${process.env.DEFAULT_PORT}`);

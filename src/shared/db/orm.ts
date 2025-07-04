@@ -13,4 +13,15 @@ export const orm = await MikroORM.init({
   clientUrl: `${process.env.MONGO_URL}?retryWrites=true&w=majority`,
   highlighter: new MongoHighlighter(),
   debug: true,
+  schemaGenerator: {
+    //never in production
+    disableForeignKeys: true,
+    createForeignKeyConstraints: true,
+    ignoreSchema: [],
+  },
 });
+
+export const syncSchema = async () => {
+  const generator = orm.getSchemaGenerator();
+  await generator.updateSchema();
+};
