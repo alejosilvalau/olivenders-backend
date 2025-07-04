@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/wands
 
 ### Get one wand by ID
-GET http://localhost:3000/api/wands/68330e7503f0d4d3a6021aeb
+GET http://localhost:3000/api/wands/68683ed4508f3212ea14e89a
 
 ### Create a new wand
 POST http://localhost:3000/api/wands/
@@ -20,7 +20,7 @@ Content-Type: application/json
 }
 
 ### Update an existing wand
-PUT http://localhost:3000/api/wands/6861ea904621e1d6ae9b8434
+PUT http://localhost:3000/api/wands/68683ed4508f3212ea14e89a
 Content-Type: application/json
 
 {
@@ -35,7 +35,7 @@ Content-Type: application/json
 }
 
 ### Deactivate a wand (logical removal)
-PATCH http://localhost:3000/api/wands/6861ea9a4621e1d6ae9b8435/deactivate
+PATCH http://localhost:3000/api/wands/68683ed4508f3212ea14e89a/deactivate
 
 ### Delete a wand
-DELETE http://localhost:3000/api/wands/6861ea904621e1d6ae9b8434
+DELETE http://localhost:3000/api/wands/6867321425e64f49255e5a7e
