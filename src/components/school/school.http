@@ -28,3 +28,6 @@ Content-Type: application/json
 
 ### Delete a school
 DELETE http://localhost:3000/api/schools/68330d3edbffba04856c4045
+
+### Get a school by name
+GET http://localhost:3000/api/schools/find-by-name/HOGWARTS%20SCHOOL%20OF%20WITCHCRAFT%20AND%20WIZARDRY
