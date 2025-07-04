@@ -2,13 +2,14 @@ import { Request, Response, NextFunction } from 'express';
 import { orm } from '../../shared/db/orm.js';
 import { z } from 'zod';
 import { Wood } from './wood.entity.js';
+import objectIdSchema from '../../shared/db/objectIdSchema.js';
 
 const woodZodSchema = z.object({
-  id: z.string().uuid().optional(),
+  id: objectIdSchema.optional(),
   name: z.string().trim().min(1),
   binomial_name: z.string().trim().min(1),
   description: z.string().trim().min(1),
-  price: z.number()
+  price: z.number(),
 });
 
 const em = orm.em;
