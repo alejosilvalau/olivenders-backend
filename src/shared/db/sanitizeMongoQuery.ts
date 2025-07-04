@@ -2,25 +2,26 @@ import { NextFunction, Request, Response } from 'express';
 import mongoSanitize from 'express-mongo-sanitize';
 
 export const sanitizeMongoQuery = (req: Request, res: Response, next: NextFunction) => {
+  // Sanitize query parameters
   if (req.query) {
     Object.keys(req.query).forEach(key => {
       const value = req.query[key];
-      if (typeof value === 'string' || Array.isArray(value)) {
-        req.query[key] =
-          typeof value === 'string'
-            ? mongoSanitize.sanitize({ value }).value
-            : (mongoSanitize.sanitize(value) as string[]);
+      if (typeof value === 'string') {
+        req.query[key] = mongoSanitize.sanitize({ value }).value;
+      } else if (Array.isArray(value)) {
+        req.query[key] = mongoSanitize.sanitize(value);
       }
     });
   }
 
+  // Sanitize request body
   if (req.body) {
-    Object.keys(req.body).forEach(key => {
-      const value = req.body[key];
-      if (typeof value === 'string' || typeof value === 'object') {
-        req.body[key] = mongoSanitize.sanitize(value);
-      }
-    });
+    req.body = mongoSanitize.sanitize(req.body);
+  }
+
+  // Sanitize route parameters
+  if (req.params) {
+    req.params = mongoSanitize.sanitize(req.params);
   }
 
   next();
