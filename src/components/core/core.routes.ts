@@ -79,8 +79,8 @@ coreRouter.get('/', findAll);
  *               $ref: '#/components/schemas/Core'
  *       404:
  *         description: Core not found
- *      500:
- *        description: Error retrieving the core
+ *       500:
+ *         description: Error retrieving the core
  */
 coreRouter.get('/:id', findOne);
 

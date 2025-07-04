@@ -123,7 +123,7 @@ async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id;
     const woodToDelete = em.getReference(Wood, id);
-    await em.removeAndFlush(woodToDelete!);
+    await em.removeAndFlush(woodToDelete);
     res.status(200).json({ message: 'Wood deleted', data: null });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
