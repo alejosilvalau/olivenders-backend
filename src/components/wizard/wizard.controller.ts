@@ -96,50 +96,6 @@ async function findOneByUsername(req: Request, res: Response) {
   }
 }
 
-async function login(req: Request, res: Response) {
-  try {
-    const username = req.body.username;
-    const wizard = await em.findOneOrFail(Wizard, { username });
-
-    const password = req.body.password;
-    const isMatch = await bcrypt.compare(password, wizard.password);
-
-    if (!isMatch) {
-      res.status(401).json({ message: 'incorrect password', data: null });
-      return;
-    }
-
-    const token = jwt.sign({ id: wizard.id, role: wizard.role }, process.env.SECRET_KEY_WEBTOKEN!, {
-      expiresIn: '1h',
-    });
-
-    res.status(200).json({ message: 'login successful', data: { user: wizard, token: token } });
-  } catch (error: any) {
-    if (error.name === 'NotFoundError') {
-      res.status(404).json({ message: 'wizard not found', data: null });
-    } else {
-      res.status(500).json({ message: error.message, data: null });
-    }
-  }
-}
-
-async function validatePassword(req: Request, res: Response) {
-  try {
-    const wizardId = req.params.id;
-    const wizard = await em.findOneOrFail(Wizard, { id: wizardId });
-
-    const password = req.body.password;
-    const isMatch = await bcrypt.compare(password, wizard.password);
-    res.status(200).json({ message: 'password validation completed', data: isMatch });
-  } catch (error: any) {
-    if (error.name === 'NotFoundError') {
-      res.status(404).json({ message: 'wizard not found', data: null });
-    } else {
-      res.status(500).json({ message: error.message, data: null });
-    }
-  }
-}
-
 async function isUsernameAvailable(req: Request, res: Response) {
   try {
     const username = req.params.username;
@@ -192,6 +148,50 @@ async function add(req: Request, res: Response) {
       });
     } else {
       res.status(500).json({ message: 'an error occurred while creating the wizard', data: null });
+    }
+  }
+}
+
+async function login(req: Request, res: Response) {
+  try {
+    const username = req.body.username;
+    const wizard = await em.findOneOrFail(Wizard, { username });
+
+    const password = req.body.password;
+    const isMatch = await bcrypt.compare(password, wizard.password);
+
+    if (!isMatch) {
+      res.status(401).json({ message: 'incorrect password', data: null });
+      return;
+    }
+
+    const token = jwt.sign({ id: wizard.id, role: wizard.role }, process.env.SECRET_KEY_WEBTOKEN!, {
+      expiresIn: '1h',
+    });
+
+    res.status(200).json({ message: 'login successful', data: { user: wizard, token: token } });
+  } catch (error: any) {
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'wizard not found', data: null });
+    } else {
+      res.status(500).json({ message: error.message, data: null });
+    }
+  }
+}
+
+async function validatePassword(req: Request, res: Response) {
+  try {
+    const wizardId = req.params.id;
+    const wizard = await em.findOneOrFail(Wizard, { id: wizardId });
+
+    const password = req.body.password;
+    const isMatch = await bcrypt.compare(password, wizard.password);
+    res.status(200).json({ message: 'password validation completed', data: isMatch });
+  } catch (error: any) {
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'wizard not found', data: null });
+    } else {
+      res.status(500).json({ message: error.message, data: null });
     }
   }
 }
@@ -256,12 +256,12 @@ export {
   findOne,
   findOneByEmail,
   findOneByUsername,
-  login,
-  validatePassword,
   isUsernameAvailable,
   isEmailAvailable,
   add,
+  login,
+  validatePassword,
   update,
   resetPasswordWithoutToken,
-  remove
+  remove,
 };

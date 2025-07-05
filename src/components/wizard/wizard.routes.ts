@@ -1,17 +1,18 @@
 import { Router } from 'express';
 import {
+  sanitizeWizardInput,
   findAll,
   findOne,
-  checkUsername,
-  checkEmail,
+  findOneByEmail,
+  findOneByUsername,
+  isUsernameAvailable,
+  isEmailAvailable,
   add,
+  login,
+  validatePassword,
   update,
   resetPasswordWithoutToken,
   remove,
-  sanitizeUsuarioInput,
-  login,
-  validatePassword,
-  findOneByUsername,
 } from './wizard.controller.js';
 // import { verificarRol, verificarToken } from '../../middleware/authMiddleware.js';
 
@@ -142,46 +143,6 @@ wizardRouter.get('/:id', findOne);
 
 /**
  * @swagger
- * /api/usuarios/checkusername/:username:
- *   get:
- *     summary: Verifica disponibilidad de nombre de usuario
- *     tags: [Usuario]
- *     parameters:
- *       - in: path
- *         name: username
- *         schema:
- *           type: string
- *         required: true
- *         description: Nombre de usuario
- *     responses:
- *       200:
- *         description: Resultado de disponibilidad
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 available:
- *                   type: boolean
- *                   example: true
- *       500:
- *         description: Error en la verificación
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error al verificar el nombre de usuario
- *                 error:
- *                   type: string
- *                   example: Detalles del error
- */
-wizardRouter.get('/checkusername/:username', checkUsername);
-
-/**
- * @swagger
  * /api/usuarios/checkemail/{email}:
  *   get:
  *     summary: Verifica disponibilidad de correo electrónico
@@ -218,47 +179,34 @@ wizardRouter.get('/checkusername/:username', checkUsername);
  *                   type: string
  *                   example: Detalles del error
  */
-wizardRouter.get('/checkemail/:email', checkEmail);
+wizardRouter.get('/email/:email', findOneByEmail);
 
-// Endpoint GET /:user/:mail
 /**
  * @swagger
- * /api/usuarios/{user}/{mail}:
+ * /api/usuarios/checkusername/:username:
  *   get:
- *     summary: Obtiene usuario por nombre de usuario o correo
+ *     summary: Verifica disponibilidad de nombre de usuario
  *     tags: [Usuario]
  *     parameters:
  *       - in: path
- *         name: user
+ *         name: username
  *         schema:
  *           type: string
  *         required: true
  *         description: Nombre de usuario
- *       - in: path
- *         name: mail
- *         schema:
- *           type: string
- *         required: true
- *         description: Correo electrónico
  *     responses:
  *       200:
- *         description: Usuario encontrado
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Usuario'
- *       404:
- *         description: Usuario no encontrado
+ *         description: Resultado de disponibilidad
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
- *                   example: Usuario no encontrado
+ *                 available:
+ *                   type: boolean
+ *                   example: true
  *       500:
- *         description: Error al obtener el usuario
+ *         description: Error en la verificación
  *         content:
  *           application/json:
  *             schema:
@@ -266,85 +214,12 @@ wizardRouter.get('/checkemail/:email', checkEmail);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Error al obtener el usuario
+ *                   example: Error al verificar el nombre de usuario
  *                 error:
  *                   type: string
  *                   example: Detalles del error
  */
-// wizardRouter.get('/:user/:mail', findOneByEmailOrUsername);
-
-/**
- * @swagger
- * /api/usuarios/reset:
- *   post:
- *     summary: Restablecer la contraseña del usuario
- *     tags: [Usuario]
- *     description: Permite restablecer la contraseña del usuario utilizando un token de restablecimiento.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               token:
- *                 type: string
- *                 description: Token de restablecimiento de contraseña
- *               newPassword:
- *                 type: string
- *                 description: Nueva contraseña del usuario
- *     responses:
- *       200:
- *         description: Contraseña actualizada exitosamente
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 ok:
- *                   type: boolean
- *                   example: true
- *                 message:
- *                   type: string
- *                   example: "Contraseña actualizada exitosamente"
- *       400:
- *         description: Solicitud incorrecta (contraseña corta o token inválido/expirado)
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 ok:
- *                   type: boolean
- *                   example: false
- *                 message:
- *                   type: string
- *                   example: "La contraseña debe tener al menos 6 caracteres"
- *       404:
- *         description: Usuario no encontrado
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 ok:
- *                   type: boolean
- *                   example: false
- *                 message:
- *                   type: string
- *                   example: "Usuario no encontrado"
- *       500:
- *         description: Error interno del servidor
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Mensaje de error
- */
-//wizardRouter.post('/reset', resetPassword); // Removed since resetPassword is not implemented
+wizardRouter.get('/username/:username', findOneByUsername);
 
 /**
  * @swagger
@@ -455,7 +330,7 @@ wizardRouter.post('/login', login);
  *                   type: string
  *                   example: Detalles del error
  */
-wizardRouter.post('/', sanitizeUsuarioInput, add);
+wizardRouter.post('/', add);
 
 /**
  * @swagger
@@ -567,7 +442,7 @@ wizardRouter.post('/validate/:id', validatePassword);
  *                   type: string
  *                   example: Detalles del error
  */
-wizardRouter.put('/:id', sanitizeUsuarioInput, update);
+wizardRouter.put('/:id', update);
 
 /**
  * @swagger
@@ -616,7 +491,7 @@ wizardRouter.put('/:id', sanitizeUsuarioInput, update);
  *                   type: string
  *                   example: Error al actualizar la contraseña
  */
-wizardRouter.patch('/:id', sanitizeUsuarioInput, resetPasswordWithoutToken);
+wizardRouter.patch('/:id', resetPasswordWithoutToken);
 
 /**
  * @swagger
