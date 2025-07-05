@@ -6,6 +6,7 @@ import { z } from 'zod';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { wrap } from '@mikro-orm/core';
 
 dotenv.config();
 
@@ -59,13 +60,14 @@ function sanitizeWizardPartialInput(req: Request, res: Response, next: NextFunct
   }
 }
 
-function sanitizeWizardResponse(wizard: any) {
+function sanitizeWizardResponse(wizard: Wizard | null) {
   if (!wizard) return wizard;
-  const { password, _id, ...rest } = wizard;
-  return rest;
+  const obj = wrap(wizard).toObject() as any;
+  delete obj.password;
+  return obj;
 }
 
-function sanitizeWizardResponseArray(wizards: any[]) {
+function sanitizeWizardResponseArray(wizards: Wizard[]) {
   return wizards.map(sanitizeWizardResponse);
 }
 
@@ -160,7 +162,7 @@ async function add(req: Request, res: Response) {
 
     const hashRounds = 10;
     input.password = await bcrypt.hash(input.password, hashRounds);
-    console.log('Creating wizard with input:', input);
+
     const wizard = em.create(Wizard, input);
     await em.flush();
 
@@ -230,6 +232,9 @@ async function update(req: Request, res: Response) {
     const input = req.body.sanitizedInput;
     input.name = input.name.toLowerCase();
     input.email = input.email.toLowerCase();
+
+    const hashRounds = 10;
+    input.password = await bcrypt.hash(input.password, hashRounds);
 
     const wizardToUpdate = await em.findOneOrFail(Wizard, { id });
     em.assign(wizardToUpdate, req.body.sanitizedInput);

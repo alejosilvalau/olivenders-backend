@@ -5,16 +5,16 @@ GET http://localhost:3000/api/wizards/
 GET http://localhost:3000/api/wizards/68698280a91cb51622ab22b6
 
 ### Get one wizard by email
-GET http://localhost:3000/api/wizards/email/draco.malfoy@horwarts.edu
+GET http://localhost:3000/api/wizards/email/draco.malfoy@hogwarts.edu
 
 ### Get one wizard by username
 GET http://localhost:3000/api/wizards/username/dracomalfoy
 
 ### Get if a wizard username is available
-GET http://localhost:3000/api/wizards/available/username/harrypotter
+GET http://localhost:3000/api/wizards/available/username/dracomalfoy
 
 ### Get if a wizard email is available
-GET http://localhost:3000/api/wizards/available/email/harry.potter@hogwarts.edu
+GET http://localhost:3000/api/wizards/available/email/draco.malfoy@hogwarts.edu
 
 ### Create a new wizard
 POST http://localhost:3000/api/wizards/
@@ -42,36 +42,36 @@ Content-Type: application/json
 }
 
 ### Validate a wizard's password
-POST http://localhost:3000/api/wizards/validate/686504f8cc6d7ba855a9575d
+POST http://localhost:3000/api/wizards/validate/6869a017667eb044d20917ed
 Content-Type: application/json
 
 {
-  "password": "expelliarmus123"
+  "password": "Expelio123#@"
 }
 
 ### Update an existing wizard
-PUT http://localhost:3000/api/wizards/686504f8cc6d7ba855a9575d
+PUT http://localhost:3000/api/wizards/6869a017667eb044d20917ed
 Content-Type: application/json
 
 {
-  "username": "dracomalfoy",
-  "password": "expelio123",
-  "name": "Draco",
-  "last_name": "Malfoy",
-  "email": "draco.malfoy@hogwarts.edu",
-  "address": "5 Manor Drive, Malfoy Manor",
-  "phone": "445345678",
+  "username": "hermionegranger",
+  "password": "Leviooooossaaa@@2",
+  "name": "Hermione",
+  "last_name": "Granger",
+  "email": "Hermione.Granger@hogwarts.edu",
+  "address": "50 Enchanted Lane, Hogwarts",
+  "phone": "695123456",
   "role": "WIZARD",
   "school": "68692a9caddddb28d9452ee9"
 }
 
 ### Change a wizard's password
-PATCH http://localhost:3000/api/wizards/66fd592821f0f4df023497b5
+PATCH http://localhost:3000/api/wizards/6869a017667eb044d20917ed
 Content-Type: application/json
 
 {
-  "password": "alohomora456"
+  "password": "Alohooooomora456$$"
 }
 
 ### Delete wizard
-DELETE http://localhost:3000/api/wizards/686504f8cc6d7ba855a9575d
+DELETE http://localhost:3000/api/wizards/68698280a91cb51622ab22b6
