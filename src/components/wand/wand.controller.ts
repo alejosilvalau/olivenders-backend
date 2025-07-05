@@ -80,13 +80,13 @@ async function findOne(req: Request, res: Response) {
   try {
     const id = req.params.id;
     const wand = await em.findOneOrFail(Wand, { id }, { populate: ['wood', 'core'] });
-    if (!wand) {
-      res.status(404).json({ message: 'wand not found', data: null });
-      return;
-    }
     res.status(200).json({ message: 'wand fetched', data: wand });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'wand not found', data: null });
+    } else {
+      res.status(500).json({ message: error.message, data: null });
+    }
   }
 }
 

@@ -12,7 +12,12 @@ dotenv.config();
 const wizardZodSchema = z.object({
   id: objectIdSchema.optional(),
   username: z.string(),
-  password: z.string(),
+  password: z
+    .string()
+    .min(6, 'password must be at least 6 characters')
+    .refine(val => /[A-Z]/.test(val), { message: 'password must contain at least one uppercase letter' })
+    .refine(val => /[0-9]/.test(val), { message: 'password must contain at least one number' })
+    .refine(val => /[^A-Za-z0-9]/.test(val), { message: 'password must contain at least one special character' }),
   name: z.string(),
   last_name: z.string(),
   email: z.string().email(),
@@ -74,17 +79,17 @@ async function findOneByEmail(req: Request, res: Response): Promise<void> {
   }
 }
 
-async function findOneByUsername(req: Request, res: Response): Promise<void> {
+async function findOneByUsername(req: Request, res: Response) {
   try {
     const username = req.params.username;
     const wizard = await em.findOneOrFail(Wizard, { username }, { populate: ['school'] });
-    if (!wizard) {
-      res.status(404).json({ message: 'wizard not found', data: null });
-      return;
-    }
     res.status(200).json({ message: 'wizard fetched', data: wizard });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'wizard not found', data: null });
+    } else {
+      res.status(500).json({ message: error.message, data: null });
+    }
   }
 }
 
@@ -117,7 +122,7 @@ async function login(req: Request, res: Response): Promise<void> {
 }
 
 // TODO: Refactor this function
-async function validatePassword(req: Request, res: Response): Promise<void> {
+async function validatePassword(req: Request, res: Response) {
   try {
     const wizardId = req.params.id;
     const currentPassword = req.body.password;
@@ -170,6 +175,9 @@ async function add(req: Request, res: Response) {
     input.name = input.name.toLowerCase();
     input.email = input.email.toLowerCase();
 
+    const hashRounds = 10;
+    input.password = await bcrypt.hash(input.password, hashRounds);
+
     const wizard = em.create(Wizard, input);
     await em.flush();
     res.status(201).json({ message: 'wizard created', data: wizard });
@@ -204,7 +212,7 @@ async function update(req: Request, res: Response) {
 }
 
 // TODO: Refactor this function
-async function resetPasswordWithoutToken(req: Request, res: Response): Promise<void> {
+async function resetPasswordWithoutToken(req: Request, res: Response) {
   try {
     const id = req.params.id;
     const newPassword = req.body.newPassword;
