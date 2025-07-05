@@ -133,6 +133,7 @@ async function remove(req: Request, res: Response) {
     const id = req.params.id;
     const wandToDelete = await em.findOneOrFail(Wand, { id });
     await em.removeAndFlush(wandToDelete);
+    em.clear();
     res.status(200).json({ message: 'wand deleted', data: null });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });

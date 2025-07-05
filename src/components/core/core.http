@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 ### Update an existing core
-PUT http://localhost:3000/api/cores/685bc3301a3177f61f647ef2
+PUT http://localhost:3000/api/cores/68687806d72bc9560c8e0399
 Content-Type: application/json
 
 {
@@ -30,4 +30,4 @@ Content-Type: application/json
 }
 
 ### Delete a core
-DELETE http://localhost:3000/api/cores/685c1e58ce026cffd81d2fae
+DELETE http://localhost:3000/api/cores/686876537ae52f25a89ca4d5
