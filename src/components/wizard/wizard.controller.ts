@@ -60,66 +60,29 @@ async function findOne(req: Request, res: Response) {
   }
 }
 
-// TODO: Refactor this function
-async function findOneByEmailOrUsername(req: Request, res: Response): Promise<void> {
-  try {
-    const { username, email } = req.params;
-    const excludeWizardId = req.query.excludeWizardId;
-
-    const query: any = { $or: [] };
-
-    if (username) query.$or.push({ username });
-    if (email) query.$or.push({ email });
-    if (excludeWizardId) query.id = { $ne: excludeWizardId };
-
-    const wizardFound = await em.findOne(Wizard, query);
-
-    if (!wizardFound) {
-      res.status(200).json({ message: 'Wizard not found', data: null });
-      return;
-    }
-
-    res.status(200).json({ message: 'Wizard found', data: wizardFound });
-  } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
-  }
-}
-
-// TODO: Refactor this function
-async function findOneByEmailRecipient(req: Request, res: Response): Promise<void> {
+async function findOneByEmail(req: Request, res: Response): Promise<void> {
   try {
     const email = req.params.email;
-    const wizardFound = await em.findOneOrFail(Wizard, { email });
-    if (!wizardFound) {
-      res.status(409).json({ message: 'Wizard not found', data: null });
+    const wizard = await em.findOneOrFail(Wizard, { email }, { populate: ['school'] });
+    if (!wizard) {
+      res.status(404).json({ message: 'wizard not found', data: null });
       return;
     }
-    res.status(200).json({ message: 'Wizard found', data: wizardFound });
+    res.status(200).json({ message: 'wizard fetched', data: wizard });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
 }
 
-// TODO: Refactor this function
-async function findOneByEmail(email: string): Promise<any> {
-  try {
-    const wizard = await em.findOne(Wizard, { email });
-    return wizard;
-  } catch (error: any) {
-    return error.message;
-  }
-}
-
-// TODO: Refactor this function
-async function findOneByUser(req: Request, res: Response): Promise<void> {
+async function findOneByUsername(req: Request, res: Response): Promise<void> {
   try {
     const username = req.params.username;
-    const wizard = await em.findOne(Wizard, { username });
+    const wizard = await em.findOneOrFail(Wizard, { username }, { populate: ['school'] });
     if (!wizard) {
-      res.status(404).json({ message: 'Wizard not found', data: null });
+      res.status(404).json({ message: 'wizard not found', data: null });
       return;
     }
-    res.status(200).json({ message: 'Wizard found', data: wizard });
+    res.status(200).json({ message: 'wizard fetched', data: wizard });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
