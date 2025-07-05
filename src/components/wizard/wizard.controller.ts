@@ -26,11 +26,14 @@ const wizardZodSchema = z.object({
   role: z.string(),
 });
 
+const partialWizardZodSchema = wizardZodSchema.partial();
+
 const em = orm.em;
 
-function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction): void {
+function sanitizeWizardInput(req: Request, res: Response, next: NextFunction): void {
   try {
-    const validatedInput = wizardZodSchema.parse(req.body);
+    const schema = req.method === 'PATCH' ? partialWizardZodSchema : wizardZodSchema;
+    const validatedInput = schema.parse(req.body);
     req.body.sanitizedInput = { ...validatedInput };
     next();
   } catch (error: any) {
@@ -65,7 +68,7 @@ async function findOne(req: Request, res: Response) {
   }
 }
 
-async function findOneByEmail(req: Request, res: Response): Promise<void> {
+async function findOneByEmail(req: Request, res: Response) {
   try {
     const email = req.params.email;
     const wizard = await em.findOneOrFail(Wizard, { email }, { populate: ['school'] });
@@ -93,7 +96,7 @@ async function findOneByUsername(req: Request, res: Response) {
   }
 }
 
-async function login(req: Request, res: Response): Promise<void> {
+async function login(req: Request, res: Response) {
   try {
     const username = req.body.username;
     const wizard = await em.findOneOrFail(Wizard, { username });
@@ -120,49 +123,46 @@ async function login(req: Request, res: Response): Promise<void> {
   }
 }
 
-// TODO: Refactor this function
 async function validatePassword(req: Request, res: Response) {
   try {
     const wizardId = req.params.id;
-    const currentPassword = req.body.password;
-    const wizard = await em.findOne(Wizard, { id: wizardId });
-    if (!wizard) {
-      res.status(404).json({ message: 'Wizard not found', data: null });
-      return;
-    }
+    const wizard = await em.findOneOrFail(Wizard, { id: wizardId });
 
-    const isMatch = await bcrypt.compare(currentPassword, wizard.password);
-    res.status(200).json({ message: 'Password validation completed', data: isMatch });
+    const password = req.body.password;
+    const isMatch = await bcrypt.compare(password, wizard.password);
+    res.status(200).json({ message: 'password validation completed', data: isMatch });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'wizard not found', data: null });
+    } else {
+      res.status(500).json({ message: error.message, data: null });
+    }
   }
 }
 
-// TODO: Refactor this function
-async function checkUsername(req: Request, res: Response): Promise<void> {
+async function isUsernameAvailable(req: Request, res: Response) {
   try {
     const username = req.params.username;
     const wizardFound = await em.findOne(Wizard, { username });
-    if (!wizardFound) {
-      res.status(200).json({ message: 'Username available', data: false });
+    if (wizardFound) {
+      res.status(200).json({ message: 'username already exists', data: false });
       return;
     }
-    res.status(200).json({ message: 'Username already exists', data: true });
+    res.status(200).json({ message: 'username available', data: true });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
 }
 
-// TODO: Refactor this function
-async function checkEmail(req: Request, res: Response): Promise<void> {
+async function isEmailAvailable(req: Request, res: Response) {
   try {
     const email = req.params.email;
     const wizardFound = await em.findOne(Wizard, { email });
-    if (!wizardFound) {
-      res.status(200).json({ message: 'Email available', data: false });
+    if (wizardFound) {
+      res.status(200).json({ message: 'email already exists', data: false });
       return;
     }
-    res.status(200).json({ message: 'Email already exists', data: true });
+    res.status(200).json({ message: 'email available', data: true });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
@@ -179,7 +179,10 @@ async function add(req: Request, res: Response) {
 
     const wizard = em.create(Wizard, input);
     await em.flush();
-    res.status(201).json({ message: 'wizard created', data: wizard });
+
+    // Remove password from response for security
+    const wizardData = { ...wizard, password: undefined };
+    res.status(201).json({ message: 'wizard created', data: wizardData });
   } catch (error: any) {
     if (error.code === 11000) {
       // MongoDB duplicate key error code
@@ -204,29 +207,21 @@ async function update(req: Request, res: Response) {
     const wizardToUpdate = em.findOneOrFail(Wizard, id);
     em.assign(wizardToUpdate, req.body.sanitizedInput);
     await em.flush();
-    res.status(200).json({ message: 'wizard updated', data: wizardToUpdate });
+
+    // Remove password from response for security
+    const wizardData = { ...wizardToUpdate, password: undefined };
+    res.status(200).json({ message: 'wizard updated', data: wizardData });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
 }
 
-// TODO: Refactor this function
 async function resetPasswordWithoutToken(req: Request, res: Response) {
   try {
     const id = req.params.id;
+    const wizard = await em.findOneOrFail(Wizard, { id });
+
     const newPassword = req.body.newPassword;
-
-    if (newPassword.length < 6) {
-      res.status(400).json({ message: 'Password must be at least 6 characters', data: null });
-      return;
-    }
-
-    const wizard = await em.findOne(Wizard, { id });
-    if (!wizard) {
-      res.status(404).json({ message: 'Wizard not found', data: null });
-      return;
-    }
-
     const hashRounds = 10;
     const hashedPassword = await bcrypt.hash(newPassword, hashRounds);
     wizard.password = hashedPassword;
@@ -236,16 +231,19 @@ async function resetPasswordWithoutToken(req: Request, res: Response) {
     const wizardData = { ...wizard, password: undefined };
     res.status(200).json({ message: 'password updated successfully', data: wizardData });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'wizard not found', data: null });
+    } else {
+      res.status(500).json({ message: error.message, data: null });
+    }
   }
 }
 
 async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const wizardToDelete = await em.findOneOrFail(Wizard, { id });
+    const wizardToDelete = await em.findOneOrFail(Wizard, { id }, { populate: ['school'] });
     await em.removeAndFlush(wizardToDelete);
-    em.clear();
     res.status(200).json({ message: 'wizard deleted', data: null });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
@@ -253,17 +251,17 @@ async function remove(req: Request, res: Response) {
 }
 
 export {
-  sanitizeUsuarioInput,
+  sanitizeWizardInput,
   findAll,
   findOne,
   findOneByEmail,
   findOneByUsername,
   login,
   validatePassword,
-  checkUsername,
-  checkEmail,
+  isUsernameAvailable,
+  isEmailAvailable,
   add,
   update,
   resetPasswordWithoutToken,
-  remove,
+  remove
 };
