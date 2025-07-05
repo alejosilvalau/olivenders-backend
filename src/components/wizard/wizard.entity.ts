@@ -4,7 +4,7 @@ import { School } from '../school/school.entity.js';
 
 @Entity()
 export class Wizard extends BaseEntity {
-  @Property({ nullable: false })
+  @Property({ nullable: false, unique: true })
   username!: string;
 
   @Property({ nullable: false })
@@ -16,7 +16,7 @@ export class Wizard extends BaseEntity {
   @Property({ nullable: false })
   last_name!: string;
 
-  @Property({ unique: true, nullable: false })
+  @Property({ nullable: false, unique: true })
   email!: string;
 
   @Property({ nullable: false })
