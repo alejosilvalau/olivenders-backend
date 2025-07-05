@@ -13,13 +13,13 @@ Content-Type: application/json
 
 {
   "name": "Veela hair",
-  "description": "Wandmaker Garrick Ollivander mentioned that he did not use Veela hair because it made for temperamental wands.",
-  "price": 700,
+  "description": "Garrick Ollivander mentioned that he did not use Veela hair because it made for temperamental wands.",
+  "price": 3030,
   "wands": []
 }
 
 ### Update an existing core
-PUT http://localhost:3000/api/cores/68687806d72bc9560c8e0399
+PUT http://localhost:3000/api/cores/6869049884656d883f79c22a
 Content-Type: application/json
 
 {
@@ -30,4 +30,4 @@ Content-Type: application/json
 }
 
 ### Delete a core
-DELETE http://localhost:3000/api/cores/686876537ae52f25a89ca4d5
+DELETE http://localhost:3000/api/cores/686902bc15ae139cff85d867

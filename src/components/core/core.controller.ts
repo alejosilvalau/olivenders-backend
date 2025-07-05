@@ -31,6 +31,7 @@ const sanitizeCoreInput = (req: Request, res: Response, next: NextFunction): voi
 async function findAll(req: Request, res: Response) {
   try {
     const cores = await em.find(Core, {});
+
     res.status(200).json({ message: 'cores fetched', data: cores });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
@@ -41,6 +42,7 @@ async function findOneByName(req: Request, res: Response) {
   try {
     const name = req.params.name.toLowerCase();
     const core = await em.findOneOrFail(Core, { name });
+
     if (!core) {
       res.status(404).json({ message: 'core not found', data: null });
       return;
@@ -55,6 +57,7 @@ async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id;
     const core = await em.findOneOrFail(Core, { id });
+
     if (!core) {
       res.status(404).json({ message: 'core not found', data: null });
       return;
@@ -67,13 +70,13 @@ async function findOne(req: Request, res: Response, next: NextFunction) {
 
 async function add(req: Request, res: Response) {
   try {
-    em.clear();
     console.log('Cleared the EntityManager');
     const input = req.body.sanitizedInput;
     input.name = input.name.toLowerCase();
 
     const core = em.create(Core, input);
     await em.flush();
+
     res.status(201).json({ message: 'core created', data: core });
   } catch (error: any) {
     if (error.code === 11000) {
@@ -93,7 +96,6 @@ async function add(req: Request, res: Response) {
 
 async function update(req: Request, res: Response) {
   try {
-    em.clear();
     const id = req.params.id;
 
     const input = req.body.sanitizedInput;
@@ -102,6 +104,7 @@ async function update(req: Request, res: Response) {
     const coreToUpdate = await em.findOneOrFail(Core, { id });
     em.assign(coreToUpdate, input);
     await em.flush();
+
     res.status(200).json({ message: 'core updated', data: coreToUpdate });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
@@ -113,7 +116,7 @@ async function remove(req: Request, res: Response) {
     const id = req.params.id;
     const coreToDelete = await em.findOneOrFail(Core, { id }, { populate: ['wands'] });
     await em.removeAndFlush(coreToDelete);
-    em.clear();
+
     res.status(200).json({ message: 'core deleted', data: null });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
