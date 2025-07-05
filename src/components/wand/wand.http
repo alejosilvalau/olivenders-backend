@@ -16,7 +16,8 @@ Content-Type: application/json
   "image": "https://example.com/elder-wand.jpg",
   "profit_margin": 1000,
   "total_price": 5000,
-  "wood": "68686723f61561c30bc5b8ff"
+  "wood": "686900b70896ab9a49bbce9f",
+  "core": "6869049884656d883f79c22a"
 }
 
 ### Update an existing wand
@@ -31,7 +32,8 @@ Content-Type: application/json
   "image": "https://example.com/phoenix-wand.jpg",
   "profit_margin": 500,
   "total_price": 1500,
-  "wood": "68681375f9e4fcf1d48bf08f"
+  "wood": "686900b70896ab9a49bbce9f",
+  "core": "6869049884656d883f79c22a"
 }
 
 ### Deactivate a wand (logical removal)

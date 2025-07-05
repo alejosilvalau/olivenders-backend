@@ -14,6 +14,7 @@ const wandZodSchema = z.object({
   profit_margin: z.number().nonnegative(),
   total_price: z.number().positive(),
   wood: objectIdSchema,
+  core: objectIdSchema,
 });
 
 const em = orm.em;

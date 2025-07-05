@@ -20,7 +20,7 @@ Content-Type: application/json
 }
 
 ### Update an existing wood
-PUT http://localhost:3000/api/woods/686872a54a7e88e6ff519bf9
+PUT http://localhost:3000/api/woods/686900b70896ab9a49bbce9f
 Content-Type: application/json
 
 {
@@ -32,4 +32,4 @@ Content-Type: application/json
 }
 
 ### Delete a wood
-DELETE http://localhost:3000/api/woods/68686723f61561c30bc5b8ff
+DELETE http://localhost:3000/api/woods/686872a54a7e88e6ff519bf9
