@@ -5,7 +5,7 @@ GET http://localhost:3000/api/schools
 GET http://localhost:3000/api/schools/name/hogwarts%20school%20of%20witchcraft%20and%20wizardry
 
 ### Get one school by ID
-GET http://localhost:3000/api/schools/68330e7503f0d4d3a6021aeb
+GET http://localhost:3000/api/schools/68692a9caddddb28d9452ee9
 
 ### Create a new school
 POST http://localhost:3000/api/schools/
@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 ### Update an existing school
-PUT http://localhost:3000/api/schools/683312f1da820fff0e8ba0e6
+PUT http://localhost:3000/api/schools/68692a9caddddb28d9452ee9
 Content-Type: application/json
 
 {
@@ -30,4 +30,4 @@ Content-Type: application/json
 }
 
 ### Delete a school
-DELETE http://localhost:3000/api/schools/685c19b14c3b8d9151d89db0
+DELETE http://localhost:3000/api/schools/68692addaddddb28d9452eea

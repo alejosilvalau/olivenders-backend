@@ -6,3 +6,4 @@
 - [Wands](https://harrypotter.fandom.com/wiki/Wand)
 - [Woods](https://harrypotter.fandom.com/wiki/Wand_wood)
 - [Cores](https://harrypotter.fandom.com/wiki/Wand_core)
+- [Schools](https://harrypotter.fandom.com/wiki/Wizarding_school)
