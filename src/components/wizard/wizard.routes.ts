@@ -221,6 +221,57 @@ wizardRouter.get('/email/:email', findOneByEmail);
  */
 wizardRouter.get('/username/:username', findOneByUsername);
 
+// TODO: Add documentation for this endpoint
+wizardRouter.get('/available/username/:username', isUsernameAvailable);
+
+// TODO: Add documentation for this endpoint
+wizardRouter.get('/available/email/:email', isEmailAvailable);
+
+/**
+ * @swagger
+ * /api/usuarios:
+ *   post:
+ *     summary: Crea un nuevo usuario
+ *     tags: [Usuario]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Usuario'
+ *     responses:
+ *       201:
+ *         description: Usuario creado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Usuario'
+ *       400:
+ *         description: Error de validación o usuario ya existente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Ya existe un usuario con ese nombre de usuario o correo electrónico.
+ *       500:
+ *         description: Error al crear el usuario
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Error al crear el usuario
+ *                 error:
+ *                   type: string
+ *                   example: Detalles del error
+ */
+wizardRouter.post('/', add);
+
 /**
  * @swagger
  * /api/usuarios/login:
@@ -286,51 +337,6 @@ wizardRouter.get('/username/:username', findOneByUsername);
  *                   example: Detalles del error
  */
 wizardRouter.post('/login', login);
-
-/**
- * @swagger
- * /api/usuarios:
- *   post:
- *     summary: Crea un nuevo usuario
- *     tags: [Usuario]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Usuario'
- *     responses:
- *       201:
- *         description: Usuario creado
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Usuario'
- *       400:
- *         description: Error de validación o usuario ya existente
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Ya existe un usuario con ese nombre de usuario o correo electrónico.
- *       500:
- *         description: Error al crear el usuario
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error al crear el usuario
- *                 error:
- *                   type: string
- *                   example: Detalles del error
- */
-wizardRouter.post('/', add);
 
 /**
  * @swagger
