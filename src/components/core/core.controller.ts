@@ -17,20 +17,7 @@ const em = orm.em;
 const sanitizeCoreInput = (req: Request, res: Response, next: NextFunction): void => {
   try {
     const validatedInput = coreZodSchema.parse(req.body);
-
-    req.body.sanitizedInput = {
-      id: validatedInput.id,
-      name: validatedInput.name,
-      description: validatedInput.description,
-      price: validatedInput.price,
-    };
-
-    Object.keys(req.body.sanitizedInput).forEach(key => {
-      if (req.body.sanitizedInput[key] === undefined) {
-        delete req.body.sanitizedInput[key];
-      }
-    });
-
+    req.body.sanitizedInput = { ...validatedInput };
     next();
   } catch (error: any) {
     const formattedError = error.errors.map((err: z.ZodIssue) => ({
