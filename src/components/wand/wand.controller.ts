@@ -35,8 +35,6 @@ function sanitizeWandInput(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-// Add this function to your wand.controller.ts file
-
 async function calculateWandPrice(woodId: string, coreId: string, profit: number) {
   try {
     const wood = await em.findOneOrFail(Wood, { id: woodId });
