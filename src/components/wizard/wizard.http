@@ -2,19 +2,19 @@
 GET http://localhost:3000/api/wizards/
 
 ### Get one wizard by ID
-GET http://localhost:3000/api/wizards/686504f8cc6d7ba855a9575d
+GET http://localhost:3000/api/wizards/68698280a91cb51622ab22b6
 
 ### Get one wizard by email
-GET http://localhost:3000/api/wizards/email/draco.malfoy@hogwarts.edu
+GET http://localhost:3000/api/wizards/email/draco.malfoy@horwarts.edu
 
-### Get one wizard by email
-GET http://localhost:3000/api/wizards/username/harrypotter
+### Get one wizard by username
+GET http://localhost:3000/api/wizards/username/dracomalfoy
 
-### Get if a wizard is available by username
-GET http://localhost:3000/api/wizards/available/username/dracomalfoy
+### Get if a wizard username is available
+GET http://localhost:3000/api/wizards/available/username/harrypotter
 
-### Get if a wizard is available by email
-GET http://localhost:3000/api/wizards/available/email/draco.malfoy@hogwarts.edu
+### Get if a wizard email is available
+GET http://localhost:3000/api/wizards/available/email/harry.potter@hogwarts.edu
 
 ### Create a new wizard
 POST http://localhost:3000/api/wizards/
@@ -28,7 +28,8 @@ Content-Type: application/json
   "email": "draco.malfoy@hogwarts.edu",
   "address": "5 Manor Drive, Malfoy Manor",
   "phone": "445345678",
-  "role": "WIZARD"
+  "role": "WIZARD",
+  "school": "68692a9caddddb28d9452ee9"
 }
 
 ### Login to a wizard account
@@ -60,7 +61,8 @@ Content-Type: application/json
   "email": "draco.malfoy@hogwarts.edu",
   "address": "5 Manor Drive, Malfoy Manor",
   "phone": "445345678",
-  "role": "WIZARD"
+  "role": "WIZARD",
+  "school": "68692a9caddddb28d9452ee9"
 }
 
 ### Change a wizard's password

@@ -24,16 +24,30 @@ const wizardZodSchema = z.object({
   address: z.string(),
   phone: z.string(),
   role: z.enum(['ADMIN', 'WIZARD']),
+  school: objectIdSchema,
 });
-
-const partialWizardZodSchema = wizardZodSchema.partial();
 
 const em = orm.em;
 
 function sanitizeWizardInput(req: Request, res: Response, next: NextFunction): void {
   try {
-    const schema = req.method === 'PATCH' ? partialWizardZodSchema : wizardZodSchema;
-    const validatedInput = schema.parse(req.body);
+    const validatedInput = wizardZodSchema.parse(req.body);
+    req.body.sanitizedInput = { ...validatedInput };
+    next();
+  } catch (error: any) {
+    const formattedError = error.errors.map((err: z.ZodIssue) => ({
+      field: err.path.join('.'),
+      message: err.message,
+    }));
+    res.status(400).json({ errors: formattedError });
+  }
+}
+
+const partialWizardZodSchema = wizardZodSchema.partial();
+
+function sanitizeWizardPartialInput(req: Request, res: Response, next: NextFunction): void {
+  try {
+    const validatedInput = partialWizardZodSchema.parse(req.body);
     req.body.sanitizedInput = { ...validatedInput };
     next();
   } catch (error: any) {
@@ -132,7 +146,7 @@ async function add(req: Request, res: Response) {
 
     const hashRounds = 10;
     input.password = await bcrypt.hash(input.password, hashRounds);
-
+    console.log('Creating wizard with input:', input);
     const wizard = em.create(Wizard, input);
     await em.flush();
 
@@ -252,6 +266,7 @@ async function remove(req: Request, res: Response) {
 
 export {
   sanitizeWizardInput,
+  sanitizeWizardPartialInput,
   findAll,
   findOne,
   findOneByEmail,

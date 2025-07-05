@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   sanitizeWizardInput,
+  sanitizeWizardPartialInput,
   findAll,
   findOne,
   findOneByEmail,
@@ -337,7 +338,7 @@ wizardRouter.post('/', sanitizeMongoQuery, sanitizeWizardInput, add);
  *                   type: string
  *                   example: Detalles del error
  */
-wizardRouter.post('/login', sanitizeMongoQuery, sanitizeWizardInput, login);
+wizardRouter.post('/login', sanitizeMongoQuery, sanitizeWizardPartialInput, login);
 
 /**
  * @swagger
@@ -392,7 +393,7 @@ wizardRouter.post('/login', sanitizeMongoQuery, sanitizeWizardInput, login);
  *                   type: string
  *                   description: Mensaje de error
  */
-wizardRouter.post('/validate/:id', sanitizeMongoQuery, sanitizeWizardInput, validatePassword);
+wizardRouter.post('/validate/:id', sanitizeMongoQuery, sanitizeWizardPartialInput, validatePassword);
 
 /**
  * @swagger
@@ -498,7 +499,7 @@ wizardRouter.put('/:id', sanitizeMongoQuery, sanitizeWizardInput, update);
  *                   type: string
  *                   example: Error al actualizar la contraseña
  */
-wizardRouter.patch('/:id', sanitizeMongoQuery, sanitizeWizardInput, changePasswordWithoutToken);
+wizardRouter.patch('/:id', sanitizeMongoQuery, sanitizeWizardPartialInput, changePasswordWithoutToken);
 
 /**
  * @swagger
