@@ -10,7 +10,7 @@ const woodZodSchema = z.object({
   binomial_name: z.string().trim().min(1),
   description: z.string().trim().min(1),
   price: z.number(),
-  wands: z.array(objectIdSchema).optional(),
+  wands: z.array(objectIdSchema),
 });
 
 const em = orm.em;

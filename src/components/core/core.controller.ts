@@ -2,12 +2,14 @@ import { Request, Response, NextFunction } from 'express';
 import { orm } from '../../shared/db/orm.js';
 import { Core } from './core.entity.js';
 import { z } from 'zod';
+import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 
 const coreZodSchema = z.object({
-  id: z.string().optional(),
+  id: objectIdSchema.optional(),
   name: z.string().trim().min(1),
   description: z.string().trim().min(1),
   price: z.number().positive(),
+  wands: z.array(objectIdSchema),
 });
 
 const em = orm.em;
