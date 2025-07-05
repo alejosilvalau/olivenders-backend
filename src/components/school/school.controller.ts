@@ -37,10 +37,10 @@ async function findAll(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-async function findOneByName(req: Request, res: Response) {
+async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
-    const name = req.params.name.toLowerCase();
-    const school = await em.findOneOrFail(School, { name });
+    const id = req.params.id;
+    const school = await em.findOneOrFail(School, { id });
     if (!school) {
       res.status(404).json({ message: 'school not found', data: null });
       return;
@@ -51,10 +51,10 @@ async function findOneByName(req: Request, res: Response) {
   }
 }
 
-async function findOne(req: Request, res: Response, next: NextFunction) {
+async function findOneByName(req: Request, res: Response) {
   try {
-    const id = req.params.id;
-    const school = await em.findOneOrFail(School, { id });
+    const name = req.params.name.toLowerCase();
+    const school = await em.findOneOrFail(School, { name });
     if (!school) {
       res.status(404).json({ message: 'school not found', data: null });
       return;
@@ -119,4 +119,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { sanitizeSchoolInput, findAll, findOne, add, update, remove, findOneByName };
+export { sanitizeSchoolInput, findAll, findOne, findOneByName, add, update, remove };

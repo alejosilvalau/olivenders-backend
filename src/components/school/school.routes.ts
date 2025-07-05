@@ -53,32 +53,7 @@ export const schoolRouter = Router();
  */
 schoolRouter.get('/', findAll);
 
-/**
- * @swagger
- * /api/schools/find-by-name/{name}:
- *   get:
- *     summary: Get a school by name
- *     tags: [School]
- *     parameters:
- *       - in: path
- *         name: name
- *         schema:
- *           type: string
- *         required: true
- *         description: Name of the school
- *     responses:
- *       200:
- *         description: School found
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/School'
- *       404:
- *         description: School not found
- *       500:
- *         description: Error retrieving the school
- */
-schoolRouter.get('/name/:name', sanitizeMongoQuery,findOneByName);
+
 
 /**
  * @swagger
@@ -105,7 +80,34 @@ schoolRouter.get('/name/:name', sanitizeMongoQuery,findOneByName);
  *       500:
  *         description: Error retrieving the school
  */
-schoolRouter.get('/:id', sanitizeMongoQuery,findOne);
+schoolRouter.get('/:id', sanitizeMongoQuery, findOne);
+
+/**
+ * @swagger
+ * /api/schools/find-by-name/{name}:
+ *   get:
+ *     summary: Get a school by name
+ *     tags: [School]
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Name of the school
+ *     responses:
+ *       200:
+ *         description: School found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/School'
+ *       404:
+ *         description: School not found
+ *       500:
+ *         description: Error retrieving the school
+ */
+schoolRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
 
 /**
  * @swagger

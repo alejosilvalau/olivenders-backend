@@ -1,11 +1,11 @@
 ### Get all schools
 GET http://localhost:3000/api/schools
 
-### Get a school by name
-GET http://localhost:3000/api/schools/name/hogwarts%20school%20of%20witchcraft%20and%20wizardry
-
 ### Get one school by ID
 GET http://localhost:3000/api/schools/68692a9caddddb28d9452ee9
+
+### Get a school by name
+GET http://localhost:3000/api/schools/name/hogwarts%20school%20of%20witchcraft%20and%20wizardry
 
 ### Create a new school
 POST http://localhost:3000/api/schools/
