@@ -59,33 +59,6 @@ coreRouter.get('/', findAll);
 
 /**
  * @swagger
- * /api/cores/find-by-name/{name}:
- *   get:
- *     summary: Find a core by name
- *     tags: [Core]
- *     parameters:
- *       - in: path
- *         name: name
- *         schema:
- *           type: string
- *         required: true
- *         description: The name of the core
- *     responses:
- *       200:
- *         description: Core found
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Core'
- *       404:
- *         description: Core not found
- *       500:
- *         description: Error retrieving the core
- */
-coreRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
-
-/**
- * @swagger
  * /api/cores/{id}:
  *   get:
  *     summary: Get a core by ID
@@ -110,6 +83,33 @@ coreRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
  *         description: Error retrieving the core
  */
 coreRouter.get('/:id', findOne);
+
+/**
+ * @swagger
+ * /api/cores/find-by-name/{name}:
+ *   get:
+ *     summary: Find a core by name
+ *     tags: [Core]
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The name of the core
+ *     responses:
+ *       200:
+ *         description: Core found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Core'
+ *       404:
+ *         description: Core not found
+ *       500:
+ *         description: Error retrieving the core
+ */
+coreRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
 
 /**
  * @swagger

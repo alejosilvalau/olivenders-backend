@@ -37,10 +37,10 @@ async function findAll(req: Request, res: Response) {
   }
 }
 
-async function findOneByName(req: Request, res: Response) {
+async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
-    const name = req.params.name.toLowerCase();
-    const core = await em.findOneOrFail(Core, { name });
+    const id = req.params.id;
+    const core = await em.findOneOrFail(Core, { id });
 
     if (!core) {
       res.status(404).json({ message: 'core not found', data: null });
@@ -52,10 +52,10 @@ async function findOneByName(req: Request, res: Response) {
   }
 }
 
-async function findOne(req: Request, res: Response, next: NextFunction) {
+async function findOneByName(req: Request, res: Response) {
   try {
-    const id = req.params.id;
-    const core = await em.findOneOrFail(Core, { id });
+    const name = req.params.name.toLowerCase();
+    const core = await em.findOneOrFail(Core, { name });
 
     if (!core) {
       res.status(404).json({ message: 'core not found', data: null });
@@ -123,17 +123,7 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-
-
-  export {
-    sanitizeCoreInput,
-    findAll,
-    findOne,
-    add,
-    update,
-    remove,
-    findOneByName
-  };
+export { sanitizeCoreInput, findAll, findOne, findOneByName, add, update, remove };
   
   
   
