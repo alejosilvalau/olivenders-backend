@@ -55,6 +55,33 @@ schoolRouter.get('/', findAll);
 
 /**
  * @swagger
+ * /api/schools/find-by-name/{name}:
+ *   get:
+ *     summary: Get a school by name
+ *     tags: [School]
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Name of the school
+ *     responses:
+ *       200:
+ *         description: School found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/School'
+ *       404:
+ *         description: School not found
+ *       500:
+ *         description: Error retrieving the school
+ */
+schoolRouter.get('/name/:name', sanitizeMongoQuery,findOneByName);
+
+/**
+ * @swagger
  * /api/schools/{id}:
  *   get:
  *     summary: Get a school by ID
@@ -78,7 +105,7 @@ schoolRouter.get('/', findAll);
  *       500:
  *         description: Error retrieving the school
  */
-schoolRouter.get('/:id', findOne);
+schoolRouter.get('/:id', sanitizeMongoQuery,findOne);
 
 /**
  * @swagger
@@ -104,7 +131,7 @@ schoolRouter.get('/:id', findOne);
  *       500:
  *         description: Error creating the school
  */
-schoolRouter.post('/', sanitizeSchoolInput, sanitizeMongoQuery, add);
+schoolRouter.post('/', sanitizeMongoQuery, sanitizeSchoolInput, add);
 
 /**
  * @swagger
@@ -139,7 +166,7 @@ schoolRouter.post('/', sanitizeSchoolInput, sanitizeMongoQuery, add);
  *       500:
  *         description: Error updating the school
  */
-schoolRouter.put('/:id', sanitizeSchoolInput, sanitizeMongoQuery, update);
+schoolRouter.put('/:id', sanitizeMongoQuery, sanitizeSchoolInput, update);
 
 /**
  * @swagger
@@ -163,30 +190,3 @@ schoolRouter.put('/:id', sanitizeSchoolInput, sanitizeMongoQuery, update);
  *         description: Error deleting the school
  */
 schoolRouter.delete('/:id', sanitizeMongoQuery, remove);
-
-/**
- * @swagger
- * /api/schools/find-by-name/{name}:
- *   get:
- *     summary: Get a school by name
- *     tags: [School]
- *     parameters:
- *       - in: path
- *         name: name
- *         schema:
- *           type: string
- *         required: true
- *         description: Name of the school
- *     responses:
- *       200:
- *         description: School found
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/School'
- *       404:
- *         description: School not found
- *       500:
- *         description: Error retrieving the school
- */
-schoolRouter.get('/find-by-name/:name', findOneByName);
