@@ -28,4 +28,6 @@ export class Wizard extends BaseEntity {
   @Property({ nullable: false })
   role!: string;
 
+  @ManyToOne(() => School, { nullable: false })
+  school!: Rel<School>;
 }
