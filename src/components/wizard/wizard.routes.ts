@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import {
   findAll,
-  findOneById,
+  findOne,
   findOneByEmailOrUsername,
   checkUsername,
   checkEmail,
@@ -139,7 +139,7 @@ wizardRouter.get('/', findAll);
  *                   type: string
  *                   example: Detalles del error
  */
-wizardRouter.get('/:id', findOneById);
+wizardRouter.get('/:id', findOne);
 
 /**
  * @swagger

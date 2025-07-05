@@ -37,10 +37,24 @@ function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction): 
   }
 }
 
-async function findAll(req: Request, res: Response): Promise<void> {
+async function findAll(req: Request, res: Response) {
   try {
     const wizards = await em.find(Wizard, {}, { populate: ['school'] });
     res.status(200).json({ message: 'wizards fetched', data: wizards });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message, data: null });
+  }
+}
+
+async function findOne(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const wizard = await em.findOneOrFail(Wizard, { id }, { populate: ['school'] });
+    if (!wizard) {
+      res.status(404).json({ message: 'wizard not found', data: null });
+      return;
+    }
+    res.status(200).json({ message: 'wizard fetched', data: wizard });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
@@ -101,20 +115,6 @@ async function findOneByUser(req: Request, res: Response): Promise<void> {
   try {
     const username = req.params.username;
     const wizard = await em.findOne(Wizard, { username });
-    if (!wizard) {
-      res.status(404).json({ message: 'Wizard not found', data: null });
-      return;
-    }
-    res.status(200).json({ message: 'Wizard found', data: wizard });
-  } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
-  }
-}
-
-async function findOneById(req: Request, res: Response): Promise<void> {
-  try {
-    const id = req.params.id;
-    const wizard = await em.findOneOrFail(Wizard, { id });
     if (!wizard) {
       res.status(404).json({ message: 'Wizard not found', data: null });
       return;
@@ -214,7 +214,7 @@ async function add(req: Request, res: Response) {
     if (error.code === 11000) {
       // MongoDB duplicate key error code
       res.status(409).json({
-        message: 'a wizard with this name already exists',
+        message: 'a wizard with this name or email already exists',
         data: null,
       });
     } else {
@@ -285,10 +285,10 @@ async function remove(req: Request, res: Response) {
 export {
   sanitizeUsuarioInput,
   findAll,
+  findOne,
   findOneByEmailOrUsername,
   findOneByEmailRecipient,
   findOneByUser,
-  findOneById,
   login,
   validatePassword,
   checkUsername,

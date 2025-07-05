@@ -79,7 +79,7 @@ async function add(req: Request, res: Response) {
     if (error.code === 11000) {
       // MongoDB duplicate key error code
       res.status(409).json({
-        message: 'a school with this name already exists',
+        message: 'a school with this name or email already exists',
         data: null,
       });
     } else {
