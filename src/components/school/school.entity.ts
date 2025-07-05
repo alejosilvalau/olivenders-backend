@@ -4,10 +4,10 @@ import { Wizard } from '../wizard/wizard.entity.js';
 
 @Entity()
 export class School extends BaseEntity {
-  @Property({ nullable: false })
+  @Property({ nullable: false, unique: true })
   name!: string;
 
-  @Property({ nullable: false })
+  @Property({ nullable: false, unique: true })
   email!: string;
 
   @Property({ nullable: false })

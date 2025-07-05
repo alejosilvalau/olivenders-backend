@@ -52,4 +52,4 @@ Content-Type: application/json
 }
 
 ### Delete wizard
-DELETE http://localhost:3000/api/wizards/66a292b9167e1190e60640d1
+DELETE http://localhost:3000/api/wizards/686504f8cc6d7ba855a9575d
