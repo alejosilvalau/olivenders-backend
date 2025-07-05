@@ -4,51 +4,71 @@ GET http://localhost:3000/api/wizards
 ### Get one wizard by ID
 GET http://localhost:3000/api/wizards/686504f8cc6d7ba855a9575d
 
-### Create wizard
-POST http://localhost:3000/api/wizards/
+### Get one wizard by email
+GET http://localhost:3000/api/wizards/email/draco.malfoy@hogwarts.edu
+
+### Get one wizard by email
+GET http://localhost:3000/api/wizards/username/harrypotter
+
+### Get if a wizard is available by username
+GET http://localhost:3000/api/wizards/available/username/dracomalfoy
+
+### Get if a wizard is available by email
+GET http://localhost:3000/api/wizards/available/email/draco.malfoy@hogwarts.edu
+
+### Create a new wand
+POST http://localhost:3000/api/wizards
 Content-Type: application/json
 
 {
-    "username": "dracomalfoy",
-    "password": "expelio123",
-    "name": "Draco",
-    "last_name": "Malfoy",
-    "email": "draco.malfoy@hogwarts.edu",
-    "phone": "445345678",
-    "address": "5 Manor Drive, Malfoy Manor",
-    "role": "WIZARD"
+  "username": "dracomalfoy",
+  "password": "expelio123",
+  "name": "Draco",
+  "last_name": "Malfoy",
+  "email": "draco.malfoy@hogwarts.edu",
+  "address": "5 Manor Drive, Malfoy Manor",
+  "phone": "445345678",
+  "role": "WIZARD"
 }
 
-
-### Update wizard
-PUT http://localhost:3000/api/wizards/686504f8cc6d7ba855a9575d
-Content-Type: application/json
-
-{
-    "username": "harrypotter",
-    "name": "Harry",
-    "last_name": "Potter",
-    "email": "harry.potter@hogwarts.edu",
-    "phone": "5551234567",
-    "address": "12 Grimmauld Place",
-    "role": "WIZARD"
-}
-
-### Login
+### Login to a wizard account
 POST http://localhost:3000/api/wizards/login
 Content-Type: application/json
 
 {
-    "username": "harrypotter",
-    "password": "expelliarmus123"
+  "username": "harrypotter",
+  "password": "expelliarmus123"
 }
 
-### Reset password
+### Validate a wizard's password
+POST http://localhost:3000/api/wizards/validate/686504f8cc6d7ba855a9575d
+Content-Type: application/json
+
+{
+  "password": "expelliarmus123"
+}
+
+### Update an existing wizard
+PUT http://localhost:3000/api/wizards/686504f8cc6d7ba855a9575d
+Content-Type: application/json
+
+{
+  "username": "dracomalfoy",
+  "password": "expelio123",
+  "name": "Draco",
+  "last_name": "Malfoy",
+  "email": "draco.malfoy@hogwarts.edu",
+  "address": "5 Manor Drive, Malfoy Manor",
+  "phone": "445345678",
+  "role": "WIZARD"
+}
+
+### Change a wizard's password
 PATCH http://localhost:3000/api/wizards/66fd592821f0f4df023497b5
 Content-Type: application/json
 
 {
-    "newPassword": "alohomora456"
+  "password": "alohomora456"
 }
 
 ### Delete wizard

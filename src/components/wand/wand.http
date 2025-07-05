@@ -11,7 +11,7 @@ GET http://localhost:3000/api/wands/wood/68691b824e73af09c1b0de31
 GET http://localhost:3000/api/wands/68683ed4508f3212ea14e89a
 
 ### Create a new wand
-POST http://localhost:3000/api/wands/
+POST http://localhost:3000/api/wands
 Content-Type: application/json
 
 {

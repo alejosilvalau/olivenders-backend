@@ -221,7 +221,7 @@ async function changePasswordWithoutToken(req: Request, res: Response) {
     const id = req.params.id;
     const wizard = await em.findOneOrFail(Wizard, { id });
 
-    const newPassword = req.body.newPassword;
+    const newPassword = req.body.password;
     const hashRounds = 10;
     const hashedPassword = await bcrypt.hash(newPassword, hashRounds);
     wizard.password = hashedPassword;
