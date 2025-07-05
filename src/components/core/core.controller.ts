@@ -110,6 +110,7 @@ async function remove(req: Request, res: Response) {
     const id = req.params.id;
     const coreToDelete = await em.findOneOrFail(Core, { id }, { populate: ['wands'] });
     await em.removeAndFlush(coreToDelete);
+    em.clear();
     res.status(200).json({ message: 'core deleted', data: null });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });

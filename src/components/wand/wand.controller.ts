@@ -35,7 +35,7 @@ function sanitizeWandInput(req: Request, res: Response, next: NextFunction) {
 
 async function findAll(req: Request, res: Response) {
   try {
-    const wands = await em.find(Wand, {}, { populate: ['wood'] });
+    const wands = await em.find(Wand, {}, { populate: ['wood', 'core'] });
     res.status(200).json({ message: 'wands fetched', data: wands });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
@@ -57,7 +57,7 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const wand = await em.findOneOrFail(Wand, { id }, { populate: ['wood'] });
+    const wand = await em.findOneOrFail(Wand, { id }, { populate: ['wood', 'core'] });
     if (!wand) {
       res.status(404).json({ message: 'wand not found', data: null });
       return;
