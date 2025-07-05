@@ -1,17 +1,17 @@
 import { Router } from 'express';
 import {
-  sanitizeSaleInput,
+  sanitizeOrderInput,
   findAll,
   findOne,
-  findByPaymentId,
   findByStatus,
+  findByPaymentId,
   add,
   update,
   remove,
-} from './sale.controller.js';
+} from './order.controller.js';
 import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
 
-export const saleRouter = Router();
+export const orderRouter = Router();
 
 /**
  * @swagger
@@ -61,7 +61,7 @@ export const saleRouter = Router();
  *       500:
  *         description: Error retrieving sales
  */
-saleRouter.get('/', findAll);
+orderRouter.get('/', findAll);
 
 /**
  * @swagger
@@ -88,7 +88,7 @@ saleRouter.get('/', findAll);
  *       500:
  *         description: Error retrieving the sale
  */
-saleRouter.get('/:id', findOne);
+orderRouter.get('/:id', findOne);
 
 /**
  * @swagger
@@ -115,7 +115,7 @@ saleRouter.get('/:id', findOne);
  *       500:
  *         description: Error retrieving the sale
  */
-saleRouter.get('/payment/:payment_id', findByPaymentId);
+orderRouter.get('/payment/:payment_id', findByPaymentId);
 
 /**
  * @swagger
@@ -142,7 +142,7 @@ saleRouter.get('/payment/:payment_id', findByPaymentId);
  *       500:
  *         description: Error retrieving sales
  */
-saleRouter.get('/status/:status', findByStatus);
+orderRouter.get('/status/:status', findByStatus);
 
 /**
  * @swagger
@@ -170,7 +170,7 @@ saleRouter.get('/status/:status', findByStatus);
  *       500:
  *         description: Error creating the sale
  */
-saleRouter.post('/', sanitizeSaleInput, sanitizeMongoQuery, add);
+orderRouter.post('/', sanitizeOrderInput, sanitizeMongoQuery, add);
 
 /**
  * @swagger
@@ -205,7 +205,7 @@ saleRouter.post('/', sanitizeSaleInput, sanitizeMongoQuery, add);
  *       500:
  *         description: Error updating the sale
  */
-saleRouter.put('/:id', sanitizeSaleInput, sanitizeMongoQuery, update);
+orderRouter.put('/:id', sanitizeOrderInput, sanitizeMongoQuery, update);
 
 /**
  * @swagger
@@ -228,4 +228,4 @@ saleRouter.put('/:id', sanitizeSaleInput, sanitizeMongoQuery, update);
  *       500:
  *         description: Error deleting the sale
  */
-saleRouter.delete('/:id', sanitizeMongoQuery, remove);
+orderRouter.delete('/:id', sanitizeMongoQuery, remove);

@@ -12,7 +12,7 @@ import { coreRouter } from './components/core/core.routes.js';
 import { wandRouter } from './components/wand/wand.routes.js';
 import { questionRouter } from './components/question/question.routes.js';
 import { quizRouter } from './components/quiz/quiz.routes.js';
-import { saleRouter } from './components/sale/sale.routes.js';
+import { orderRouter } from './components/order/order.routes.js';
 import { wizardRouter } from './components/wizard/wizard.routes.js';
 
 dotenv.config();
@@ -64,7 +64,7 @@ app.use('/api/cores', coreRouter);
 app.use('/api/wands', wandRouter);
 app.use('/api/questions', questionRouter);
 app.use('/api/quizzes', quizRouter);
-app.use('/api/sales', saleRouter);
+app.use('/api/sales', orderRouter);
 app.use('/api/wizards', wizardRouter);
 
 app.use((_, res) => {

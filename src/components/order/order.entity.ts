@@ -2,7 +2,7 @@ import { Entity, Property, Collection, OneToMany, Cascade, types, DateTimeType }
 import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
 
 @Entity()
-export class Sale extends BaseEntity {
+export class Order extends BaseEntity {
   @Property({ nullable: false })
   payment_reference!: string;
 
