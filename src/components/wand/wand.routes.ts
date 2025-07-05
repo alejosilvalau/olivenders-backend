@@ -1,5 +1,15 @@
 import { Router } from 'express';
-import { sanitizeWandInput, findAll, findOne, add, update, remove, logicRemove } from './wand.controller.js';
+import {
+  sanitizeWandInput,
+  findAllByCore,
+  findAllByWood,
+  findAll,
+  findOne,
+  add,
+  update,
+  remove,
+  logicRemove,
+} from './wand.controller.js';
 import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
 
 export const wandRouter = Router();
@@ -44,6 +54,12 @@ export const wandRouter = Router();
  *         - profit_margin
  *         - total_price
  */
+
+// Agregar documentación
+wandRouter.get('/core/:coreId', sanitizeMongoQuery, findAllByCore);
+
+// Agregar documentación
+wandRouter.get('/wood/:woodId', sanitizeMongoQuery, findAllByWood);
 
 /**
  * @swagger

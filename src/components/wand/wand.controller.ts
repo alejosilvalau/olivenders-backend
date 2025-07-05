@@ -47,6 +47,26 @@ async function calculateWandPrice(woodId: string, coreId: string, profit: number
   }
 }
 
+async function findAllByCore(req: Request, res: Response) {
+  try {
+    const coreId = req.params.coreId;
+    const wands = await em.find(Wand, { core: coreId, status: 'active' }, { populate: ['wood', 'core'] });
+    res.status(200).json({ message: 'wands fetched', data: wands });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message, data: null });
+  }
+}
+
+async function findAllByWood(req: Request, res: Response) {
+  try {
+    const woodId = req.params.woodId;
+    const wands = await em.find(Wand, { wood: woodId, status: 'active' }, { populate: ['wood', 'core'] });
+    res.status(200).json({ message: 'wands fetched', data: wands });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message, data: null });
+  }
+}
+
 async function findAll(req: Request, res: Response) {
   try {
     const wands = await em.find(Wand, {}, { populate: ['wood', 'core'] });
@@ -55,18 +75,6 @@ async function findAll(req: Request, res: Response) {
     res.status(500).json({ message: error.message, data: null });
   }
 }
-
-// TODO: Implement the function when doing the relationships
-// async function findAllByUser(req: Request, res: Response) {
-//   try {
-//     em.clear();
-//     const email = req.params.id;
-//     const wands = await em.find(Wand, { email });
-//     res.status(200).json(wands);
-//   } catch (error: any) {
-//     res.status(500).json({ message: error.message });
-//   }
-// }
 
 async function findOne(req: Request, res: Response) {
   try {
@@ -81,18 +89,6 @@ async function findOne(req: Request, res: Response) {
     res.status(500).json({ message: error.message, data: null });
   }
 }
-
-// TODO: Implement the function when doing the relationships
-// async function findAllByCategory(req: Request, res: Response) {
-//   try {
-//     em.clear();
-//     const status = req.params.id;
-//     const wands = await em.find(Wand, { status });
-//     res.status(200).json(wands);
-//   } catch (error: any) {
-//     res.status(500).json({ message: error.message });
-//   }
-// }
 
 async function add(req: Request, res: Response) {
   try {
@@ -134,6 +130,7 @@ async function update(req: Request, res: Response) {
     res.status(500).json({ message: error.message, data: null });
   }
 }
+
 async function logicRemove(req: Request, res: Response) {
   try {
     const id = req.params.id;
@@ -158,4 +155,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { sanitizeWandInput, findAll, findOne, add, update, remove, logicRemove };
+export { sanitizeWandInput, findAllByCore, findAllByWood, findAll, findOne, add, update, remove, logicRemove };

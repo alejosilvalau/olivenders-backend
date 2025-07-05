@@ -111,7 +111,7 @@ async function findOneByUser(req: Request, res: Response): Promise<void> {
   }
 }
 
-async function findOne(req: Request, res: Response): Promise<void> {
+async function findOneById(req: Request, res: Response): Promise<void> {
   try {
     const id = req.params.id;
     const wizard = await em.findOneOrFail(Wizard, { id });
@@ -288,7 +288,7 @@ export {
   findOneByEmailOrUsername,
   findOneByEmailRecipient,
   findOneByUser,
-  findOne,
+  findOneById,
   login,
   validatePassword,
   checkUsername,
