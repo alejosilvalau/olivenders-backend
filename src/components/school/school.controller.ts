@@ -41,13 +41,13 @@ async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id;
     const school = await em.findOneOrFail(School, { id });
-    if (!school) {
-      res.status(404).json({ message: 'school not found', data: null });
-      return;
-    }
     res.status(200).json({ message: 'school fetched', data: school });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'school not found', data: null });
+    } else {
+      res.status(500).json({ message: error.message, data: null });
+    }
   }
 }
 
@@ -55,13 +55,13 @@ async function findOneByName(req: Request, res: Response) {
   try {
     const name = req.params.name.toLowerCase();
     const school = await em.findOneOrFail(School, { name });
-    if (!school) {
-      res.status(404).json({ message: 'school not found', data: null });
-      return;
-    }
     res.status(200).json({ message: 'school fetched', data: school });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'school not found', data: null });
+    } else {
+      res.status(500).json({ message: error.message, data: null });
+    }
   }
 }
 
