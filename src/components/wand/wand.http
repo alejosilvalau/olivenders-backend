@@ -16,7 +16,7 @@ Content-Type: application/json
   "image": "https://example.com/elder-wand.jpg",
   "profit_margin": 1000,
   "total_price": 5000,
-  "wood": "68681375f9e4fcf1d48bf08f"
+  "wood": "68686723f61561c30bc5b8ff"
 }
 
 ### Update an existing wand
@@ -38,4 +38,4 @@ Content-Type: application/json
 PATCH http://localhost:3000/api/wands/68683ed4508f3212ea14e89a/deactivate
 
 ### Delete a wand
-DELETE http://localhost:3000/api/wands/68683ed4508eae12ea14e89a
+DELETE http://localhost:3000/api/wands/686866cc4b3eeee6df099568

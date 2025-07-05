@@ -1,6 +1,7 @@
 import { Entity, Property, ManyToOne, Cascade, Rel } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
 import Wood from '../wood/wood.entity.js';
+import { Core } from '../core/core.entity.js';
 
 @Entity()
 export class Wand extends BaseEntity {
@@ -27,4 +28,7 @@ export class Wand extends BaseEntity {
 
   @ManyToOne(() => Wood, { nullable: false })
   wood!: Rel<Wood>;
+
+  @ManyToOne(() => Core, { nullable: false })
+  core!: Rel<Core>;
 }
