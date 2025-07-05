@@ -27,7 +27,7 @@ Content-Type: application/json
 }
 
 ### Eliminar una entidad Core
-DELETE http://localhost:3000/api/cores/685bc3301a3177f61f647ef2
+DELETE http://localhost:3000/api/cores/685c1e58ce026cffd81d2fae
 
 ### Obtener una entidad Core por nombre
 GET http://localhost:3000/api/cores/find-by-name/Unicorn%20hair

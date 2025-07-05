@@ -4,7 +4,7 @@ import { Wand } from '../wand/wand.entity.js';
 
 @Entity()
 export class Core extends BaseEntity {
-  @Property({ nullable: false })
+  @Property({ nullable: false, unique: true })
   name!: string;
 
   @Property({ nullable: false })

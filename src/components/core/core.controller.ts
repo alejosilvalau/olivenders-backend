@@ -31,100 +31,92 @@ const sanitizeCoreInput = (req: Request, res: Response, next: NextFunction): voi
 async function findAll(req: Request, res: Response): Promise<void> {
   try {
     const cores = await em.find(Core, {});
-    res.status(200).json({ message: 'Cores fetched', data: cores });
+    res.status(200).json({ message: 'cores fetched', data: cores });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
 }
 
-async function findOne(req: Request, res: Response): Promise<void> {
+async function findOneByName(req: Request, res: Response) {
   try {
-    const id = req.params.id;
-    const core = await em.findOne(Core, { id });
+    const name = req.params.name.toLowerCase();
+    const core = await em.findOneOrFail(Core, { name });
     if (!core) {
-      res.status(404).json({ message: 'Core not found', data: null });
+      res.status(404).json({ message: 'core not found', data: null });
       return;
     }
-    res.status(200).json({ message: 'Core fetched', data: core });
+    res.status(200).json({ message: 'core fetched', data: core });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
 }
 
-async function add(req: Request, res: Response): Promise<void> {
+async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
-    const input = req.body.sanitizedInput;
-    input.name = input.name.toUpperCase();
-
-    const existingCore = await em.findOne(Core, { name: input.name });
-    if (existingCore) {
-      res.status(409).json({ message: 'The core already exists', data: null });
-    } else {
-      const core = em.create(Core, input);
-      await em.flush();
-      res.status(201).json({ message: 'Core created', data: core });
+    const id = req.params.id;
+    const core = await em.findOneOrFail(Core, { id });
+    if (!core) {
+      res.status(404).json({ message: 'core not found', data: null });
+      return;
     }
+    res.status(200).json({ message: 'core fetched', data: core });
   } catch (error: any) {
-    console.error('Error creating core:', error);
-    res.status(500).json({ message: 'An error occurred while creating the core', data: null });
+    res.status(500).json({ message: error.message, data: null });
   }
 }
 
-  async function update(req: Request, res: Response): Promise<void> {
-    try {
-      const id = req.params.id;
-      const input = req.body.sanitizedInput;
-      input.name = input.name.toUpperCase();
+async function add(req: Request, res: Response) {
+  try {
+    const input = req.body.sanitizedInput;
+    input.name = input.name.toLowerCase();
 
-      const coreToUpdate = await em.findOne(Core, { id });
-      if (!coreToUpdate) {
-        res.status(404).json({ message: 'Core not found', data: null });
-      } else {
-        em.assign(coreToUpdate, input);
-        await em.flush();
-        res.status(200).json({ message: 'Core updated', data: coreToUpdate });
-      }
-    } catch (error: any) {
-      res.status(500).json({ message: error.message, data: null });
+    const core = em.create(Core, input);
+    await em.flush();
+    res.status(201).json({ message: 'core created', data: core });
+  } catch (error: any) {
+    if (error.code === 11000) {
+      // MongoDB duplicate key error code
+      res.status(409).json({
+        message: 'a core with this name already exists',
+        data: null,
+      });
+    } else {
+      res.status(500).json({
+        message: 'an error occurred while creating the core',
+        data: null,
+      });
     }
   }
+}
 
-  async function remove(req: Request, res: Response): Promise<void> {
-    try {
-      const id = req.params.id;
-      const coreToDelete = await em.findOne(Core, { id });
-      if (!coreToDelete) {
-        res.status(404).json({ message: 'Core not found', data: null });
-      } else {
-        await em.removeAndFlush(coreToDelete!);
-        res.status(200).json({ message: 'Core deleted', data: null });
-      }
-    } catch (error: any) {
-      res.status(500).json({ message: error.message, data: null });
-    }
+async function update(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+
+    const input = req.body.sanitizedInput;
+    input.name = input.name.toLowerCase();
+
+    const coreToUpdate = await em.findOneOrFail(Core, { id });
+    em.assign(coreToUpdate, input);
+    await em.flush();
+    res.status(200).json({ message: 'core updated', data: coreToUpdate });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message, data: null });
   }
+}
 
-  async function findOneByName(req: Request, res: Response): Promise<void> {
-    try {
-      const name = req.params.name.toUpperCase();
-      const excludeCoreId = req.query.excludeCoreId;
-
-      const query: any = {};
-      if (name) query.name = name;
-      if (excludeCoreId) query.id = { $ne: excludeCoreId };
-
-      const core = await em.findOne(Core, query);
-
-      if (!core) {
-        res.status(200).json({ message: 'Core not found', data: null });
-        return;
-      }
-
-      res.status(200).json({ message: 'Core fetched', data: core });
-    } catch (error: any) {
-      res.status(500).json({ message: error.message, data: null });
-    }
+async function remove(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const coreToDelete = await em.findOneOrFail(Core, { id }, { populate: ['wands'] });
+    await em.removeAndFlush(coreToDelete);
+    res.status(200).json({ message: 'core deleted', data: null });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message, data: null });
   }
+}
+
+
 
   export {
     sanitizeCoreInput,
