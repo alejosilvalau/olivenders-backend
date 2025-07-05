@@ -41,14 +41,13 @@ async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id;
     const core = await em.findOneOrFail(Core, { id });
-
-    if (!core) {
-      res.status(404).json({ message: 'core not found', data: null });
-      return;
-    }
     res.status(200).json({ message: 'core fetched', data: core });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'core not found', data: null });
+    } else {
+      res.status(500).json({ message: error.message, data: null });
+    }
   }
 }
 
@@ -56,14 +55,13 @@ async function findOneByName(req: Request, res: Response) {
   try {
     const name = req.params.name.toLowerCase();
     const core = await em.findOneOrFail(Core, { name });
-
-    if (!core) {
-      res.status(404).json({ message: 'core not found', data: null });
-      return;
-    }
     res.status(200).json({ message: 'core fetched', data: core });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'core not found', data: null });
+    } else {
+      res.status(500).json({ message: error.message, data: null });
+    }
   }
 }
 
