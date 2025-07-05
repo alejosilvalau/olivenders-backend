@@ -1,8 +1,8 @@
 ### Get all wands by core
-GET http://localhost:3000/api/wands/core/68691bcb4e
+GET http://localhost:3000/api/wands/core/68691bcb4a73ad09c1b0de32
 
 ### Get all wands by wood
-GET http://localhost:3000/api/wands/wood/68691b824e73
+GET http://localhost:3000/api/wands/wood/68691b824e73af09c1b0de31
 
 ### Get all wands
 GET http://localhost:3000/api/wands

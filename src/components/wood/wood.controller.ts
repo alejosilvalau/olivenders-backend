@@ -37,10 +37,10 @@ async function findAll(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-async function findOneByName(req: Request, res: Response) {
+async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
-    const name = req.params.name.toLowerCase();
-    const wood = await em.findOneOrFail(Wood, { name });
+    const id = req.params.id;
+    const wood = await em.findOneOrFail(Wood, { id });
     if (!wood) {
       res.status(404).json({ message: 'wood not found', data: null });
       return;
@@ -51,10 +51,10 @@ async function findOneByName(req: Request, res: Response) {
   }
 }
 
-async function findOne(req: Request, res: Response, next: NextFunction) {
+async function findOneByName(req: Request, res: Response) {
   try {
-    const id = req.params.id;
-    const wood = await em.findOneOrFail(Wood, { id });
+    const name = req.params.name.toLowerCase();
+    const wood = await em.findOneOrFail(Wood, { name });
     if (!wood) {
       res.status(404).json({ message: 'wood not found', data: null });
       return;
@@ -119,4 +119,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { sanitizeWoodInput, findAll, findOne, add, update, remove, findOneByName };
+export { sanitizeWoodInput, findAll, findOne, findOneByName, add, update, remove };
