@@ -2,7 +2,6 @@ import { Router } from 'express';
 import {
   findAll,
   findOne,
-  findOneByEmailOrUsername,
   checkUsername,
   checkEmail,
   add,
@@ -12,7 +11,7 @@ import {
   sanitizeUsuarioInput,
   login,
   validatePassword,
-  findOneByUser,
+  findOneByUsername,
 } from './wizard.controller.js';
 // import { verificarRol, verificarToken } from '../../middleware/authMiddleware.js';
 
@@ -272,7 +271,7 @@ wizardRouter.get('/checkemail/:email', checkEmail);
  *                   type: string
  *                   example: Detalles del error
  */
-wizardRouter.get('/:user/:mail', findOneByEmailOrUsername);
+// wizardRouter.get('/:user/:mail', findOneByEmailOrUsername);
 
 /**
  * @swagger
