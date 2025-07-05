@@ -15,24 +15,12 @@ const schoolZodSchema = z.object({
 
 const em = orm.em;
 
-const sanitizeSchoolInput = (req: Request, res: Response, _: NextFunction): void => {
+const sanitizeSchoolInput = (req: Request, res: Response, next: NextFunction): void => {
   try {
     const validatedInput = schoolZodSchema.parse(req.body);
 
-    req.body.sanitizedInput = {
-      id: validatedInput.id,
-      name: validatedInput.name,
-      email: validatedInput.email,
-      address: validatedInput.address,
-      phone: validatedInput.phone,
-    };
-
-    Object.keys(req.body.sanitizedInput).forEach(key => {
-      if (req.body.sanitizedInput[key] === undefined) {
-        delete req.body.sanitizedInput[key];
-      }
-    });
-
+    req.body.sanitizedInput = { ...validatedInput };
+    next();
   
   } catch (error: any) {
     const formattedError = error.errors.map((err: z.ZodIssue) => ({
@@ -52,19 +40,22 @@ async function findAll(req: Request, res: Response, next: NextFunction): Promise
   }
 }
 
-async function findOne(req: Request, res: Response, next: NextFunction): Promise<void> {
-  try {
-    const id = req.params.id;
-    const school = await em.findOne(School, { id });
-    if (!school) {
-      res.status(404).json({ message: 'school not found', data: null });
-      return;
+
+async function findOne(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = req.params.id;
+      const school = await em.findOneOrFail(School, { id });
+      if (!school) {
+        res.status(404).json({ message: 'school not found', data: null });
+        return;
+      }
+      res.status(200).json({ message: 'school fetched', data: school });
+    } catch (error: any) {
+      res.status(500).json({ message: error.message, data: null });
     }
-    res.status(200).json({ message: 'school fetched', data: school });
-  } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
   }
-}
+
+
 
 async function add(req: Request, res: Response): Promise<void> {
   try {
@@ -92,7 +83,7 @@ async function update(req: Request, res: Response): Promise<void> {
     const input = req.body.sanitizedInput;
     input.name = input.name.toUpperCase();
 
-    const schoolToUpdate = await em.findOne(School, { id });
+    const schoolToUpdate = await em.findOneOrFail(School, { id });
     if (!schoolToUpdate) {
       res.status(404).json({ message: 'school not found', data: null });
     } else {
