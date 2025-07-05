@@ -11,9 +11,10 @@ import {
   login,
   validatePassword,
   update,
-  resetPasswordWithoutToken,
+  changePasswordWithoutToken,
   remove,
 } from './wizard.controller.js';
+import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
 // import { verificarRol, verificarToken } from '../../middleware/authMiddleware.js';
 
 export const wizardRouter = Router();
@@ -139,7 +140,7 @@ wizardRouter.get('/', findAll);
  *                   type: string
  *                   example: Detalles del error
  */
-wizardRouter.get('/:id', findOne);
+wizardRouter.get('/:id', sanitizeMongoQuery, findOne);
 
 /**
  * @swagger
@@ -179,7 +180,7 @@ wizardRouter.get('/:id', findOne);
  *                   type: string
  *                   example: Detalles del error
  */
-wizardRouter.get('/email/:email', findOneByEmail);
+wizardRouter.get('/email/:email', sanitizeMongoQuery, findOneByEmail);
 
 /**
  * @swagger
@@ -219,13 +220,13 @@ wizardRouter.get('/email/:email', findOneByEmail);
  *                   type: string
  *                   example: Detalles del error
  */
-wizardRouter.get('/username/:username', findOneByUsername);
+wizardRouter.get('/username/:username', sanitizeMongoQuery, findOneByUsername);
 
 // TODO: Add documentation for this endpoint
-wizardRouter.get('/available/username/:username', isUsernameAvailable);
+wizardRouter.get('/available/username/:username', sanitizeMongoQuery, isUsernameAvailable);
 
 // TODO: Add documentation for this endpoint
-wizardRouter.get('/available/email/:email', isEmailAvailable);
+wizardRouter.get('/available/email/:email', sanitizeMongoQuery, isEmailAvailable);
 
 /**
  * @swagger
@@ -270,7 +271,7 @@ wizardRouter.get('/available/email/:email', isEmailAvailable);
  *                   type: string
  *                   example: Detalles del error
  */
-wizardRouter.post('/', add);
+wizardRouter.post('/', sanitizeMongoQuery, sanitizeWizardInput, add);
 
 /**
  * @swagger
@@ -336,7 +337,7 @@ wizardRouter.post('/', add);
  *                   type: string
  *                   example: Detalles del error
  */
-wizardRouter.post('/login', login);
+wizardRouter.post('/login', sanitizeMongoQuery, sanitizeWizardInput, login);
 
 /**
  * @swagger
@@ -391,7 +392,7 @@ wizardRouter.post('/login', login);
  *                   type: string
  *                   description: Mensaje de error
  */
-wizardRouter.post('/validate/:id', validatePassword);
+wizardRouter.post('/validate/:id', sanitizeMongoQuery, sanitizeWizardInput, validatePassword);
 
 /**
  * @swagger
@@ -448,7 +449,7 @@ wizardRouter.post('/validate/:id', validatePassword);
  *                   type: string
  *                   example: Detalles del error
  */
-wizardRouter.put('/:id', update);
+wizardRouter.put('/:id', sanitizeMongoQuery, sanitizeWizardInput, update);
 
 /**
  * @swagger
@@ -497,7 +498,7 @@ wizardRouter.put('/:id', update);
  *                   type: string
  *                   example: Error al actualizar la contraseña
  */
-wizardRouter.patch('/:id', resetPasswordWithoutToken);
+wizardRouter.patch('/:id', sanitizeMongoQuery, sanitizeWizardInput, changePasswordWithoutToken);
 
 /**
  * @swagger
@@ -540,4 +541,4 @@ wizardRouter.patch('/:id', resetPasswordWithoutToken);
  *                   type: string
  *                   example: Error al eliminar el usuario
  */
-wizardRouter.delete('/:id', remove);
+wizardRouter.delete('/:id', sanitizeMongoQuery, remove);

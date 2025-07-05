@@ -77,10 +77,10 @@ export const wandRouter = Router();
  */
 wandRouter.get('/', findAll);
 
-// Agregar documentación
+// TODO: Agregar documentación
 wandRouter.get('/core/:coreId', sanitizeMongoQuery, findAllByCore);
 
-// Agregar documentación
+// TODO: Agregar documentación
 wandRouter.get('/wood/:woodId', sanitizeMongoQuery, findAllByWood);
 
 /**

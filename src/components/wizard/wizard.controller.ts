@@ -216,7 +216,7 @@ async function update(req: Request, res: Response) {
   }
 }
 
-async function resetPasswordWithoutToken(req: Request, res: Response) {
+async function changePasswordWithoutToken(req: Request, res: Response) {
   try {
     const id = req.params.id;
     const wizard = await em.findOneOrFail(Wizard, { id });
@@ -262,6 +262,6 @@ export {
   login,
   validatePassword,
   update,
-  resetPasswordWithoutToken,
+  changePasswordWithoutToken,
   remove,
 };
