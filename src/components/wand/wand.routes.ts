@@ -55,11 +55,7 @@ export const wandRouter = Router();
  *         - total_price
  */
 
-// Agregar documentación
-wandRouter.get('/core/:coreId', sanitizeMongoQuery, findAllByCore);
 
-// Agregar documentación
-wandRouter.get('/wood/:woodId', sanitizeMongoQuery, findAllByWood);
 
 /**
  * @swagger
@@ -80,6 +76,12 @@ wandRouter.get('/wood/:woodId', sanitizeMongoQuery, findAllByWood);
  *         description: Error retrieving wands
  */
 wandRouter.get('/', findAll);
+
+// Agregar documentación
+wandRouter.get('/core/:coreId', sanitizeMongoQuery, findAllByCore);
+
+// Agregar documentación
+wandRouter.get('/wood/:woodId', sanitizeMongoQuery, findAllByWood);
 
 /**
  * @swagger
@@ -107,6 +109,7 @@ wandRouter.get('/', findAll);
  *         description: Error retrieving the wand
  */
 wandRouter.get('/:id', sanitizeMongoQuery, findOne);
+
 
 /**
  * @swagger

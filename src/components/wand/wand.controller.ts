@@ -47,6 +47,15 @@ async function calculateWandPrice(woodId: string, coreId: string, profit: number
   }
 }
 
+async function findAll(req: Request, res: Response) {
+  try {
+    const wands = await em.find(Wand, {}, { populate: ['wood', 'core'] });
+    res.status(200).json({ message: 'wands fetched', data: wands });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message, data: null });
+  }
+}
+
 async function findAllByCore(req: Request, res: Response) {
   try {
     const coreId = req.params.coreId;
@@ -61,15 +70,6 @@ async function findAllByWood(req: Request, res: Response) {
   try {
     const woodId = req.params.woodId;
     const wands = await em.find(Wand, { wood: woodId, status: 'active' }, { populate: ['wood', 'core'] });
-    res.status(200).json({ message: 'wands fetched', data: wands });
-  } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
-  }
-}
-
-async function findAll(req: Request, res: Response) {
-  try {
-    const wands = await em.find(Wand, {}, { populate: ['wood', 'core'] });
     res.status(200).json({ message: 'wands fetched', data: wands });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
@@ -155,4 +155,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { sanitizeWandInput, findAllByCore, findAllByWood, findAll, findOne, add, update, remove, logicRemove };
+export { sanitizeWandInput, findAll, findAllByCore, findAllByWood, findOne, add, update, logicRemove, remove };
