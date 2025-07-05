@@ -59,6 +59,33 @@ coreRouter.get('/', findAll);
 
 /**
  * @swagger
+ * /api/cores/find-by-name/{name}:
+ *   get:
+ *     summary: Find a core by name
+ *     tags: [Core]
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The name of the core
+ *     responses:
+ *       200:
+ *         description: Core found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Core'
+ *       404:
+ *         description: Core not found
+ *       500:
+ *         description: Error retrieving the core
+ */
+coreRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
+
+/**
+ * @swagger
  * /api/cores/{id}:
  *   get:
  *     summary: Get a core by ID
@@ -108,7 +135,7 @@ coreRouter.get('/:id', findOne);
  *       500:
  *         description: Error creating the core
  */
-coreRouter.post('/', sanitizeCoreInput, sanitizeMongoQuery, add);
+coreRouter.post('/', sanitizeMongoQuery, sanitizeCoreInput, add);
 
 /**
  * @swagger
@@ -143,7 +170,7 @@ coreRouter.post('/', sanitizeCoreInput, sanitizeMongoQuery, add);
  *       500:
  *         description: Error updating the core
  */
-coreRouter.put('/:id', sanitizeCoreInput, sanitizeMongoQuery, update);
+coreRouter.put('/:id', sanitizeMongoQuery,sanitizeCoreInput, update);
 
 /**
  * @swagger
@@ -167,30 +194,3 @@ coreRouter.put('/:id', sanitizeCoreInput, sanitizeMongoQuery, update);
  *         description: Error deleting the core
  */
 coreRouter.delete('/:id', sanitizeMongoQuery, remove);
-
-/**
- * @swagger
- * /api/cores/find-by-name/{name}:
- *   get:
- *     summary: Find a core by name
- *     tags: [Core]
- *     parameters:
- *       - in: path
- *         name: name
- *         schema:
- *           type: string
- *         required: true
- *         description: The name of the core
- *     responses:
- *       200:
- *         description: Core found
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Core'
- *       404:
- *         description: Core not found
- *       500:
- *         description: Error retrieving the core
- */
-coreRouter.get('/find-by-name/:name', findOneByName);
