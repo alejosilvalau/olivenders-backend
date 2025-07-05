@@ -9,7 +9,7 @@ export class Wand extends BaseEntity {
   name!: string;
 
   @Property({ nullable: false })
-  length!: number;
+  length_inches!: number;
 
   @Property({ nullable: false })
   description!: string;

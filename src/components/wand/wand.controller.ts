@@ -9,7 +9,7 @@ import { Core } from '../core/core.entity.js';
 const wandZodSchema = z.object({
   id: objectIdSchema.optional(),
   name: z.string().trim().min(1),
-  length: z.number().positive(),
+  length_inches: z.number().positive(),
   description: z.string().trim().min(1),
   status: z.string().trim().min(1),
   image: z.string().trim().min(1),

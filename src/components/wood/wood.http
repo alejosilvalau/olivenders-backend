@@ -12,10 +12,10 @@ POST http://localhost:3000/api/woods/
 Content-Type: application/json
 
 {
-    "name": "Apple",
-    "binomial_name": "Malus domestica",
-    "description": "Applewood wands are not made in great numbers. They are powerful and best suited to an owner of high aims and ideals, as this wood mixes poorly with Dark magic.",
-    "price": 490,
+  "name": "Ash",
+  "binomial_name": "Fraxinus",
+  "description": "Those witches and wizards best suited to ash wands were not lightly swayed from their beliefs or purposes, the ideal owner might be stubborn, and would certainly be courageous, but never crass or arrogant. However, the brash or over-confident witch or wizard, who often insisted of trying wands of this prestigious wood, would be disappointed by its effects. An ash wand cleaved to its one true master and ought not to be passed on or gifted from the original owner, because it would lose power and skill. This tendency was extreme if the core was of unicorn hair.",
+  "price": 750
 }
 
 ### Update an existing wood
@@ -23,10 +23,10 @@ PUT http://localhost:3000/api/woods/68691342a2b501ef3c6c6d81
 Content-Type: application/json
 
 {
-    "name": "Alder",
-    "binomial_name": "Alnus",
-    "description": "Alder is an unyielding wood, yet I have discovered that its ideal owner is not stubborn or obstinate, but often helpful, considerate and most likeable. Alder wood is well suited for making flutes and pipes, and for building bridges. Alder people are adventurous travellers and confident decision makers who trust their inner voices. Alder people should work hard to maintain a balance between work and play.",
-    "price": 750,
+  "name": "Ash",
+  "binomial_name": "Fraxinus",
+  "description": "Those witches and wizards best suited to ash wands were not lightly swayed from their beliefs or purposes, the ideal owner might be stubborn, and would certainly be courageous, but never crass or arrogant. However, the brash or over-confident witch or wizard, who often insisted of trying wands of this prestigious wood, would be disappointed by its effects. An ash wand cleaved to its one true master and ought not to be passed on or gifted from the original owner, because it would lose power and skill. This tendency was extreme if the core was of unicorn hair.",
+  "price": 750
 }
 
 ### Delete a wood

@@ -9,14 +9,14 @@ POST http://localhost:3000/api/wands/
 Content-Type: application/json
 
 {
-  "name": "Elder Wand",
-  "length": 15,
+  "name": "Charles Weasley's first wand",
+  "length_inches": 12,
   "description": "The most powerful wand in existence",
   "status": "active",
   "image": "https://example.com/elder-wand.jpg",
   "profit": 1000,
-  "wood": "68691342a2b501ef3c6c6d81",
-  "core": "6869049884656d883f79c22a"
+  "wood": "68691b824e73ad09c1b0de31",
+  "core": "68691bcb4e73ad09c1b0de32"
 }
 
 ### Update an existing wand
@@ -25,7 +25,7 @@ Content-Type: application/json
 
 {
   "name": "Phoenix Feather Wand",
-  "length": 11,
+  "length_inches": 11,
   "description": "A wand with a phoenix feather core",
   "status": "active",
   "image": "https://example.com/phoenix-wand.jpg",
@@ -38,4 +38,4 @@ Content-Type: application/json
 PATCH http://localhost:3000/api/wands/68683ed4508f3212ea14e89a/deactivate
 
 ### Delete a wand
-DELETE http://localhost:3000/api/wands/6869160f4469e07242b44f66
+DELETE http://localhost:3000/api/wands/686919824e73ad09c1b0de2f

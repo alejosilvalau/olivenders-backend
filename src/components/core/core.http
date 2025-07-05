@@ -12,10 +12,9 @@ POST http://localhost:3000/api/cores/
 Content-Type: application/json
 
 {
-  "name": "Veela hair",
-  "description": "Garrick Ollivander mentioned that he did not use Veela hair because it made for temperamental wands.",
-  "price": 3030,
-  "wands": []
+  "name": "Dragon heartstring",
+  "description": "Dragon heartstring wands produced the most powerful and flamboyant magic and they learned spells faster and easier, however they were more prone to accidents. They were the most likely to change loyalty, but would always bond strongly with its current owner. It was also the easiest to turn to the dark arts, though it would not turn on its own.",
+  "price": 400
 }
 
 ### Update an existing core
@@ -25,9 +24,8 @@ Content-Type: application/json
 {
   "name": "Unicorn hair",
   "description": "Unicorn hair wands were not very powerful, but they were the least prone to accidents and the least likely to change loyalties. They were also the most difficult to turn to the dark arts. They were prone to wilting if mishandled.",
-  "price": 175,
-  "wands": []
+  "price": 175
 }
 
 ### Delete a core
-DELETE http://localhost:3000/api/cores/686902bc15ae139cff85d867
+DELETE http://localhost:3000/api/cores/686919e04e73ad09c1b0de30
