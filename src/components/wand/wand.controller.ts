@@ -3,6 +3,8 @@ import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 import { orm } from '../../shared/db/orm.js';
 import { Wand } from './wand.entity.js';
 import { z } from 'zod';
+import Wood from '../wood/wood.entity.js';
+import { Core } from '../core/core.entity.js';
 
 const wandZodSchema = z.object({
   id: objectIdSchema.optional(),
@@ -11,8 +13,7 @@ const wandZodSchema = z.object({
   description: z.string().trim().min(1),
   status: z.string().trim().min(1),
   image: z.string().trim().min(1),
-  profit_margin: z.number().nonnegative(),
-  total_price: z.number().positive(),
+  profit: z.number().nonnegative(),
   wood: objectIdSchema,
   core: objectIdSchema,
 });
@@ -31,6 +32,20 @@ function sanitizeWandInput(req: Request, res: Response, next: NextFunction) {
       message: err.message,
     }));
     res.status(400).json({ errors: formattedError });
+  }
+}
+
+// Add this function to your wand.controller.ts file
+
+async function calculateWandPrice(woodId: string, coreId: string, profit: number) {
+  try {
+    const wood = await em.findOneOrFail(Wood, { id: woodId });
+    const core = await em.findOneOrFail(Core, { id: coreId });
+
+    const totalPrice = wood.price + core.price + profit;
+    return totalPrice;
+  } catch (error: any) {
+    throw new Error(`failed to calculate wand price: ${error.message}`);
   }
 }
 
@@ -86,6 +101,8 @@ async function add(req: Request, res: Response) {
     const input = req.body.sanitizedInput;
     input.name = input.name.toLowerCase();
 
+    input.total_price = await calculateWandPrice(input.wood, input.core, input.profit);
+
     const wand = em.create(Wand, input);
     await em.flush();
     res.status(201).json({ message: 'wand created', data: wand });
@@ -108,6 +125,8 @@ async function update(req: Request, res: Response) {
 
     const input = req.body.sanitizedInput;
     input.name = input.name.toLowerCase();
+
+    input.total_price = await calculateWandPrice(input.wood, input.core, input.profit);
 
     const wandToUpdate = em.findOneOrFail(Wand, id);
     em.assign(wandToUpdate, req.body.sanitizedInput);

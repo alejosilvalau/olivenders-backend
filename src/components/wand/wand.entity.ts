@@ -21,7 +21,7 @@ export class Wand extends BaseEntity {
   image!: string;
 
   @Property({ nullable: false })
-  profit_margin!: number;
+  profit!: number;
 
   @Property({ nullable: false })
   total_price!: number;

@@ -9,7 +9,6 @@ const coreZodSchema = z.object({
   name: z.string().trim().min(1),
   description: z.string().trim().min(1),
   price: z.number().positive(),
-  wands: z.array(objectIdSchema),
 });
 
 const em = orm.em;
@@ -73,6 +72,7 @@ async function add(req: Request, res: Response) {
     console.log('Cleared the EntityManager');
     const input = req.body.sanitizedInput;
     input.name = input.name.toLowerCase();
+    input.wands = [];
 
     const core = em.create(Core, input);
     await em.flush();

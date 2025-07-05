@@ -14,9 +14,8 @@ Content-Type: application/json
   "description": "The most powerful wand in existence",
   "status": "active",
   "image": "https://example.com/elder-wand.jpg",
-  "profit_margin": 1000,
-  "total_price": 5000,
-  "wood": "686900b70896ab9a49bbce9f",
+  "profit": 1000,
+  "wood": "68691342a2b501ef3c6c6d81",
   "core": "6869049884656d883f79c22a"
 }
 
@@ -30,9 +29,8 @@ Content-Type: application/json
   "description": "A wand with a phoenix feather core",
   "status": "active",
   "image": "https://example.com/phoenix-wand.jpg",
-  "profit_margin": 500,
-  "total_price": 1500,
-  "wood": "686900b70896ab9a49bbce9f",
+  "profit": 500,
+  "wood": "68691342a2b501ef3c6c6d81",
   "core": "6869049884656d883f79c22a"
 }
 
@@ -40,4 +38,4 @@ Content-Type: application/json
 PATCH http://localhost:3000/api/wands/68683ed4508f3212ea14e89a/deactivate
 
 ### Delete a wand
-DELETE http://localhost:3000/api/wands/686866cc4b3eeee6df099568
+DELETE http://localhost:3000/api/wands/6869160f4469e07242b44f66
