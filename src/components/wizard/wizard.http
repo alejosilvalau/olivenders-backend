@@ -37,8 +37,8 @@ POST http://localhost:3000/api/wizards/login/
 Content-Type: application/json
 
 {
-  "username": "harrypotter",
-  "password": "expelliarmus123"
+  "username": "dracomalfoy",
+  "password": "Expelio123#@"
 }
 
 ### Validate a wizard's password

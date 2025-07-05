@@ -59,10 +59,21 @@ function sanitizeWizardPartialInput(req: Request, res: Response, next: NextFunct
   }
 }
 
+function sanitizeWizardResponse(wizard: any) {
+  if (!wizard) return wizard;
+  const { password, _id, ...rest } = wizard;
+  return rest;
+}
+
+function sanitizeWizardResponseArray(wizards: any[]) {
+  return wizards.map(sanitizeWizardResponse);
+}
+
 async function findAll(req: Request, res: Response) {
   try {
     const wizards = await em.find(Wizard, {}, { populate: ['school'] });
-    res.status(200).json({ message: 'wizards fetched', data: wizards });
+    const sanitizedResponseArray = sanitizeWizardResponseArray(wizards);
+    res.status(200).json({ message: 'wizards fetched', data: sanitizedResponseArray });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
@@ -72,7 +83,8 @@ async function findOne(req: Request, res: Response) {
   try {
     const id = req.params.id;
     const wizard = await em.findOneOrFail(Wizard, { id }, { populate: ['school'] });
-    res.status(200).json({ message: 'wizard fetched', data: wizard });
+    const sanitizedResponse = sanitizeWizardResponse(wizard);
+    res.status(200).json({ message: 'wizard fetched', data: sanitizedResponse });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
       res.status(404).json({ message: 'wizard not found', data: null });
@@ -86,7 +98,8 @@ async function findOneByEmail(req: Request, res: Response) {
   try {
     const email = req.params.email;
     const wizard = await em.findOneOrFail(Wizard, { email }, { populate: ['school'] });
-    res.status(200).json({ message: 'wizard fetched', data: wizard });
+    const sanitizedResponse = sanitizeWizardResponse(wizard);
+    res.status(200).json({ message: 'wizard fetched', data: sanitizedResponse });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
       res.status(404).json({ message: 'wizard not found', data: null });
@@ -100,7 +113,8 @@ async function findOneByUsername(req: Request, res: Response) {
   try {
     const username = req.params.username;
     const wizard = await em.findOneOrFail(Wizard, { username }, { populate: ['school'] });
-    res.status(200).json({ message: 'wizard fetched', data: wizard });
+    const sanitizedResponse = sanitizeWizardResponse(wizard);
+    res.status(200).json({ message: 'wizard fetched', data: sanitizedResponse });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
       res.status(404).json({ message: 'wizard not found', data: null });
@@ -150,12 +164,10 @@ async function add(req: Request, res: Response) {
     const wizard = em.create(Wizard, input);
     await em.flush();
 
-    // Remove password from response for security
-    const wizardData = { ...wizard, password: undefined };
-    res.status(201).json({ message: 'wizard created', data: wizardData });
+    const sanitizedResponse = sanitizeWizardResponse(wizard);
+    res.status(201).json({ message: 'wizard created', data: sanitizedResponse });
   } catch (error: any) {
     if (error.code === 11000) {
-      // MongoDB duplicate key error code
       res.status(409).json({
         message: 'a wizard with this name or email already exists',
         data: null,
@@ -183,7 +195,8 @@ async function login(req: Request, res: Response) {
       expiresIn: '1h',
     });
 
-    res.status(200).json({ message: 'login successful', data: { user: wizard, token: token } });
+    const sanitizedResponse = sanitizeWizardResponse(wizard);
+    res.status(200).json({ message: 'login successful', data: { user: sanitizedResponse, token: token } });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
       res.status(404).json({ message: 'wizard not found', data: null });
@@ -222,9 +235,8 @@ async function update(req: Request, res: Response) {
     em.assign(wizardToUpdate, req.body.sanitizedInput);
     await em.flush();
 
-    // Remove password from response for security
-    const wizardData = { ...wizardToUpdate, password: undefined };
-    res.status(200).json({ message: 'wizard updated', data: wizardData });
+    const sanitizedResponse = sanitizeWizardResponse(wizardToUpdate);
+    res.status(200).json({ message: 'wizard updated', data: sanitizedResponse });
   } catch (error: any) {
     res.status(500).json({ message: error.message, data: null });
   }
@@ -241,9 +253,8 @@ async function changePasswordWithoutToken(req: Request, res: Response) {
     wizard.password = hashedPassword;
     await em.persistAndFlush(wizard);
 
-    // Remove password from response for security
-    const wizardData = { ...wizard, password: undefined };
-    res.status(200).json({ message: 'password updated successfully', data: wizardData });
+    const sanitizedResponse = sanitizeWizardResponse(wizard);
+    res.status(200).json({ message: 'password updated successfully', data: sanitizedResponse });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
       res.status(404).json({ message: 'wizard not found', data: null });
