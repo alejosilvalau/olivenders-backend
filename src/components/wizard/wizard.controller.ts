@@ -181,7 +181,7 @@ async function add(req: Request, res: Response) {
 async function login(req: Request, res: Response) {
   try {
     const username = req.body.username;
-    const wizard = await em.findOneOrFail(Wizard, { username }, { populate: ['school'] });
+    const wizard = await em.findOneOrFail(Wizard, { username });
 
     const password = req.body.password;
     const isMatch = await bcrypt.compare(password, wizard.password);
@@ -231,7 +231,7 @@ async function update(req: Request, res: Response) {
     input.name = input.name.toLowerCase();
     input.email = input.email.toLowerCase();
 
-    const wizardToUpdate = await em.findOneOrFail(Wizard, { id }, { populate: ['school'] });
+    const wizardToUpdate = await em.findOneOrFail(Wizard, { id });
     em.assign(wizardToUpdate, req.body.sanitizedInput);
     await em.flush();
 
@@ -267,7 +267,7 @@ async function changePasswordWithoutToken(req: Request, res: Response) {
 async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const wizardToDelete = await em.findOneOrFail(Wizard, { id }, { populate: ['school'] });
+    const wizardToDelete = await em.findOneOrFail(Wizard, { id });
     await em.removeAndFlush(wizardToDelete);
     res.status(200).json({ message: 'wizard deleted', data: null });
   } catch (error: any) {
