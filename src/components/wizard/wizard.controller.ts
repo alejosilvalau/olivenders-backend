@@ -181,7 +181,7 @@ async function add(req: Request, res: Response) {
 async function login(req: Request, res: Response) {
   try {
     const username = req.body.username;
-    const wizard = await em.findOneOrFail(Wizard, { username });
+    const wizard = await em.findOneOrFail(Wizard, { username }, { populate: ['school'] });
 
     const password = req.body.password;
     const isMatch = await bcrypt.compare(password, wizard.password);
@@ -231,7 +231,7 @@ async function update(req: Request, res: Response) {
     input.name = input.name.toLowerCase();
     input.email = input.email.toLowerCase();
 
-    const wizardToUpdate = em.findOneOrFail(Wizard, id);
+    const wizardToUpdate = await em.findOneOrFail(Wizard, { id }, { populate: ['school'] });
     em.assign(wizardToUpdate, req.body.sanitizedInput);
     await em.flush();
 
