@@ -68,7 +68,7 @@ app.use('/api/sales', saleRouter);
 app.use('/api/wizards', wizardRouter);
 
 app.use((_, res) => {
-  res.status(404).json({ message: 'Resource not found' });
+  res.status(404).json({ message: 'resource not found' });
 });
 
 async function startServer() {

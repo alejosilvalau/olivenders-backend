@@ -28,7 +28,7 @@ const sanitizeCoreInput = (req: Request, res: Response, next: NextFunction): voi
   }
 };
 
-async function findAll(req: Request, res: Response): Promise<void> {
+async function findAll(req: Request, res: Response) {
   try {
     const cores = await em.find(Core, {});
     res.status(200).json({ message: 'cores fetched', data: cores });
@@ -67,6 +67,8 @@ async function findOne(req: Request, res: Response, next: NextFunction) {
 
 async function add(req: Request, res: Response) {
   try {
+    em.clear();
+    console.log('Cleared the EntityManager');
     const input = req.body.sanitizedInput;
     input.name = input.name.toLowerCase();
 
@@ -91,6 +93,7 @@ async function add(req: Request, res: Response) {
 
 async function update(req: Request, res: Response) {
   try {
+    em.clear();
     const id = req.params.id;
 
     const input = req.body.sanitizedInput;

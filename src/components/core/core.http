@@ -2,10 +2,10 @@
 GET http://localhost:3000/api/cores
 
 ### Find a core by name
-GET http://localhost:3000/api/cores/find-by-name/Unicorn%20hair
+GET http://localhost:3000/api/cores/name/veela%20hair
 
 ### Get one wood by ID
-GET http://localhost:3000/api/cores/685bc3301a3177f61f647ef2
+GET http://localhost:3000/api/cores/686876537ae52f25a89ca4d5
 
 ### Create a new core
 POST http://localhost:3000/api/cores/
