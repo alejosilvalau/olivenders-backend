@@ -16,6 +16,6 @@ export class School extends BaseEntity {
   @Property({ nullable: false })
   phone!: string;
 
-  // @OneToMany(() => Wizard, wizard => wizard.school, { nullable: true, cascade: [Cascade.REMOVE] })
-  // wizards = new Collection<Wizard>(this);
+  @OneToMany(() => Wizard, wizard => wizard.school, { nullable: true, cascade: [Cascade.REMOVE] })
+  wizards = new Collection<Wizard>(this);
 }
