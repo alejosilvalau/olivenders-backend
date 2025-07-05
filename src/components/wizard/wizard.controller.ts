@@ -23,7 +23,7 @@ const wizardZodSchema = z.object({
   email: z.string().email(),
   address: z.string(),
   phone: z.string(),
-  role: z.string(),
+  role: z.enum(['ADMIN', 'WIZARD']),
 });
 
 const partialWizardZodSchema = wizardZodSchema.partial();

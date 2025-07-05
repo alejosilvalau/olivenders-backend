@@ -1,5 +1,5 @@
 ### Get all wizards
-GET http://localhost:3000/api/wizards 
+GET http://localhost:3000/api/wizards/
 
 ### Get one wizard by ID
 GET http://localhost:3000/api/wizards/686504f8cc6d7ba855a9575d
@@ -16,13 +16,13 @@ GET http://localhost:3000/api/wizards/available/username/dracomalfoy
 ### Get if a wizard is available by email
 GET http://localhost:3000/api/wizards/available/email/draco.malfoy@hogwarts.edu
 
-### Create a new wand
-POST http://localhost:3000/api/wizards
+### Create a new wizard
+POST http://localhost:3000/api/wizards/
 Content-Type: application/json
 
 {
   "username": "dracomalfoy",
-  "password": "expelio123",
+  "password": "Expelio123#@",
   "name": "Draco",
   "last_name": "Malfoy",
   "email": "draco.malfoy@hogwarts.edu",
@@ -32,7 +32,7 @@ Content-Type: application/json
 }
 
 ### Login to a wizard account
-POST http://localhost:3000/api/wizards/login
+POST http://localhost:3000/api/wizards/login/
 Content-Type: application/json
 
 {
