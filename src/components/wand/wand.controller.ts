@@ -123,11 +123,11 @@ async function update(req: Request, res: Response) {
     input.total_price = await calculateWandPrice(input.wood, input.core, input.profit);
 
     const wandToUpdate = await em.findOneOrFail(Wand, id);
-    em.assign(wandToUpdate, req.body.sanitizedInput);
+    em.assign(wandToUpdate, input);
     await em.flush();
     res.status(200).json({ message: 'wand updated', data: wandToUpdate });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    res.status(500).json({ message: error.message });
   }
 }
 

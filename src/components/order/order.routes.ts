@@ -1,14 +1,5 @@
 import { Router } from 'express';
-import {
-  sanitizeOrderInput,
-  findAll,
-  findOne,
-  findByStatus,
-  findByPaymentId,
-  add,
-  update,
-  remove,
-} from './order.controller.js';
+import { sanitizeOrderInput, findAll, findOne, add, update, remove } from './order.controller.js';
 import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
 
 export const orderRouter = Router();
@@ -89,60 +80,6 @@ orderRouter.get('/', findAll);
  *         description: Error retrieving the sale
  */
 orderRouter.get('/:id', findOne);
-
-/**
- * @swagger
- * /api/sales/payment/{payment_id}:
- *   get:
- *     summary: Get a sale by payment ID
- *     tags: [Sale]
- *     parameters:
- *       - in: path
- *         name: payment_id
- *         schema:
- *           type: number
- *         required: true
- *         description: Payment ID of the sale
- *     responses:
- *       200:
- *         description: Sale found
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Sale'
- *       404:
- *         description: Sale not found
- *       500:
- *         description: Error retrieving the sale
- */
-orderRouter.get('/payment/:payment_id', findByPaymentId);
-
-/**
- * @swagger
- * /api/sales/status/{status}:
- *   get:
- *     summary: Get sales by status
- *     tags: [Sale]
- *     parameters:
- *       - in: path
- *         name: status
- *         schema:
- *           type: string
- *         required: true
- *         description: Status of the sales to retrieve
- *     responses:
- *       200:
- *         description: List of sales
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Sale'
- *       500:
- *         description: Error retrieving sales
- */
-orderRouter.get('/status/:status', findByStatus);
 
 /**
  * @swagger
