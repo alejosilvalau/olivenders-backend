@@ -32,7 +32,6 @@ export class Order extends BaseEntity {
 
   @Property({ nullable: false })
   status!: OrderStatus;
-  // pending, paid, dispatched, delivered, completed, cancelled, refunded
 
   @Property({ nullable: false })
   review?: string;

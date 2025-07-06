@@ -58,10 +58,10 @@ async function findOne(req: Request, res: Response) {
   try {
     const id = req.params.id;
     const order = await em.findOneOrFail(Order, { id });
-    res.status(200).json({ message: 'order fetched', data: order });
+    res.status(200).json({ message: 'Order fetched', data: order });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
-      res.status(404).json({ message: 'wand not found' });
+      res.status(404).json({ message: 'Order not found' });
     } else {
       res.status(500).json({ message: error.message });
     }
@@ -88,9 +88,9 @@ async function add(req: Request, res: Response) {
 
     const order = em.create(Order, input);
     await em.flush();
-    res.status(201).json({ message: 'order created', data: order });
+    res.status(201).json({ message: 'Order created', data: order });
   } catch (error: any) {
-    res.status(500).json({ message: 'an error occurred while creating the order' });
+    res.status(500).json({ message: 'An error occurred while creating the order' });
   }
 }
 
@@ -104,9 +104,13 @@ async function update(req: Request, res: Response) {
     const orderToUpdate = await em.findOneOrFail(Order, id);
     em.assign(orderToUpdate, req.body.sanitizedInput);
     await em.flush();
-    res.status(200).json({ message: 'order updated', data: orderToUpdate });
+    res.status(200).json({ message: 'Order updated', data: orderToUpdate });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Order not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
@@ -116,7 +120,7 @@ async function pay(req: Request, res: Response) {
     const orderToPay = await em.findOneOrFail(Order, { id });
 
     if (orderToPay.status !== OrderStatus.Pending) {
-      return res.status(400).json({ message: 'order is not in a payable state' });
+      return res.status(400).json({ message: 'Order is not in a payable state' });
     }
 
     // Here you would integrate with the payment provider
@@ -124,9 +128,13 @@ async function pay(req: Request, res: Response) {
 
     orderToPay.status = OrderStatus.Paid;
     await em.flush();
-    res.status(200).json({ message: 'order paid successfully', data: orderToPay });
+    res.status(200).json({ message: 'Order paid successfully', data: orderToPay });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Order not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
@@ -136,7 +144,7 @@ async function dispatch(req: Request, res: Response) {
     const orderToDispatch = await em.findOneOrFail(Order, { id });
 
     if (orderToDispatch.status !== OrderStatus.Paid) {
-      return res.status(400).json({ message: 'order is not in a dispatchable state' });
+      return res.status(400).json({ message: 'Order is not in a dispatchable state' });
     }
 
     // Here you would integrate with the shipping provider
@@ -144,9 +152,13 @@ async function dispatch(req: Request, res: Response) {
 
     orderToDispatch.status = OrderStatus.Dispatched;
     await em.flush();
-    res.status(200).json({ message: 'order dispatched successfully', data: orderToDispatch });
+    res.status(200).json({ message: 'Order dispatched successfully', data: orderToDispatch });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Order not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
@@ -156,7 +168,7 @@ async function deliver(req: Request, res: Response) {
     const orderToDeliver = await em.findOneOrFail(Order, { id });
 
     if (orderToDeliver.status !== OrderStatus.Dispatched) {
-      return res.status(400).json({ message: 'order is not in a deliverable state' });
+      return res.status(400).json({ message: 'Order is not in a deliverable state' });
     }
 
     // Here you would integrate with the delivery provider
@@ -164,9 +176,13 @@ async function deliver(req: Request, res: Response) {
 
     orderToDeliver.status = OrderStatus.Delivered;
     await em.flush();
-    res.status(200).json({ message: 'order delivered successfully', data: orderToDeliver });
+    res.status(200).json({ message: 'Order delivered successfully', data: orderToDeliver });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Order not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
@@ -176,14 +192,18 @@ async function complete(req: Request, res: Response) {
     const orderToComplete = await em.findOneOrFail(Order, { id });
 
     if (orderToComplete.status !== OrderStatus.Delivered) {
-      return res.status(400).json({ message: 'order is not in a completable state' });
+      return res.status(400).json({ message: 'Order is not in a completable state' });
     }
 
     orderToComplete.status = OrderStatus.Completed;
     await em.flush();
-    res.status(200).json({ message: 'order completed successfully', data: orderToComplete });
+    res.status(200).json({ message: 'Order completed successfully', data: orderToComplete });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Order not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
@@ -193,14 +213,18 @@ async function cancel(req: Request, res: Response) {
     const orderToCancel = await em.findOneOrFail(Order, { id });
 
     if (orderToCancel.status === OrderStatus.Completed || orderToCancel.status === OrderStatus.Refunded) {
-      return res.status(400).json({ message: 'order cannot be cancelled at this stage' });
+      return res.status(400).json({ message: 'Order cannot be cancelled at this stage' });
     }
 
     orderToCancel.status = OrderStatus.Cancelled;
     await em.flush();
-    res.status(200).json({ message: 'order cancelled successfully', data: orderToCancel });
+    res.status(200).json({ message: 'Order cancelled successfully', data: orderToCancel });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Order not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
@@ -210,7 +234,7 @@ async function refund(req: Request, res: Response) {
     const orderToRefund = await em.findOneOrFail(Order, { id });
 
     if (orderToRefund.status !== OrderStatus.Cancelled) {
-      return res.status(400).json({ message: 'order is not in a refundable state' });
+      return res.status(400).json({ message: 'Order is not in a refundable state' });
     }
 
     // Here you would integrate with the payment provider to process the refund
@@ -218,9 +242,34 @@ async function refund(req: Request, res: Response) {
 
     orderToRefund.status = OrderStatus.Refunded;
     await em.flush();
-    res.status(200).json({ message: 'order refunded successfully', data: orderToRefund });
+    res.status(200).json({ message: 'Order refunded successfully', data: orderToRefund });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Order not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
+  }
+}
+
+async function review(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const orderToReview = await em.findOneOrFail(Order, { id });
+
+    const reviewInput = orderReviewZodSchema.parse(req.body);
+
+    // Add AI check here
+
+    orderToReview.review = reviewInput.review;
+    await em.flush();
+    res.status(200).json({ message: 'Order reviewed successfully', data: orderToReview });
+  } catch (error: any) {
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Order not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
@@ -230,9 +279,13 @@ async function remove(req: Request, res: Response) {
     const orderToDelete = await em.findOneOrFail(Order, { id });
     await em.removeAndFlush(orderToDelete);
     em.clear();
-    res.status(200).json({ message: 'order deleted' });
+    res.status(200).json({ message: 'Order deleted' });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Order not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
