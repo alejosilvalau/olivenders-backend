@@ -43,7 +43,7 @@ async function calculateWandPrice(woodId: string, coreId: string, profit: number
     const totalPrice = wood.price + core.price + profit;
     return totalPrice;
   } catch (error: any) {
-    throw new Error(`failed to calculate wand price: ${error.message}`);
+    throw new Error(`Failed to calculate wand price: ${error.message}`);
   }
 }
 
@@ -124,7 +124,11 @@ async function update(req: Request, res: Response) {
     await em.flush();
     res.status(200).json({ message: 'Wand updated', data: wandToUpdate });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Wand not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
@@ -136,7 +140,11 @@ async function logicRemove(req: Request, res: Response) {
     await em.flush();
     res.status(200).json({ message: 'Wand deactivated', data: wandToUpdate });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Wand not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
@@ -148,7 +156,11 @@ async function remove(req: Request, res: Response) {
     em.clear();
     res.status(200).json({ message: 'Wand deleted' });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Wand not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
