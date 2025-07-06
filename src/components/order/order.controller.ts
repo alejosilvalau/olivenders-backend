@@ -1,16 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
+import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 import { orm } from '../../shared/db/orm.js';
 import { z } from 'zod';
 import { Order } from './order.entity.js';
 
 const orderZodSchema = z.object({
-  id: z.string().uuid().optional(),
-  payment_id: z.number().int().positive(),
-  date: z
-    .string()
-    .transform(val => new Date(val))
-    .or(z.date()),
-  status: z.enum(['', '']),
+  id: objectIdSchema.optional(),
+  payment_reference: z.string().trim().min(1),
+  payment_provider: z.enum(['stripe', 'paypal', 'wire_transfer', 'credit_card', 'debit_card']),
+  date: z.date(),
+  status: z.enum(['pending', 'paid', 'dispatched', 'delivered', 'completed', 'cancelled', 'refunded']),
   review: z.string().trim().min(1).optional(),
 });
 
@@ -19,37 +18,14 @@ const em = orm.em;
 function sanitizeOrderInput(req: Request, res: Response, next: NextFunction): void {
   try {
     const validatedInput = orderZodSchema.parse(req.body);
-
-    // Check if the date is valid after transformation
-    if (validatedInput.date && isNaN(validatedInput.date.getTime())) {
-      throw new Error('Invalid date format');
-    }
-
-    req.body.sanitizedInput = {
-      id: validatedInput.id,
-      payment_id: validatedInput.payment_id,
-      date: validatedInput.date,
-      status: validatedInput.status,
-      review: validatedInput.review,
-    };
-
-    Object.keys(req.body.sanitizedInput).forEach(key => {
-      if (req.body.sanitizedInput[key] === undefined) {
-        delete req.body.sanitizedInput[key];
-      }
-    });
-
+    req.body.sanitizedInput = { ...validatedInput };
     next();
   } catch (error: any) {
-    if (error.errors) {
-      const formattedError = error.errors.map((err: z.ZodIssue) => ({
-        field: err.path.join('.'),
-        message: err.message,
-      }));
-      res.status(400).json({ message: formattedError, data: null });
-    } else {
-      res.status(400).json({ message: [{ field: error.path || 'unknown', message: error.message }], data: null });
-    }
+    const formattedError = error.errors.map((err: z.ZodIssue) => ({
+      field: err.path.join('.'),
+      message: err.message,
+    }));
+    res.status(400).json({ errors: formattedError });
   }
 }
 

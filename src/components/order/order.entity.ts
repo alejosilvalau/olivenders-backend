@@ -8,7 +8,6 @@ export class Order extends BaseEntity {
 
   @Property({ nullable: false })
   payment_provider!: string;
-  // stripe, paypal, bitcon, ethereum, wire_transfer, credit_card, debit_card
 
   @Property({ nullable: false, type: DateTimeType })
   date!: DateTimeType;
@@ -18,5 +17,5 @@ export class Order extends BaseEntity {
   // pending, paid, dispatched, delivered, completed, cancelled, refunded
 
   @Property({ nullable: false })
-  review!: string;
+  review?: string;
 }
