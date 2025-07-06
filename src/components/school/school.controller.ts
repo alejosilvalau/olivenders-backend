@@ -31,9 +31,9 @@ const sanitizeSchoolInput = (req: Request, res: Response, next: NextFunction): v
 async function findAll(req: Request, res: Response, next: NextFunction) {
   try {
     const schools = await em.find(School, {});
-    res.status(200).json({ message: 'schools fetched', data: schools });
+    res.status(200).json({ message: 'Schools fetched', data: schools });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    res.status(500).json({ message: error.message });
   }
 }
 
@@ -41,12 +41,12 @@ async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id;
     const school = await em.findOneOrFail(School, { id });
-    res.status(200).json({ message: 'school fetched', data: school });
+    res.status(200).json({ message: 'School fetched', data: school });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
-      res.status(404).json({ message: 'school not found', data: null });
+      res.status(404).json({ message: 'School not found' });
     } else {
-      res.status(500).json({ message: error.message, data: null });
+      res.status(500).json({ message: error.message });
     }
   }
 }
@@ -55,12 +55,12 @@ async function findOneByName(req: Request, res: Response) {
   try {
     const name = req.params.name.toLowerCase();
     const school = await em.findOneOrFail(School, { name });
-    res.status(200).json({ message: 'school fetched', data: school });
+    res.status(200).json({ message: 'School fetched', data: school });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
-      res.status(404).json({ message: 'school not found', data: null });
+      res.status(404).json({ message: 'School not found' });
     } else {
-      res.status(500).json({ message: error.message, data: null });
+      res.status(500).json({ message: error.message });
     }
   }
 }
@@ -74,18 +74,16 @@ async function add(req: Request, res: Response) {
 
     const school = em.create(School, input);
     await em.flush();
-    res.status(201).json({ message: 'school created', data: school });
+    res.status(201).json({ message: 'School created', data: school });
   } catch (error: any) {
     if (error.code === 11000) {
       // MongoDB duplicate key error code
       res.status(409).json({
-        message: 'a school with this name or email already exists',
-        data: null,
+        message: 'A school with this name or email already exists',
       });
     } else {
       res.status(500).json({
-        message: 'an error occurred while creating the school',
-        data: null,
+        message: 'An error occurred while creating the school',
       });
     }
   }
@@ -102,9 +100,9 @@ async function update(req: Request, res: Response) {
     const schoolToUpdate = await em.findOneOrFail(School, { id });
     em.assign(schoolToUpdate, input);
     await em.flush();
-    res.status(200).json({ message: 'school updated', data: schoolToUpdate });
+    res.status(200).json({ message: 'School updated', data: schoolToUpdate });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    res.status(500).json({ message: error.message });
   }
 }
 
@@ -113,9 +111,9 @@ async function remove(req: Request, res: Response) {
     const id = req.params.id;
     const schoolToDelete = await em.findOneOrFail(School, { id }, { populate: ['wizards'] });
     await em.removeAndFlush(schoolToDelete);
-    res.status(200).json({ message: 'school deleted', data: null });
+    res.status(200).json({ message: 'School deleted' });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    res.status(500).json({ message: error.message });
   }
 }
 
