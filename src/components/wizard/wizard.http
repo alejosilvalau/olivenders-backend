@@ -71,5 +71,17 @@ Content-Type: application/json
   "password": "Alohooooomora456$$"
 }
 
+### Make a wizard an admin
+PATCH http://localhost:3000/api/wizards/68698280a91cb51622ab22b6/role/admin
+
+### Make an admin a wizard
+PATCH http://localhost:3000/api/wizards/68698280a91cb51622ab22b6/role/wizard
+
+### Deactivate a wizard account
+PATCH http://localhost:3000/api/wizards/68698280a91cb51622ab22b6/deactivate
+
+### Activate a wizard account
+PATCH http://localhost:3000/api/wizards/68698280a91cb51622ab22b6/activate
+
 ### Delete wizard
 DELETE http://localhost:3000/api/wizards/68698280a91cb51622ab22b6
