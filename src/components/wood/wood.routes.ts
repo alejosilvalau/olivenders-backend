@@ -49,12 +49,20 @@ export const woodRouter = Router();
  *               properties:
  *                 message:
  *                   type: string
+ *                   example: Woods fetched
  *                 data:
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/Wood'
  *       500:
  *         description: Error retrieving woods
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
 woodRouter.get('/',findAll);
 
@@ -81,12 +89,28 @@ woodRouter.get('/',findAll);
  *               properties:
  *                 message:
  *                   type: string
+ *                   example: Wood fetched
  *                 data:
  *                   $ref: '#/components/schemas/Wood'
  *       404:
  *         description: Wood not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Wood not found
  *       500:
  *         description: Error retrieving the wood
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
 woodRouter.get('/:id', sanitizeMongoQuery, findOne);
 
@@ -113,12 +137,28 @@ woodRouter.get('/:id', sanitizeMongoQuery, findOne);
  *               properties:
  *                 message:
  *                   type: string
+ *                   example: Wood fetched
  *                 data:
  *                   $ref: '#/components/schemas/Wood'
  *       404:
  *         description: Wood not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Wood not found
  *       500:
  *         description: Error retrieving the wood
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
 woodRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
 
@@ -133,7 +173,25 @@ woodRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Wood'
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Name of the wood
+ *               binomial_name:
+ *                 type: string
+ *                 description: Scientific binomial name of the wood
+ *               description:
+ *                 type: string
+ *                 description: Detailed description of the wood
+ *               price:
+ *                 type: number
+ *                 description: Price of the wood
+ *             required:
+ *               - name
+ *               - binomial_name
+ *               - description
+ *               - price
  *     responses:
  *       201:
  *         description: Wood created
@@ -144,14 +202,45 @@ woodRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
  *               properties:
  *                 message:
  *                   type: string
+ *                   example: Wood created
  *                 data:
  *                   $ref: '#/components/schemas/Wood'
  *       400:
  *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       field:
+ *                         type: string
+ *                       message:
+ *                         type: string
  *       409:
  *         description: Wood with this name already exists
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: A wood with this name already exists
  *       500:
  *         description: Error creating the wood
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: An error occurred while creating the wood
  */
 woodRouter.post('/', sanitizeMongoQuery, sanitizeWoodInput, add);
 
@@ -173,7 +262,20 @@ woodRouter.post('/', sanitizeMongoQuery, sanitizeWoodInput, add);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Wood'
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Name of the wood
+ *               binomial_name:
+ *                 type: string
+ *                 description: Scientific binomial name of the wood
+ *               description:
+ *                 type: string
+ *                 description: Detailed description of the wood
+ *               price:
+ *                 type: number
+ *                 description: Price of the wood
  *     responses:
  *       200:
  *         description: Wood updated
@@ -184,14 +286,44 @@ woodRouter.post('/', sanitizeMongoQuery, sanitizeWoodInput, add);
  *               properties:
  *                 message:
  *                   type: string
+ *                   example: Wood updated
  *                 data:
  *                   $ref: '#/components/schemas/Wood'
  *       404:
  *         description: Wood not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Wood not found
  *       400:
  *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       field:
+ *                         type: string
+ *                       message:
+ *                         type: string
  *       500:
  *         description: Error updating the wood
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
 woodRouter.put('/:id', sanitizeMongoQuery, sanitizeWoodInput, update);
 
@@ -218,9 +350,25 @@ woodRouter.put('/:id', sanitizeMongoQuery, sanitizeWoodInput, update);
  *               properties:
  *                 message:
  *                   type: string
+ *                   example: Wood deleted
  *       404:
  *         description: Wood not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Wood not found
  *       500:
  *         description: Error deleting the wood
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
 woodRouter.delete('/:id', sanitizeMongoQuery, remove);
