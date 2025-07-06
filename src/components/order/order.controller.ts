@@ -152,7 +152,11 @@ async function pay(req: Request, res: Response) {
   }
 }
 
-function fakeDelivery(id: string) {
+function generateTrackingId(): string {
+  return 'TRK-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+}
+
+function scheduleAutoDelivery(id: string) {
   const delay = 60000; // 60 seconds
 
   setTimeout(async () => {
@@ -180,13 +184,13 @@ async function dispatch(req: Request, res: Response) {
 
     // Here you would integrate with the shipping provider
     // For example, using a shipping API to create a shipment
-
+    orderToDispatch.tracking_id = generateTrackingId();
     orderToDispatch.status = OrderStatus.Dispatched;
     await em.flush();
     res.status(200).json({ message: 'Order dispatched successfully', data: orderToDispatch });
 
     // Trigger fake delivery after dispatch
-    fakeDelivery(id);
+    scheduleAutoDelivery(id);
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
       res.status(404).json({ message: 'Order not found' });
