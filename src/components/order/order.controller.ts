@@ -152,6 +152,22 @@ async function pay(req: Request, res: Response) {
   }
 }
 
+function fakeDelivery(id: string) {
+  const delay = 60000; // 60 seconds
+
+  setTimeout(async () => {
+    try {
+      const order = await em.findOne(Order, { id });
+      if (order && order.status === OrderStatus.Dispatched) {
+        order.status = OrderStatus.Delivered;
+        await em.flush();
+      }
+    } catch (err) {
+      console.error('Auto-delivery failed:', err);
+    }
+  }, delay);
+}
+
 async function dispatch(req: Request, res: Response) {
   try {
     const id = req.params.id;
@@ -168,31 +184,9 @@ async function dispatch(req: Request, res: Response) {
     orderToDispatch.status = OrderStatus.Dispatched;
     await em.flush();
     res.status(200).json({ message: 'Order dispatched successfully', data: orderToDispatch });
-  } catch (error: any) {
-    if (error.name === 'NotFoundError') {
-      res.status(404).json({ message: 'Order not found' });
-    } else {
-      res.status(500).json({ message: error.message });
-    }
-  }
-}
 
-async function deliver(req: Request, res: Response) {
-  try {
-    const id = req.params.id;
-    const orderToDeliver = await em.findOneOrFail(Order, { id });
-
-    if (orderToDeliver.status !== OrderStatus.Dispatched) {
-      res.status(400).json({ message: 'Order is not in a deliverable state' });
-      return;
-    }
-
-    // Here you would integrate with the delivery provider
-    // For example, using a delivery API to confirm delivery
-
-    orderToDeliver.status = OrderStatus.Delivered;
-    await em.flush();
-    res.status(200).json({ message: 'Order delivered successfully', data: orderToDeliver });
+    // Trigger fake delivery after dispatch
+    fakeDelivery(id);
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
       res.status(404).json({ message: 'Order not found' });
@@ -323,7 +317,6 @@ export {
   update,
   pay,
   dispatch,
-  deliver,
   complete,
   cancel,
   refund,

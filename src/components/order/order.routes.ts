@@ -8,7 +8,6 @@ import {
   update,
   pay,
   dispatch,
-  deliver,
   complete,
   cancel,
   refund,
@@ -30,8 +29,6 @@ orderRouter.put('/:id', sanitizeMongoQuery, sanitizeOrderInput, update);
 orderRouter.patch('/:id/pay', sanitizeMongoQuery, pay);
 
 orderRouter.patch('/:id/dispatch', sanitizeMongoQuery, dispatch);
-
-orderRouter.patch('/:id/deliver', sanitizeMongoQuery, deliver);
 
 orderRouter.patch('/:id/complete', sanitizeMongoQuery, complete);
 

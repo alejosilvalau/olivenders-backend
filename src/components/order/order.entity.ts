@@ -30,6 +30,9 @@ export class Order extends BaseEntity {
   @Property({ nullable: false })
   shipping_address!: string;
 
+  @Property({ nullable: true })
+  tracking_id!: string;
+
   @Property({ nullable: false, type: DateTimeType })
   date!: DateTimeType;
 
