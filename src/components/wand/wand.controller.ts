@@ -50,9 +50,9 @@ async function calculateWandPrice(woodId: string, coreId: string, profit: number
 async function findAll(req: Request, res: Response) {
   try {
     const wands = await em.find(Wand, {}, { populate: ['wood', 'core'] });
-    res.status(200).json({ message: 'wands fetched', data: wands });
+    res.status(200).json({ message: 'Wands fetched', data: wands });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    res.status(500).json({ message: error.message });
   }
 }
 
@@ -60,9 +60,9 @@ async function findAllByCore(req: Request, res: Response) {
   try {
     const coreId = req.params.coreId;
     const wands = await em.find(Wand, { core: coreId, status: 'active' }, { populate: ['wood', 'core'] });
-    res.status(200).json({ message: 'wands fetched', data: wands });
+    res.status(200).json({ message: 'Wands fetched', data: wands });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    res.status(500).json({ message: error.message });
   }
 }
 
@@ -70,9 +70,9 @@ async function findAllByWood(req: Request, res: Response) {
   try {
     const woodId = req.params.woodId;
     const wands = await em.find(Wand, { wood: woodId, status: 'active' }, { populate: ['wood', 'core'] });
-    res.status(200).json({ message: 'wands fetched', data: wands });
+    res.status(200).json({ message: 'Wands fetched', data: wands });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    res.status(500).json({ message: error.message });
   }
 }
 
@@ -80,12 +80,12 @@ async function findOne(req: Request, res: Response) {
   try {
     const id = req.params.id;
     const wand = await em.findOneOrFail(Wand, { id }, { populate: ['wood', 'core'] });
-    res.status(200).json({ message: 'wand fetched', data: wand });
+    res.status(200).json({ message: 'Wand fetched', data: wand });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
-      res.status(404).json({ message: 'wand not found', data: null });
+      res.status(404).json({ message: 'Wand not found' });
     } else {
-      res.status(500).json({ message: error.message, data: null });
+      res.status(500).json({ message: error.message });
     }
   }
 }
@@ -99,16 +99,13 @@ async function add(req: Request, res: Response) {
 
     const wand = em.create(Wand, input);
     await em.flush();
-    res.status(201).json({ message: 'wand created', data: wand });
+    res.status(201).json({ message: 'Wand created', data: wand });
   } catch (error: any) {
     if (error.code === 11000) {
       // MongoDB duplicate key error code
-      res.status(409).json({
-        message: 'a wand with this name already exists',
-        data: null,
-      });
+      res.status(409).json({ message: 'A wand with this name already exists' });
     } else {
-      res.status(500).json({ message: 'an error occurred while creating the wand', data: null });
+      res.status(500).json({ message: 'An error occurred while creating the wand' });
     }
   }
 }
@@ -125,9 +122,9 @@ async function update(req: Request, res: Response) {
     const wandToUpdate = await em.findOneOrFail(Wand, id);
     em.assign(wandToUpdate, req.body.sanitizedInput);
     await em.flush();
-    res.status(200).json({ message: 'wand updated', data: wandToUpdate });
+    res.status(200).json({ message: 'Wand updated', data: wandToUpdate });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    res.status(500).json({ message: error.message });
   }
 }
 
@@ -137,9 +134,9 @@ async function logicRemove(req: Request, res: Response) {
     const wandToUpdate = await em.findOneOrFail(Wand, { id });
     em.assign(wandToUpdate, { status: 'inactive' });
     await em.flush();
-    res.status(200).json({ message: 'wand deactivated', data: wandToUpdate });
+    res.status(200).json({ message: 'Wand deactivated', data: wandToUpdate });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    res.status(500).json({ message: error.message });
   }
 }
 
@@ -149,9 +146,9 @@ async function remove(req: Request, res: Response) {
     const wandToDelete = await em.findOneOrFail(Wand, { id });
     await em.removeAndFlush(wandToDelete);
     em.clear();
-    res.status(200).json({ message: 'wand deleted', data: null });
+    res.status(200).json({ message: 'Wand deleted' });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    res.status(500).json({ message: error.message });
   }
 }
 

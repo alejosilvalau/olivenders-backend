@@ -22,7 +22,7 @@ Content-Type: application/json
 
 {
   "username": "dracomalfoy",
-  "password": "Expelio123#@",
+  "password": "Expelio123",
   "name": "Draco",
   "last_name": "Malfoy",
   "email": "draco.malfoy@hogwarts.edu",
