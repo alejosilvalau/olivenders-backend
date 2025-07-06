@@ -11,6 +11,6 @@ export const objectIdSchema = z.string().refine(
     }
   },
   {
-    message: 'invalid objectid format',
+    message: 'Invalid objectid format',
   }
 );

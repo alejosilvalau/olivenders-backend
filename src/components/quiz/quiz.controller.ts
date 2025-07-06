@@ -42,9 +42,9 @@ function sanitizeQuizInput(req: Request, res: Response, next: NextFunction): voi
         field: err.path.join('.'),
         message: err.message,
       }));
-      res.status(400).json({ message: formattedError, data: null });
+      res.status(400).json({ errors: formattedError });
     } else {
-      res.status(400).json({ message: [{ message: error.message }], data: null });
+      res.status(400).json({ errors: [{ message: error.message }] });
     }
   }
 }

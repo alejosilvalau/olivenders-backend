@@ -45,11 +45,24 @@ export const schoolRouter = Router();
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/School'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Schools fetched
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/School'
  *       500:
  *         description: Error retrieving schools
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
 schoolRouter.get('/', findAll);
 
@@ -74,17 +87,38 @@ schoolRouter.get('/', findAll);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/School'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: School fetched
+ *                 data:
+ *                   $ref: '#/components/schemas/School'
  *       404:
  *         description: School not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: School not found
  *       500:
  *         description: Error retrieving the school
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
 schoolRouter.get('/:id', sanitizeMongoQuery, findOne);
 
 /**
  * @swagger
- * /api/schools/find-by-name/{name}:
+ * /api/schools/name/{name}:
  *   get:
  *     summary: Get a school by name
  *     tags: [School]
@@ -101,11 +135,32 @@ schoolRouter.get('/:id', sanitizeMongoQuery, findOne);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/School'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: School fetched
+ *                 data:
+ *                   $ref: '#/components/schemas/School'
  *       404:
  *         description: School not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: School not found
  *       500:
  *         description: Error retrieving the school
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
 schoolRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
 
@@ -127,11 +182,48 @@ schoolRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/School'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: School created
+ *                 data:
+ *                   $ref: '#/components/schemas/School'
  *       400:
  *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       field:
+ *                         type: string
+ *                       message:
+ *                         type: string
+ *       409:
+ *         description: School with this name or email already exists
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: A school with this name or email already exists
  *       500:
  *         description: Error creating the school
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
 schoolRouter.post('/', sanitizeMongoQuery, sanitizeSchoolInput, add);
 
@@ -160,13 +252,48 @@ schoolRouter.post('/', sanitizeMongoQuery, sanitizeSchoolInput, add);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/School'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: School updated
+ *                 data:
+ *                   $ref: '#/components/schemas/School'
  *       404:
  *         description: School not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: School not found
  *       400:
  *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       field:
+ *                         type: string
+ *                       message:
+ *                         type: string
  *       500:
  *         description: Error updating the school
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
 schoolRouter.put('/:id', sanitizeMongoQuery, sanitizeSchoolInput, update);
 
@@ -186,9 +313,32 @@ schoolRouter.put('/:id', sanitizeMongoQuery, sanitizeSchoolInput, update);
  *     responses:
  *       200:
  *         description: School deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: School deleted
  *       404:
  *         description: School not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: School not found
  *       500:
  *         description: Error deleting the school
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
 schoolRouter.delete('/:id', sanitizeMongoQuery, remove);

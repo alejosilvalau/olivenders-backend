@@ -12,7 +12,7 @@ POST http://localhost:3000/api/cores/
 Content-Type: application/json
 
 {
-  "name": "Dragon heartstring",
+  "name": "",
   "description": "Dragon heartstring wands produced the most powerful and flamboyant magic and they learned spells faster and easier, however they were more prone to accidents. They were the most likely to change loyalty, but would always bond strongly with its current owner. It was also the easiest to turn to the dark arts, though it would not turn on its own.",
   "price": 400
 }

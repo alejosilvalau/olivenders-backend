@@ -27,7 +27,7 @@ export const wandRouter = Router();
  *         name:
  *           type: string
  *           description: Name of the wand
- *         length:
+ *         length_inches:
  *           type: number
  *           description: Length of the wand in inches
  *         description:
@@ -39,22 +39,28 @@ export const wandRouter = Router();
  *         image:
  *           type: string
  *           description: Image URL of the wand
- *         profit_margin:
+ *         profit:
  *           type: number
- *           description: Profit margin percentage for the wand
+ *           description: Profit amount for the wand
  *         total_price:
  *           type: number
  *           description: Total price of the wand
+ *         wood:
+ *           type: string
+ *           description: ID of the wood used in the wand
+ *         core:
+ *           type: string
+ *           description: ID of the core used in the wand
  *       required:
  *         - name
- *         - length
+ *         - length_inches
  *         - description
  *         - status
  *         - image
- *         - profit_margin
- *         - total_price
+ *         - profit
+ *         - wood
+ *         - core
  */
-
 
 
 /**
@@ -69,18 +75,89 @@ export const wandRouter = Router();
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Wand'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Wands fetched
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Wand'
  *       500:
  *         description: Error retrieving wands
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  */
 wandRouter.get('/', findAll);
 
-// TODO: Agregar documentación
+/**
+ * @swagger
+ * /api/wands/core/{coreId}:
+ *   get:
+ *     summary: Get all wands by core
+ *     tags: [Wand]
+ *     parameters:
+ *       - in: path
+ *         name: coreId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID of the core
+ *     responses:
+ *       200:
+ *         description: List of wands with the specified core
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Wand'
+ *       500:
+ *         description: Error retrieving wands by core
+ */
 wandRouter.get('/core/:coreId', sanitizeMongoQuery, findAllByCore);
 
-// TODO: Agregar documentación
+/**
+ * @swagger
+ * /api/wands/wood/{woodId}:
+ *   get:
+ *     summary: Get all wands by wood
+ *     tags: [Wand]
+ *     parameters:
+ *       - in: path
+ *         name: woodId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID of the wood
+ *     responses:
+ *       200:
+ *         description: List of wands with the specified wood
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Wand'
+ *       500:
+ *         description: Error retrieving wands by wood
+ */
 wandRouter.get('/wood/:woodId', sanitizeMongoQuery, findAllByWood);
 
 /**
@@ -102,9 +179,23 @@ wandRouter.get('/wood/:woodId', sanitizeMongoQuery, findAllByWood);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Wand'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Wand fetched
+ *                 data:
+ *                   $ref: '#/components/schemas/Wand'
  *       404:
  *         description: Wand not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Wand not found
  *       500:
  *         description: Error retrieving the wand
  */
@@ -122,18 +213,72 @@ wandRouter.get('/:id', sanitizeMongoQuery, findOne);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Wand'
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               length_inches:
+ *                 type: number
+ *               description:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *               image:
+ *                 type: string
+ *               profit:
+ *                 type: number
+ *               wood:
+ *                 type: string
+ *               core:
+ *                 type: string
+ *             required:
+ *               - name
+ *               - length_inches
+ *               - description
+ *               - status
+ *               - image
+ *               - profit
+ *               - wood
+ *               - core
  *     responses:
  *       201:
  *         description: Wand created
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Wand'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Wand created
+ *                 data:
+ *                   $ref: '#/components/schemas/Wand'
  *       400:
  *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       field:
+ *                         type: string
+ *                       message:
+ *                         type: string
  *       409:
  *         description: Wand already exists
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: A wand with this name already exists
  *       500:
  *         description: Error creating the wand
  */
@@ -157,18 +302,55 @@ wandRouter.post('/', sanitizeMongoQuery, sanitizeWandInput, add);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Wand'
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               length_inches:
+ *                 type: number
+ *               description:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *               image:
+ *                 type: string
+ *               profit:
+ *                 type: number
+ *               wood:
+ *                 type: string
+ *               core:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Wand updated
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Wand'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Wand updated
+ *                 data:
+ *                   $ref: '#/components/schemas/Wand'
  *       404:
  *         description: Wand not found
  *       400:
  *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       field:
+ *                         type: string
+ *                       message:
+ *                         type: string
  *       500:
  *         description: Error updating the wand
  */
@@ -177,7 +359,7 @@ wandRouter.put('/:id', sanitizeMongoQuery, sanitizeWandInput, update);
 /**
  * @swagger
  * /api/wands/{id}/deactivate:
- *   put:
+ *   patch:
  *     summary: Deactivate a wand (logical removal)
  *     tags: [Wand]
  *     parameters:
@@ -193,7 +375,13 @@ wandRouter.put('/:id', sanitizeMongoQuery, sanitizeWandInput, update);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Wand'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Wand deactivated
+ *                 data:
+ *                   $ref: '#/components/schemas/Wand'
  *       404:
  *         description: Wand not found
  *       500:
@@ -217,6 +405,14 @@ wandRouter.patch('/:id/deactivate', sanitizeMongoQuery, logicRemove);
  *     responses:
  *       200:
  *         description: Wand deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Wand deleted
  *       404:
  *         description: Wand not found
  *       500:
