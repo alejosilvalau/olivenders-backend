@@ -320,4 +320,20 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { sanitizeOrderInput, findAll, findOne, add, update, remove };
+export {
+  sanitizeOrderInput,
+  sanitizeOrderStatusInput,
+  sanitizeOrderReviewInput,
+  findAll,
+  findOne,
+  add,
+  update,
+  pay,
+  dispatch,
+  deliver,
+  complete,
+  cancel,
+  refund,
+  review,
+  remove,
+};
