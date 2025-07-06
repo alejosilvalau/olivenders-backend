@@ -1,5 +1,6 @@
-import { Entity, Property, Collection, OneToMany, Cascade, types, DateTimeType } from '@mikro-orm/core';
+import { Entity, Property, Collection, OneToMany, Cascade, types, DateTimeType, ManyToOne, Rel } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
+import { Wizard } from '../wizard/wizard.entity.js';
 
 export enum OrderStatus {
   Pending = 'pending',
@@ -44,4 +45,7 @@ export class Order extends BaseEntity {
 
   @Property({ nullable: true })
   review?: string;
+
+  @ManyToOne(() => Wizard, { nullable: false })
+  wizard!: Rel<Wizard>;
 }

@@ -356,11 +356,15 @@ async function activate(req: Request, res: Response) {
 async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const wizardToDelete = await em.findOneOrFail(Wizard, { id });
+    const wizardToDelete = await em.findOneOrFail(Wizard, { id }, { populate: ['orders'] });
     await em.removeAndFlush(wizardToDelete);
     res.status(200).json({ message: 'Wizard deleted' });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Wizard not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 

@@ -1,6 +1,7 @@
-import { Entity, Property, ManyToOne, Cascade, Ref, Rel } from '@mikro-orm/core';
+import { Entity, Property, ManyToOne, Cascade, Ref, Rel, OneToMany, Collection } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
 import { School } from '../school/school.entity.js';
+import { Order } from '../order/order.entity.js';
 
 export enum WizardRole {
   Admin = 'admin',
@@ -38,4 +39,7 @@ export class Wizard extends BaseEntity {
 
   @ManyToOne(() => School, { nullable: false })
   school!: Rel<School>;
+
+  @OneToMany(() => Order, order => order.wizard, { cascade: [Cascade.REMOVE] })
+  orders = new Collection<Order>(this);
 }
