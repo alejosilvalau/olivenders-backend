@@ -3,8 +3,8 @@ import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
 import { School } from '../school/school.entity.js';
 
 export enum WizardRole {
-  Admin = 'ADMIN',
-  Wizard = 'WIZARD',
+  Admin = 'admin',
+  Wizard = 'wizard',
 }
 
 @Entity()
