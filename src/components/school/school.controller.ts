@@ -4,6 +4,8 @@ import { School } from './school.entity.js';
 import { z } from 'zod';
 import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 
+const em = orm.em;
+
 const schoolZodSchema = z.object({
   id: objectIdSchema.optional(),
   name: z.string().trim().min(1),
@@ -11,8 +13,6 @@ const schoolZodSchema = z.object({
   address: z.string().trim().min(1),
   phone: z.string().trim().min(1),
 });
-
-const em = orm.em;
 
 const sanitizeSchoolInput = (req: Request, res: Response, next: NextFunction): void => {
   try {

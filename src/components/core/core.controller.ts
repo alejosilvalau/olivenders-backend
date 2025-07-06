@@ -4,14 +4,14 @@ import { Core } from './core.entity.js';
 import { z } from 'zod';
 import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 
+const em = orm.em;
+
 const coreZodSchema = z.object({
   id: objectIdSchema.optional(),
   name: z.string().trim().min(1),
   description: z.string().trim().min(1),
   price: z.number().positive(),
 });
-
-const em = orm.em;
 
 const sanitizeCoreInput = (req: Request, res: Response, next: NextFunction): void => {
   try {

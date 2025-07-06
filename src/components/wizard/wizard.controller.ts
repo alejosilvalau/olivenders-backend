@@ -9,6 +9,7 @@ import bcrypt from 'bcrypt';
 import { wrap } from '@mikro-orm/core';
 
 dotenv.config();
+const em = orm.em;
 
 const wizardZodSchema = z.object({
   id: objectIdSchema.optional(),
@@ -27,8 +28,6 @@ const wizardZodSchema = z.object({
   role: z.enum(['ADMIN', 'WIZARD']),
   school: objectIdSchema,
 });
-
-const em = orm.em;
 
 function sanitizeWizardInput(req: Request, res: Response, next: NextFunction): void {
   try {

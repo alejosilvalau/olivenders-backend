@@ -4,6 +4,8 @@ import { z } from 'zod';
 import Wood from './wood.entity.js';
 import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 
+const em = orm.em;
+
 const woodZodSchema = z.object({
   id: objectIdSchema.optional(),
   name: z.string().trim().min(1),
@@ -11,8 +13,6 @@ const woodZodSchema = z.object({
   description: z.string().trim().min(1),
   price: z.number(),
 });
-
-const em = orm.em;
 
 const sanitizeWoodInput = (req: Request, res: Response, next: NextFunction): void => {
   try {

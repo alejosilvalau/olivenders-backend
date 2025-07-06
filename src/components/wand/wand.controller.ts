@@ -6,6 +6,8 @@ import { z } from 'zod';
 import Wood from '../wood/wood.entity.js';
 import { Core } from '../core/core.entity.js';
 
+const em = orm.em;
+
 const wandZodSchema = z.object({
   id: objectIdSchema.optional(),
   name: z.string().trim().min(1),
@@ -17,8 +19,6 @@ const wandZodSchema = z.object({
   wood: objectIdSchema,
   core: objectIdSchema,
 });
-
-const em = orm.em;
 
 function sanitizeWandInput(req: Request, res: Response, next: NextFunction) {
   try {
