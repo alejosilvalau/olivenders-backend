@@ -325,7 +325,7 @@ async function deactivate(req: Request, res: Response) {
     await em.flush();
 
     const sanitizedResponse = sanitizeWizardResponse(wizardToUpdate);
-    res.status(200).json({ message: 'Wizard account disabled', data: sanitizedResponse });
+    res.status(200).json({ message: 'Wizard account deactivated', data: sanitizedResponse });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
       res.status(404).json({ message: 'Wizard not found' });
@@ -343,7 +343,7 @@ async function activate(req: Request, res: Response) {
     await em.flush();
 
     const sanitizedResponse = sanitizeWizardResponse(wizardToUpdate);
-    res.status(200).json({ message: 'Wizard account enabled', data: sanitizedResponse });
+    res.status(200).json({ message: 'Wizard account activated', data: sanitizedResponse });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
       res.status(404).json({ message: 'Wizard not found' });
