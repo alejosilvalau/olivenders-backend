@@ -30,10 +30,9 @@ const sanitizeCoreInput = (req: Request, res: Response, next: NextFunction): voi
 async function findAll(req: Request, res: Response) {
   try {
     const cores = await em.find(Core, {});
-
-    res.status(200).json({ message: 'cores fetched', data: cores });
+    res.status(200).json({ message: 'Cores fetched', data: cores });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    res.status(500).json({ message: error.message });
   }
 }
 
@@ -41,12 +40,12 @@ async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id;
     const core = await em.findOneOrFail(Core, { id });
-    res.status(200).json({ message: 'core fetched', data: core });
+    res.status(200).json({ message: 'Core fetched', data: core });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
-      res.status(404).json({ message: 'core not found', data: null });
+      res.status(404).json({ message: 'Core not found' });
     } else {
-      res.status(500).json({ message: error.message, data: null });
+      res.status(500).json({ message: error.message });
     }
   }
 }
@@ -55,12 +54,12 @@ async function findOneByName(req: Request, res: Response) {
   try {
     const name = req.params.name.toLowerCase();
     const core = await em.findOneOrFail(Core, { name });
-    res.status(200).json({ message: 'core fetched', data: core });
+    res.status(200).json({ message: 'Core fetched', data: core });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
-      res.status(404).json({ message: 'core not found', data: null });
+      res.status(404).json({ message: 'Core not found' });
     } else {
-      res.status(500).json({ message: error.message, data: null });
+      res.status(500).json({ message: error.message });
     }
   }
 }
@@ -75,18 +74,16 @@ async function add(req: Request, res: Response) {
     const core = em.create(Core, input);
     await em.flush();
 
-    res.status(201).json({ message: 'core created', data: core });
+    res.status(201).json({ message: 'Core created', data: core });
   } catch (error: any) {
     if (error.code === 11000) {
       // MongoDB duplicate key error code
       res.status(409).json({
-        message: 'a core with this name already exists',
-        data: null,
+        message: 'A core with this name already exists',
       });
     } else {
       res.status(500).json({
-        message: 'an error occurred while creating the core',
-        data: null,
+        message: 'An error occurred while creating the core',
       });
     }
   }
@@ -103,9 +100,9 @@ async function update(req: Request, res: Response) {
     em.assign(coreToUpdate, input);
     await em.flush();
 
-    res.status(200).json({ message: 'core updated', data: coreToUpdate });
+    res.status(200).json({ message: 'Core updated', data: coreToUpdate });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    res.status(500).json({ message: error.message });
   }
 }
 
@@ -115,13 +112,10 @@ async function remove(req: Request, res: Response) {
     const coreToDelete = await em.findOneOrFail(Core, { id }, { populate: ['wands'] });
     await em.removeAndFlush(coreToDelete);
 
-    res.status(200).json({ message: 'core deleted', data: null });
+    res.status(200).json({ message: 'Core deleted' });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    res.status(500).json({ message: error.message });
   }
 }
 
 export { sanitizeCoreInput, findAll, findOne, findOneByName, add, update, remove };
-  
-  
-  

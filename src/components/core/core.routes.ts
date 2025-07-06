@@ -49,9 +49,14 @@ export const coreRouter = Router();
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Core'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Core'
  *       500:
  *         description: Error retrieving cores
  */
@@ -76,7 +81,12 @@ coreRouter.get('/', findAll);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Core'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   $ref: '#/components/schemas/Core'
  *       404:
  *         description: Core not found
  *       500:
@@ -86,7 +96,7 @@ coreRouter.get('/:id', findOne);
 
 /**
  * @swagger
- * /api/cores/find-by-name/{name}:
+ * /api/cores/name/{name}:
  *   get:
  *     summary: Find a core by name
  *     tags: [Core]
@@ -103,7 +113,12 @@ coreRouter.get('/:id', findOne);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Core'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   $ref: '#/components/schemas/Core'
  *       404:
  *         description: Core not found
  *       500:
@@ -129,9 +144,16 @@ coreRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Core'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   $ref: '#/components/schemas/Core'
  *       400:
  *         description: Validation error
+ *       409:
+ *         description: Core with this name already exists
  *       500:
  *         description: Error creating the core
  */
@@ -162,7 +184,12 @@ coreRouter.post('/', sanitizeMongoQuery, sanitizeCoreInput, add);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Core'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   $ref: '#/components/schemas/Core'
  *       400:
  *         description: Validation error
  *       404:
@@ -188,6 +215,13 @@ coreRouter.put('/:id', sanitizeMongoQuery,sanitizeCoreInput, update);
  *     responses:
  *       200:
  *         description: Core deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
  *       404:
  *         description: Core not found
  *       500:
