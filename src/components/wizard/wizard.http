@@ -49,7 +49,7 @@ Content-Type: application/json
 }
 
 ### Update an existing wizard
-PUT http://localhost:3000/api/wizards/6869a017667eb044d20917ed
+PUT http://localhost:3000/api/wizards/686aa814867bf56ce7c5351e
 Content-Type: application/json
 
 {
@@ -60,7 +60,7 @@ Content-Type: application/json
   "email": "Hermione.Granger@hogwarts.edu",
   "address": "50 Enchanted Lane, Hogwarts",
   "phone": "695123456",
-  "school": "68692a9caddddb28d9452ee9"
+  "school": "686b0408eb491423f1c68825"
 }
 
 ### Change a wizard's password

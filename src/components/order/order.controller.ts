@@ -3,6 +3,7 @@ import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 import { orm } from '../../shared/db/orm.js';
 import { z } from 'zod';
 import { Order, OrderStatus, PaymentProvider } from './order.entity.js';
+import { sanitizeOrderResponseArray, sanitizeOrderResponse } from '../../shared/entities/sanitizeOrderResponse.js';
 import { OpenAI } from 'openai';
 
 const em = orm.em;
@@ -17,6 +18,7 @@ const orderZodSchema = z.object({
   payment_reference: z.string().trim().min(1),
   payment_provider: z.nativeEnum(PaymentProvider),
   shipping_address: z.string().trim().min(1),
+  wizard: objectIdSchema,
 });
 
 function sanitizeOrderInput(req: Request, res: Response, next: NextFunction): void {
@@ -53,8 +55,9 @@ function sanitizeOrderReviewInput(req: Request, res: Response, next: NextFunctio
 
 async function findAll(req: Request, res: Response) {
   try {
-    const orders = await em.find(Order, {}, { populate: ['wizard'] });
-    res.status(200).json({ message: 'Orders fetched', data: orders });
+    const orders = await em.find(Order, {}, { populate: ['wizard.school'] });
+    const sanitizedOrders = sanitizeOrderResponseArray(orders);
+    res.status(200).json({ message: 'Orders fetched', data: sanitizedOrders });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
@@ -77,8 +80,9 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const order = await em.findOneOrFail(Order, { id }, { populate: ['wizard'] });
-    res.status(200).json({ message: 'Order fetched', data: order });
+    const order = await em.findOneOrFail(Order, { id }, { populate: ['wizard.school'] });
+    const sanitizedOrder = sanitizeOrderResponse(order);
+    res.status(200).json({ message: 'Order fetched', data: sanitizedOrder });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
       res.status(404).json({ message: 'Order not found' });
@@ -158,7 +162,7 @@ async function pay(req: Request, res: Response) {
 }
 
 function generateTrackingId(): string {
-  return 'TRK-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+  return 'TRK-' + Math.random().toString(36).slice(2, 10).toUpperCase();
 }
 
 function scheduleAutoDelivery(id: string) {

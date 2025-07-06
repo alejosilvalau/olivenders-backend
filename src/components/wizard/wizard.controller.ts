@@ -6,7 +6,7 @@ import { z } from 'zod';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { wrap } from '@mikro-orm/core';
+import { sanitizeWizardResponse, sanitizeWizardResponseArray } from '../../shared/entities/sanitizeWizardResponse.js';
 
 dotenv.config();
 const em = orm.em;
@@ -58,16 +58,6 @@ function sanitizeWizardPartialInput(req: Request, res: Response, next: NextFunct
   }
 }
 
-function sanitizeWizardResponse(wizard: Wizard | null) {
-  if (!wizard) return wizard;
-  const obj = wrap(wizard).toObject() as any;
-  delete obj.password;
-  return obj;
-}
-
-function sanitizeWizardResponseArray(wizards: Wizard[]) {
-  return wizards.map(sanitizeWizardResponse);
-}
 
 async function findAll(req: Request, res: Response) {
   try {

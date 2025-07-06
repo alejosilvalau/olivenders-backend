@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/orders/
 
 ### Get one order by ID
-GET http://localhost:3000/api/orders/686adf9b2786a48dfdb0e756
+GET http://localhost:3000/api/orders/686aee61be43a3a8d58acf91
 
 ### Create a new order
 POST http://localhost:3000/api/orders/
@@ -11,7 +11,8 @@ Content-Type: application/json
 {
   "payment_reference": "ord_123445454789",
   "payment_provider": "wire_transfer",
-  "shipping_address": "Hogwarts Castle, Scotland"
+  "shipping_address": "Hogwarts Castle, Scotland",
+  "wizard": "686aa814867bf56ce7c5351e"
 }
 
 ### Update an existing order
@@ -21,7 +22,8 @@ Content-Type: application/json
 {
   "payment_reference": "ord_987654321",
   "payment_provider": "stripe",
-  "shipping_address": "The Burrow, Ottery St. Catchpole"
+  "shipping_address": "The Burrow, Ottery St. Catchpole",
+  "wizard": "686aa814867bf56ce7c5351e"
 }
 
 ### Pay an existing order
