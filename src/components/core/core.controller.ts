@@ -102,7 +102,11 @@ async function update(req: Request, res: Response) {
 
     res.status(200).json({ message: 'Core updated', data: coreToUpdate });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Core not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
@@ -114,7 +118,11 @@ async function remove(req: Request, res: Response) {
 
     res.status(200).json({ message: 'Core deleted' });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Core not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
