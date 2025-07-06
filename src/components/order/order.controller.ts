@@ -8,7 +8,7 @@ import { OpenAI } from 'openai';
 const em = orm.em;
 
 const openai = new OpenAI({
-  baseURL: 'https://models.github.ai/inference',
+  baseURL: process.env.OPENAI_ENDPOINT,
   apiKey: process.env.OPENAI_KEY,
 });
 
