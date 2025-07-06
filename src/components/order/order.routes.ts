@@ -22,24 +22,24 @@ export const orderRouter = Router();
 
 orderRouter.get('/', findAll);
 
-orderRouter.get('/:id', findOne);
+orderRouter.get('/:id', sanitizeMongoQuery, findOne);
 
-orderRouter.post('/', add);
+orderRouter.post('/', sanitizeMongoQuery, sanitizeOrderInput, add);
 
-orderRouter.put('/:id', update);
+orderRouter.put('/:id', sanitizeMongoQuery, sanitizeOrderInput, update);
 
-orderRouter.patch('/:id/pay', pay);
+orderRouter.patch('/:id/pay', sanitizeMongoQuery, sanitizeOrderStatusInput, pay);
 
-orderRouter.patch('/:id/dispatch', dispatch);
+orderRouter.patch('/:id/dispatch', sanitizeMongoQuery, sanitizeOrderStatusInput, dispatch);
 
-orderRouter.patch('/:id/deliver', deliver);
+orderRouter.patch('/:id/deliver', sanitizeMongoQuery, sanitizeOrderStatusInput, deliver);
 
-orderRouter.patch('/:id/complete', complete);
+orderRouter.patch('/:id/complete', sanitizeMongoQuery, sanitizeOrderStatusInput, complete);
 
-orderRouter.patch('/:id/cancel', cancel);
+orderRouter.patch('/:id/cancel', sanitizeMongoQuery, sanitizeOrderStatusInput, cancel);
 
-orderRouter.patch('/:id/refund', refund);
+orderRouter.patch('/:id/refund', sanitizeMongoQuery, sanitizeOrderStatusInput, refund);
 
-orderRouter.patch('/:id/review', review);
+orderRouter.patch('/:id/review', sanitizeMongoQuery, sanitizeOrderReviewInput, review);
 
-orderRouter.delete('/:id', remove);
+orderRouter.delete('/:id', sanitizeMongoQuery, remove);
