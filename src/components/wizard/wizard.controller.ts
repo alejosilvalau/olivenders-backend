@@ -161,7 +161,7 @@ async function add(req: Request, res: Response) {
     const hashRounds = 10;
     input.password = await bcrypt.hash(input.password, hashRounds);
 
-    input.role = WizardRole.Wizard;
+    input.role = WizardRole.User;
     input.deactivated = false;
 
     const wizard = em.create(Wizard, input);
@@ -293,21 +293,21 @@ async function makeAdmin(req: Request, res: Response) {
   }
 }
 
-async function makeWizard(req: Request, res: Response) {
+async function makeUser(req: Request, res: Response) {
   try {
     const id = req.params.id;
     const wizard = await em.findOneOrFail(Wizard, { id });
 
-    if (wizard.role === WizardRole.Wizard) {
-      res.status(400).json({ message: 'Wizard is already a wizard' });
+    if (wizard.role === WizardRole.User) {
+      res.status(400).json({ message: 'Wizard is already a user' });
       return;
     }
 
-    wizard.role = WizardRole.Wizard;
+    wizard.role = WizardRole.User;
     await em.persistAndFlush(wizard);
 
     const sanitizedResponse = sanitizeWizardResponse(wizard);
-    res.status(200).json({ message: 'Wizard role updated to wizard', data: sanitizedResponse });
+    res.status(200).json({ message: 'Wizard role updated to user', data: sanitizedResponse });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
       res.status(404).json({ message: 'Wizard not found' });
@@ -379,7 +379,7 @@ export {
   update,
   changePasswordWithoutToken,
   makeAdmin,
-  makeWizard,
+  makeUser,
   deactivate,
   activate,
   remove,

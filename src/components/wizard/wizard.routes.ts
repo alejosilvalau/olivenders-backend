@@ -14,7 +14,7 @@ import {
   update,
   changePasswordWithoutToken,
   makeAdmin,
-  makeWizard,
+  makeUser,
   deactivate,
   activate,
   remove,
@@ -509,7 +509,7 @@ wizardRouter.patch('/:id', sanitizeMongoQuery, sanitizeWizardPartialInput, chang
 wizardRouter.patch('/:id/role/admin', sanitizeMongoQuery, makeAdmin);
 
 // TODO: Add documentation for this endpoint, only for admin users
-wizardRouter.patch('/:id/role/wizard', sanitizeMongoQuery, makeWizard);
+wizardRouter.patch('/:id/role/user', sanitizeMongoQuery, makeUser);
 
 wizardRouter.patch('/:id/deactivate', sanitizeMongoQuery, deactivate);
 

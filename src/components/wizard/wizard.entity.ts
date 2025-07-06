@@ -4,7 +4,7 @@ import { School } from '../school/school.entity.js';
 
 export enum WizardRole {
   Admin = 'admin',
-  Wizard = 'wizard',
+  User = 'user',
 }
 
 @Entity()
