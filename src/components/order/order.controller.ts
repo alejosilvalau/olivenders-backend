@@ -40,7 +40,7 @@ async function findAll(req: Request, res: Response) {
   }
 }
 
-// async function findAllByUser(req: Request, res: Response) {
+// async function findAllByWizard(req: Request, res: Response) {
 //   try {
 //     const idComprador = req.params.userId;
 //     const compras = await em.find(
@@ -68,7 +68,7 @@ async function findOne(req: Request, res: Response) {
   }
 }
 
-// async function findOneByVehiculo(req: Request, res: Response) {
+// async function findOneByWand(req: Request, res: Response) {
 //   try {
 //     const idVehiculo = req.params.idVehiculo;
 //     const compra = await em.findOne(Compra, { vehiculo: idVehiculo }, { populate: ['usuario', 'vehiculo'] });
@@ -110,6 +110,120 @@ async function update(req: Request, res: Response) {
   }
 }
 
+async function pay(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const orderToPay = await em.findOneOrFail(Order, { id });
+
+    if (orderToPay.status !== OrderStatus.Pending) {
+      return res.status(400).json({ message: 'order is not in a payable state' });
+    }
+
+    // Here you would integrate with the payment provider
+    // For example, using Stripe or PayPal SDKs
+
+    orderToPay.status = OrderStatus.Paid;
+    await em.flush();
+    res.status(200).json({ message: 'order paid successfully', data: orderToPay });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+async function dispatch(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const orderToDispatch = await em.findOneOrFail(Order, { id });
+
+    if (orderToDispatch.status !== OrderStatus.Paid) {
+      return res.status(400).json({ message: 'order is not in a dispatchable state' });
+    }
+
+    // Here you would integrate with the shipping provider
+    // For example, using a shipping API to create a shipment
+
+    orderToDispatch.status = OrderStatus.Dispatched;
+    await em.flush();
+    res.status(200).json({ message: 'order dispatched successfully', data: orderToDispatch });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+async function deliver(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const orderToDeliver = await em.findOneOrFail(Order, { id });
+
+    if (orderToDeliver.status !== OrderStatus.Dispatched) {
+      return res.status(400).json({ message: 'order is not in a deliverable state' });
+    }
+
+    // Here you would integrate with the delivery provider
+    // For example, using a delivery API to confirm delivery
+
+    orderToDeliver.status = OrderStatus.Delivered;
+    await em.flush();
+    res.status(200).json({ message: 'order delivered successfully', data: orderToDeliver });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+async function complete(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const orderToComplete = await em.findOneOrFail(Order, { id });
+
+    if (orderToComplete.status !== OrderStatus.Delivered) {
+      return res.status(400).json({ message: 'order is not in a completable state' });
+    }
+
+    orderToComplete.status = OrderStatus.Completed;
+    await em.flush();
+    res.status(200).json({ message: 'order completed successfully', data: orderToComplete });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+async function cancel(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const orderToCancel = await em.findOneOrFail(Order, { id });
+
+    if (orderToCancel.status === OrderStatus.Completed || orderToCancel.status === OrderStatus.Refunded) {
+      return res.status(400).json({ message: 'order cannot be cancelled at this stage' });
+    }
+
+    orderToCancel.status = OrderStatus.Cancelled;
+    await em.flush();
+    res.status(200).json({ message: 'order cancelled successfully', data: orderToCancel });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+async function refund(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const orderToRefund = await em.findOneOrFail(Order, { id });
+
+    if (orderToRefund.status !== OrderStatus.Cancelled) {
+      return res.status(400).json({ message: 'order is not in a refundable state' });
+    }
+
+    // Here you would integrate with the payment provider to process the refund
+    // For example, using Stripe or PayPal SDKs
+
+    orderToRefund.status = OrderStatus.Refunded;
+    await em.flush();
+    res.status(200).json({ message: 'order refunded successfully', data: orderToRefund });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id;
@@ -122,13 +236,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export {
-  sanitizeOrderInput,
-  findAll,
-  findOne,
-  findByStatus,
-  findByPaymentReference as findByPaymentId,
-  add,
-  update,
-  remove,
-};
+export { sanitizeOrderInput, findAll, findOne, add, update, remove };
