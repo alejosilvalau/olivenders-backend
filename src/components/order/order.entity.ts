@@ -27,6 +27,9 @@ export class Order extends BaseEntity {
   @Property({ nullable: false })
   payment_provider!: PaymentProvider;
 
+  @Property({ nullable: false })
+  shipping_address!: string;
+
   @Property({ nullable: false, type: DateTimeType })
   date!: DateTimeType;
 

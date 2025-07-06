@@ -10,6 +10,7 @@ const orderZodSchema = z.object({
   id: objectIdSchema.optional(),
   payment_reference: z.string().trim().min(1),
   payment_provider: z.nativeEnum(PaymentProvider),
+  shipping_address: z.string().trim().min(1),
 });
 
 function sanitizeOrderInput(req: Request, res: Response, next: NextFunction): void {
@@ -293,6 +294,11 @@ async function review(req: Request, res: Response) {
   try {
     const id = req.params.id;
     const orderToReview = await em.findOneOrFail(Order, { id });
+
+    if (orderToReview.status !== OrderStatus.Completed) {
+      res.status(400).json({ message: 'Order is not in a reviewable state' });
+      return;
+    }
 
     const reviewInput = req.body.sanitizedInput;
 

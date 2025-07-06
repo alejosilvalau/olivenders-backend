@@ -1,36 +1,61 @@
-### Get all sales
-GET http://localhost:3000/api/sales
+### Get all orders
+GET http://localhost:3000/api/orders/
 
-### Get one sale by ID
-GET http://localhost:3000/api/sales/6863acd3b0aaf7a0dfb5128e
+### Get one order by ID
+GET http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e
 
-### Get sale by payment ID
-GET http://localhost:3000/api/sales/payment/12345
-
-### Get sales by status
-GET http://localhost:3000/api/sales/status/completed
-
-### Create a new sale
-POST http://localhost:3000/api/sales/
+### Create a new order
+POST http://localhost:3000/api/orders/
 Content-Type: application/json
 
 {
-  "payment_id": 59494,
-  "date": "2025-07-01T10:00:00.000Z",
-  "status": "completed",
-  "review": "Excellent wand, works perfectly for my spells!"
+  "payment_reference": "ord_123456789",
+  "payment_provider": "paypal",
+  "shipping_address": "4 Privet Drive, Little Whinging, Surrey"
 }
 
-### Update an existing sale
-PUT http://localhost:3000/api/sales/6863ad09b0aaf7a0dfb5128f
+### Update an existing order
+PUT http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e
 Content-Type: application/json
 
 {
-  "payment_id": 12345,
-  "date": "2025-07-01T10:00:00.000Z",
-  "status": "shipped",
-  "review": "Great customer service, looking forward to receiving my wand!"
+  "payment_reference": "ord_987654321",
+  "payment_provider": "stripe",
+  "shipping_address": "The Burrow, Ottery St. Catchpole"
 }
 
-### Delete a sale
-DELETE http://localhost:3000/api/sales/6863ad09b0aaf7a0dfb5128f
+### Pay an existing order
+PATCH http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e/pay/
+Content-Type: application/json
+
+### Dispatch an existing order
+PATCH http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e/dispatch/
+Content-Type: application/json
+
+### Deliver an existing order
+PATCH http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e/deliver/
+Content-Type: application/json
+
+### Complete an existing order
+PATCH http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e/complete/
+Content-Type: application/json
+
+### Cancel an existing order
+PATCH http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e/cancel/
+Content-Type: application/json
+
+
+### Refund an existing order
+PATCH http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e/refund/
+Content-Type: application/json
+
+### Add a review to a complete order
+PATCH http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e/review/
+Content-Type: application/json
+
+{
+  "review": "Excellent wand! My spells have never been more accurate."
+}
+
+### Delete order
+DELETE http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e
