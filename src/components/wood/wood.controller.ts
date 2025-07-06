@@ -102,7 +102,11 @@ async function update(req: Request, res: Response) {
     await em.flush();
     res.status(200).json({ message: 'Wood updated', data: woodToUpdate });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Wood not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
@@ -113,7 +117,11 @@ async function remove(req: Request, res: Response) {
     await em.removeAndFlush(woodToDelete);
     res.status(200).json({ message: 'Wood deleted' });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Wood not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
