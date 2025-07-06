@@ -2,6 +2,11 @@ import { Entity, Property, ManyToOne, Cascade, Ref, Rel } from '@mikro-orm/core'
 import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
 import { School } from '../school/school.entity.js';
 
+export enum WizardRole {
+  Admin = 'ADMIN',
+  Wizard = 'WIZARD',
+}
+
 @Entity()
 export class Wizard extends BaseEntity {
   @Property({ nullable: false, unique: true })
@@ -26,7 +31,10 @@ export class Wizard extends BaseEntity {
   phone!: string;
 
   @Property({ nullable: false })
-  role!: string;
+  role!: WizardRole;
+
+  @Property({ nullable: false })
+  deleted!: boolean;
 
   @ManyToOne(() => School, { nullable: false })
   school!: Rel<School>;

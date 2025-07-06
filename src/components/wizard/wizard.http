@@ -28,7 +28,6 @@ Content-Type: application/json
   "email": "draco.malfoy@hogwarts.edu",
   "address": "5 Manor Drive, Malfoy Manor",
   "phone": "445345678",
-  "role": "WIZARD",
   "school": "68692a9caddddb28d9452ee9"
 }
 
@@ -61,7 +60,6 @@ Content-Type: application/json
   "email": "Hermione.Granger@hogwarts.edu",
   "address": "50 Enchanted Lane, Hogwarts",
   "phone": "695123456",
-  "role": "WIZARD",
   "school": "68692a9caddddb28d9452ee9"
 }
 

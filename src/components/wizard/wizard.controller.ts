@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { orm } from '../../shared/db/orm.js';
-import { Wizard } from './wizard.entity.js';
+import { Wizard, WizardRole } from './wizard.entity.js';
 import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 import { z } from 'zod';
 import dotenv from 'dotenv';
@@ -25,7 +25,6 @@ const wizardZodSchema = z.object({
   email: z.string().email(),
   address: z.string(),
   phone: z.string(),
-  role: z.enum(['ADMIN', 'WIZARD']),
   school: objectIdSchema,
 });
 
@@ -162,6 +161,9 @@ async function add(req: Request, res: Response) {
     const hashRounds = 10;
     input.password = await bcrypt.hash(input.password, hashRounds);
 
+    input.role = WizardRole.Wizard;
+    input.deleted = false;
+
     const wizard = em.create(Wizard, input);
     await em.flush();
 
@@ -258,6 +260,70 @@ async function changePasswordWithoutToken(req: Request, res: Response) {
 
     const sanitizedResponse = sanitizeWizardResponse(wizard);
     res.status(200).json({ message: 'Password updated successfully', data: sanitizedResponse });
+  } catch (error: any) {
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Wizard not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
+  }
+}
+
+async function makeAdmin(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const wizard = await em.findOneOrFail(Wizard, { id });
+
+    if (wizard.role === WizardRole.Admin) {
+      res.status(400).json({ message: 'Wizard is already an admin' });
+      return;
+    }
+
+    wizard.role = WizardRole.Admin;
+    await em.persistAndFlush(wizard);
+
+    const sanitizedResponse = sanitizeWizardResponse(wizard);
+    res.status(200).json({ message: 'Wizard role updated to admin', data: sanitizedResponse });
+  } catch (error: any) {
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Wizard not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
+  }
+}
+
+async function makeWizard(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const wizard = await em.findOneOrFail(Wizard, { id });
+
+    if (wizard.role === WizardRole.Wizard) {
+      res.status(400).json({ message: 'Wizard is already a wizard' });
+      return;
+    }
+
+    wizard.role = WizardRole.Wizard;
+    await em.persistAndFlush(wizard);
+
+    const sanitizedResponse = sanitizeWizardResponse(wizard);
+    res.status(200).json({ message: 'Wizard role updated to wizard', data: sanitizedResponse });
+  } catch (error: any) {
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Wizard not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
+  }
+}
+
+async function logicRemove(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const wizardToUpdate = await em.findOneOrFail(Wizard, { id });
+    wizardToUpdate.deleted = true;
+    await em.flush();
+    res.status(200).json({ message: 'Wizard deactivated', data: sanitizeWizardResponse(wizardToUpdate) });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
       res.status(404).json({ message: 'Wizard not found' });
