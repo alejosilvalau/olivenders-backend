@@ -2,20 +2,20 @@
 GET http://localhost:3000/api/orders/
 
 ### Get one order by ID
-GET http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e
+GET http://localhost:3000/api/orders/686a737a0d77818d5ba540a3
 
 ### Create a new order
 POST http://localhost:3000/api/orders/
 Content-Type: application/json
 
 {
-  "payment_reference": "ord_123456789",
-  "payment_provider": "paypal",
-  "shipping_address": "4 Privet Drive, Little Whinging, Surrey"
+  "payment_reference": "ord_123445454789",
+  "payment_provider": "wire_transfer",
+  "shipping_address": "Hogwarts Castle, Scotland"
 }
 
 ### Update an existing order
-PUT http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e
+PUT http://localhost:3000/api/orders/686a81542b4cac1ba6c980e8
 Content-Type: application/json
 
 {
@@ -25,37 +25,36 @@ Content-Type: application/json
 }
 
 ### Pay an existing order
-PATCH http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e/pay/
+PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/pay/
 Content-Type: application/json
 
 ### Dispatch an existing order
-PATCH http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e/dispatch/
+PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/dispatch/
 Content-Type: application/json
 
 ### Deliver an existing order
-PATCH http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e/deliver/
+PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/deliver/
 Content-Type: application/json
 
 ### Complete an existing order
-PATCH http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e/complete/
+PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/complete/
 Content-Type: application/json
 
 ### Cancel an existing order
-PATCH http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e/cancel/
+PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/cancel/
 Content-Type: application/json
 
-
 ### Refund an existing order
-PATCH http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e/refund/
+PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/refund/
 Content-Type: application/json
 
 ### Add a review to a complete order
-PATCH http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e/review/
+PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/review/
 Content-Type: application/json
 
 {
-  "review": "Excellent wand! My spells have never been more accurate."
+  "review": "Disaster! I tried to summon a ghost, and ended up with a frog!"
 }
 
 ### Delete order
-DELETE http://localhost:3000/api/orders/6863acd3b0aaf7a0dfb5128e
+DELETE http://localhost:3000/api/orders/686a73980d77818d5ba540a4

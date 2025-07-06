@@ -37,5 +37,8 @@ export class Order extends BaseEntity {
   status!: OrderStatus;
 
   @Property({ nullable: false })
+  completed!: boolean;
+
+  @Property({ nullable: true })
   review?: string;
 }

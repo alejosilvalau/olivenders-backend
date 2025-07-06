@@ -64,7 +64,7 @@ app.use('/api/cores', coreRouter);
 app.use('/api/wands', wandRouter);
 app.use('/api/questions', questionRouter);
 app.use('/api/quizzes', quizRouter);
-app.use('/api/sales', orderRouter);
+app.use('/api/orders', orderRouter);
 app.use('/api/wizards', wizardRouter);
 
 app.use((_, res) => {

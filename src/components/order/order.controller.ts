@@ -3,6 +3,7 @@ import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 import { orm } from '../../shared/db/orm.js';
 import { z } from 'zod';
 import { Order, OrderStatus, PaymentProvider } from './order.entity.js';
+import { DateTimeType } from '@mikro-orm/core';
 
 const em = orm.em;
 
@@ -16,24 +17,6 @@ const orderZodSchema = z.object({
 function sanitizeOrderInput(req: Request, res: Response, next: NextFunction): void {
   try {
     const validatedInput = orderZodSchema.parse(req.body);
-    req.body.sanitizedInput = { ...validatedInput };
-    next();
-  } catch (error: any) {
-    const formattedError = error.errors.map((err: z.ZodIssue) => ({
-      field: err.path.join('.'),
-      message: err.message,
-    }));
-    res.status(400).json({ message: formattedError });
-  }
-}
-
-const orderStatusZodSchema = z.object({
-  status: z.nativeEnum(OrderStatus),
-});
-
-function sanitizeOrderStatusInput(req: Request, res: Response, next: NextFunction): void {
-  try {
-    const validatedInput = orderStatusZodSchema.parse(req.body);
     req.body.sanitizedInput = { ...validatedInput };
     next();
   } catch (error: any) {
@@ -113,10 +96,10 @@ async function findOne(req: Request, res: Response) {
 async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput;
-    input.name = input.name.toLowerCase();
 
-    input.date = new Date();
+    input.date = Date();
     input.status = OrderStatus.Pending;
+    input.completed = false;
 
     const order = em.create(Order, input);
     await em.flush();
@@ -129,9 +112,7 @@ async function add(req: Request, res: Response) {
 async function update(req: Request, res: Response) {
   try {
     const id = req.params.id;
-
     const input = req.body.sanitizedInput;
-    input.name = input.name.toLowerCase();
 
     const orderToUpdate = await em.findOneOrFail(Order, id);
     em.assign(orderToUpdate, req.body.sanitizedInput);
@@ -232,6 +213,7 @@ async function complete(req: Request, res: Response) {
     }
 
     orderToComplete.status = OrderStatus.Completed;
+    orderToComplete.completed = true;
     await em.flush();
     res.status(200).json({ message: 'Order completed successfully', data: orderToComplete });
   } catch (error: any) {
@@ -270,7 +252,7 @@ async function refund(req: Request, res: Response) {
     const id = req.params.id;
     const orderToRefund = await em.findOneOrFail(Order, { id });
 
-    if (orderToRefund.status !== OrderStatus.Cancelled) {
+    if (orderToRefund.status !== OrderStatus.Cancelled && orderToRefund.status !== OrderStatus.Completed) {
       res.status(400).json({ message: 'Order is not in a refundable state' });
       return;
     }
@@ -295,7 +277,7 @@ async function review(req: Request, res: Response) {
     const id = req.params.id;
     const orderToReview = await em.findOneOrFail(Order, { id });
 
-    if (orderToReview.status !== OrderStatus.Completed) {
+    if (!orderToReview.completed || orderToReview.review) {
       res.status(400).json({ message: 'Order is not in a reviewable state' });
       return;
     }
@@ -334,7 +316,6 @@ async function remove(req: Request, res: Response) {
 
 export {
   sanitizeOrderInput,
-  sanitizeOrderStatusInput,
   sanitizeOrderReviewInput,
   findAll,
   findOne,

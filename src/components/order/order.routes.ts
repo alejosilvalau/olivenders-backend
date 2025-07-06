@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import {
   sanitizeOrderInput,
-  sanitizeOrderStatusInput,
   sanitizeOrderReviewInput,
   findAll,
   findOne,
@@ -28,17 +27,17 @@ orderRouter.post('/', sanitizeMongoQuery, sanitizeOrderInput, add);
 
 orderRouter.put('/:id', sanitizeMongoQuery, sanitizeOrderInput, update);
 
-orderRouter.patch('/:id/pay', sanitizeMongoQuery, sanitizeOrderStatusInput, pay);
+orderRouter.patch('/:id/pay', sanitizeMongoQuery, pay);
 
-orderRouter.patch('/:id/dispatch', sanitizeMongoQuery, sanitizeOrderStatusInput, dispatch);
+orderRouter.patch('/:id/dispatch', sanitizeMongoQuery, dispatch);
 
-orderRouter.patch('/:id/deliver', sanitizeMongoQuery, sanitizeOrderStatusInput, deliver);
+orderRouter.patch('/:id/deliver', sanitizeMongoQuery, deliver);
 
-orderRouter.patch('/:id/complete', sanitizeMongoQuery, sanitizeOrderStatusInput, complete);
+orderRouter.patch('/:id/complete', sanitizeMongoQuery, complete);
 
-orderRouter.patch('/:id/cancel', sanitizeMongoQuery, sanitizeOrderStatusInput, cancel);
+orderRouter.patch('/:id/cancel', sanitizeMongoQuery, cancel);
 
-orderRouter.patch('/:id/refund', sanitizeMongoQuery, sanitizeOrderStatusInput, refund);
+orderRouter.patch('/:id/refund', sanitizeMongoQuery, refund);
 
 orderRouter.patch('/:id/review', sanitizeMongoQuery, sanitizeOrderReviewInput, review);
 
