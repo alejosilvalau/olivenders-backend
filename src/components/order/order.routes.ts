@@ -28,4 +28,18 @@ orderRouter.post('/', add);
 
 orderRouter.put('/:id', update);
 
+orderRouter.patch('/:id/pay', pay);
+
+orderRouter.patch('/:id/dispatch', dispatch);
+
+orderRouter.patch('/:id/deliver', deliver);
+
+orderRouter.patch('/:id/complete', complete);
+
+orderRouter.patch('/:id/cancel', cancel);
+
+orderRouter.patch('/:id/refund', refund);
+
+orderRouter.patch('/:id/review', review);
+
 orderRouter.delete('/:id', remove);

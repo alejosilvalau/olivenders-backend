@@ -151,7 +151,8 @@ async function pay(req: Request, res: Response) {
     const orderToPay = await em.findOneOrFail(Order, { id });
 
     if (orderToPay.status !== OrderStatus.Pending) {
-      return res.status(400).json({ message: 'Order is not in a payable state' });
+      res.status(400).json({ message: 'Order is not in a payable state' });
+      return;
     }
 
     // Here you would integrate with the payment provider
@@ -175,7 +176,8 @@ async function dispatch(req: Request, res: Response) {
     const orderToDispatch = await em.findOneOrFail(Order, { id });
 
     if (orderToDispatch.status !== OrderStatus.Paid) {
-      return res.status(400).json({ message: 'Order is not in a dispatchable state' });
+      res.status(400).json({ message: 'Order is not in a dispatchable state' });
+      return;
     }
 
     // Here you would integrate with the shipping provider
@@ -199,7 +201,8 @@ async function deliver(req: Request, res: Response) {
     const orderToDeliver = await em.findOneOrFail(Order, { id });
 
     if (orderToDeliver.status !== OrderStatus.Dispatched) {
-      return res.status(400).json({ message: 'Order is not in a deliverable state' });
+      res.status(400).json({ message: 'Order is not in a deliverable state' });
+      return;
     }
 
     // Here you would integrate with the delivery provider
@@ -223,7 +226,8 @@ async function complete(req: Request, res: Response) {
     const orderToComplete = await em.findOneOrFail(Order, { id });
 
     if (orderToComplete.status !== OrderStatus.Delivered) {
-      return res.status(400).json({ message: 'Order is not in a completable state' });
+      res.status(400).json({ message: 'Order is not in a completable state' });
+      return;
     }
 
     orderToComplete.status = OrderStatus.Completed;
@@ -244,7 +248,8 @@ async function cancel(req: Request, res: Response) {
     const orderToCancel = await em.findOneOrFail(Order, { id });
 
     if (orderToCancel.status === OrderStatus.Completed || orderToCancel.status === OrderStatus.Refunded) {
-      return res.status(400).json({ message: 'Order cannot be cancelled at this stage' });
+      res.status(400).json({ message: 'Order cannot be cancelled at this stage' });
+      return;
     }
 
     orderToCancel.status = OrderStatus.Cancelled;
@@ -265,7 +270,8 @@ async function refund(req: Request, res: Response) {
     const orderToRefund = await em.findOneOrFail(Order, { id });
 
     if (orderToRefund.status !== OrderStatus.Cancelled) {
-      return res.status(400).json({ message: 'Order is not in a refundable state' });
+      res.status(400).json({ message: 'Order is not in a refundable state' });
+      return;
     }
 
     // Here you would integrate with the payment provider to process the refund
