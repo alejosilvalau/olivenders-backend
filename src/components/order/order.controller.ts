@@ -4,22 +4,53 @@ import { orm } from '../../shared/db/orm.js';
 import { z } from 'zod';
 import { Order, OrderStatus, PaymentProvider } from './order.entity.js';
 
+const em = orm.em;
+
 const orderZodSchema = z.object({
   id: objectIdSchema.optional(),
   payment_reference: z.string().trim().min(1),
-  payment_provider: z.enum([...Object.values(PaymentProvider)] as [string, ...string[]]),
+  payment_provider: z.nativeEnum(PaymentProvider),
 });
-
-const orderReviewZodSchema = z.object({
-  id: objectIdSchema.optional(),
-  review: z.string().trim().min(1),
-});
-
-const em = orm.em;
 
 function sanitizeOrderInput(req: Request, res: Response, next: NextFunction): void {
   try {
     const validatedInput = orderZodSchema.parse(req.body);
+    req.body.sanitizedInput = { ...validatedInput };
+    next();
+  } catch (error: any) {
+    const formattedError = error.errors.map((err: z.ZodIssue) => ({
+      field: err.path.join('.'),
+      message: err.message,
+    }));
+    res.status(400).json({ message: formattedError });
+  }
+}
+
+const orderStatusZodSchema = z.object({
+  status: z.nativeEnum(OrderStatus),
+});
+
+function sanitizeOrderStatusInput(req: Request, res: Response, next: NextFunction): void {
+  try {
+    const validatedInput = orderStatusZodSchema.parse(req.body);
+    req.body.sanitizedInput = { ...validatedInput };
+    next();
+  } catch (error: any) {
+    const formattedError = error.errors.map((err: z.ZodIssue) => ({
+      field: err.path.join('.'),
+      message: err.message,
+    }));
+    res.status(400).json({ message: formattedError });
+  }
+}
+
+const orderReviewZodSchema = z.object({
+  review: z.string().trim().min(1),
+});
+
+function sanitizeOrderReviewInput(req: Request, res: Response, next: NextFunction): void {
+  try {
+    const validatedInput = orderReviewZodSchema.parse(req.body);
     req.body.sanitizedInput = { ...validatedInput };
     next();
   } catch (error: any) {
@@ -257,7 +288,7 @@ async function review(req: Request, res: Response) {
     const id = req.params.id;
     const orderToReview = await em.findOneOrFail(Order, { id });
 
-    const reviewInput = orderReviewZodSchema.parse(req.body);
+    const reviewInput = req.body.sanitizedInput;
 
     // Add AI check here
 
