@@ -40,6 +40,12 @@ Content-Type: application/json
   "core": "6869049884656d883f79c22a"
 }
 
+### Mark a wand as available
+PATCH http://localhost:3000/api/wands/68683ed4508f3212ea14e89a/available/
+
+### Mark a wand as sold
+PATCH http://localhost:3000/api/wands/68683ed4508f3212ea14e89a/sold/
+
 ### Deactivate a wand (logical removal)
 PATCH http://localhost:3000/api/wands/68683ed4508f3212ea14e89a/deactivate/
 

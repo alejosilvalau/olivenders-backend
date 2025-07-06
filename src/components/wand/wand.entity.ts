@@ -3,6 +3,11 @@ import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
 import Wood from '../wood/wood.entity.js';
 import { Core } from '../core/core.entity.js';
 
+export enum WandStatus {
+  Available = 'available',
+  Sold = 'sold',
+  Deactivated = 'deactivated',
+}
 @Entity()
 export class Wand extends BaseEntity {
   @Property({ nullable: false, unique: true })
@@ -15,7 +20,7 @@ export class Wand extends BaseEntity {
   description!: string;
 
   @Property({ nullable: false })
-  status!: string;
+  status!: WandStatus;
 
   @Property({ nullable: false })
   image!: string;

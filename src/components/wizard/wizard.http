@@ -72,16 +72,16 @@ Content-Type: application/json
 }
 
 ### Make a wizard an admin
-PATCH http://localhost:3000/api/wizards/68698280a91cb51622ab22b6/role/admin
+PATCH http://localhost:3000/api/wizards/686a99c88d35246deb7b8fac/role/admin
 
 ### Make an admin a wizard
-PATCH http://localhost:3000/api/wizards/68698280a91cb51622ab22b6/role/wizard
+PATCH http://localhost:3000/api/wizards/686a99c88d35246deb7b8fac/role/wizard
 
 ### Deactivate a wizard account
-PATCH http://localhost:3000/api/wizards/68698280a91cb51622ab22b6/deactivate
+PATCH http://localhost:3000/api/wizards/686a99c88d35246deb7b8fac/deactivate
 
 ### Activate a wizard account
-PATCH http://localhost:3000/api/wizards/68698280a91cb51622ab22b6/activate
+PATCH http://localhost:3000/api/wizards/686a99c88d35246deb7b8fac/activate
 
 ### Delete wizard
-DELETE http://localhost:3000/api/wizards/68698280a91cb51622ab22b6
+DELETE http://localhost:3000/api/wizards/686a40296f7504bd11f6d6e6

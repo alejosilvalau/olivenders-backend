@@ -8,7 +8,9 @@ import {
   add,
   update,
   remove,
-  logicRemove,
+  markAsAvailable,
+  markAsSold,
+  deactivate,
 } from './wand.controller.js';
 import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
 
@@ -61,7 +63,6 @@ export const wandRouter = Router();
  *         - wood
  *         - core
  */
-
 
 /**
  * @swagger
@@ -200,7 +201,6 @@ wandRouter.get('/wood/:woodId', sanitizeMongoQuery, findAllByWood);
  *         description: Error retrieving the wand
  */
 wandRouter.get('/:id', sanitizeMongoQuery, findOne);
-
 
 /**
  * @swagger
@@ -356,6 +356,10 @@ wandRouter.post('/', sanitizeMongoQuery, sanitizeWandInput, add);
  */
 wandRouter.put('/:id', sanitizeMongoQuery, sanitizeWandInput, update);
 
+wandRouter.patch('/:id/available', sanitizeMongoQuery, markAsAvailable);
+
+wandRouter.patch('/:id/sold', sanitizeMongoQuery, markAsSold);
+
 /**
  * @swagger
  * /api/wands/{id}/deactivate:
@@ -387,7 +391,7 @@ wandRouter.put('/:id', sanitizeMongoQuery, sanitizeWandInput, update);
  *       500:
  *         description: Error deactivating the wand
  */
-wandRouter.patch('/:id/deactivate', sanitizeMongoQuery, logicRemove);
+wandRouter.patch('/:id/deactivate', sanitizeMongoQuery, deactivate);
 
 /**
  * @swagger

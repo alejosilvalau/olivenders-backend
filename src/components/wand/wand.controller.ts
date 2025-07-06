@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 import { orm } from '../../shared/db/orm.js';
-import { Wand } from './wand.entity.js';
+import { Wand, WandStatus } from './wand.entity.js';
 import { z } from 'zod';
 import Wood from '../wood/wood.entity.js';
 import { Core } from '../core/core.entity.js';
@@ -13,7 +13,6 @@ const wandZodSchema = z.object({
   name: z.string().trim().min(1),
   length_inches: z.number().positive(),
   description: z.string().trim().min(1),
-  status: z.string().trim().min(1),
   image: z.string().trim().min(1),
   profit: z.number().nonnegative(),
   wood: objectIdSchema,
@@ -59,7 +58,7 @@ async function findAll(req: Request, res: Response) {
 async function findAllByCore(req: Request, res: Response) {
   try {
     const coreId = req.params.coreId;
-    const wands = await em.find(Wand, { core: coreId, status: 'active' }, { populate: ['wood', 'core'] });
+    const wands = await em.find(Wand, { core: coreId, status: WandStatus.Available }, { populate: ['wood', 'core'] });
     res.status(200).json({ message: 'Wands fetched', data: wands });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -69,7 +68,7 @@ async function findAllByCore(req: Request, res: Response) {
 async function findAllByWood(req: Request, res: Response) {
   try {
     const woodId = req.params.woodId;
-    const wands = await em.find(Wand, { wood: woodId, status: 'active' }, { populate: ['wood', 'core'] });
+    const wands = await em.find(Wand, { wood: woodId, status: WandStatus.Available }, { populate: ['wood', 'core'] });
     res.status(200).json({ message: 'Wands fetched', data: wands });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -132,11 +131,43 @@ async function update(req: Request, res: Response) {
   }
 }
 
-async function logicRemove(req: Request, res: Response) {
+async function markAsAvailable(req: Request, res: Response) {
   try {
     const id = req.params.id;
     const wandToUpdate = await em.findOneOrFail(Wand, { id });
-    em.assign(wandToUpdate, { status: 'inactive' });
+    em.assign(wandToUpdate, { status: WandStatus.Available });
+    await em.flush();
+    res.status(200).json({ message: 'Wand available', data: wandToUpdate });
+  } catch (error: any) {
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Wand not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
+  }
+}
+
+async function markAsSold(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const wandToUpdate = await em.findOneOrFail(Wand, { id });
+    em.assign(wandToUpdate, { status: WandStatus.Sold });
+    await em.flush();
+    res.status(200).json({ message: 'Wand sold', data: wandToUpdate });
+  } catch (error: any) {
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Wand not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
+  }
+}
+
+async function deactivate(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const wandToUpdate = await em.findOneOrFail(Wand, { id });
+    em.assign(wandToUpdate, { status: WandStatus.Deactivated });
     await em.flush();
     res.status(200).json({ message: 'Wand deactivated', data: wandToUpdate });
   } catch (error: any) {
@@ -164,4 +195,16 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { sanitizeWandInput, findAll, findAllByCore, findAllByWood, findOne, add, update, logicRemove, remove };
+export {
+  sanitizeWandInput,
+  findAll,
+  findAllByCore,
+  findAllByWood,
+  findOne,
+  add,
+  update,
+  markAsAvailable,
+  markAsSold,
+  deactivate,
+  remove,
+};
