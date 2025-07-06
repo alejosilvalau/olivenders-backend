@@ -102,7 +102,11 @@ async function update(req: Request, res: Response) {
     await em.flush();
     res.status(200).json({ message: 'School updated', data: schoolToUpdate });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'School not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
@@ -113,7 +117,11 @@ async function remove(req: Request, res: Response) {
     await em.removeAndFlush(schoolToDelete);
     res.status(200).json({ message: 'School deleted' });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'School not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 

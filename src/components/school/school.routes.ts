@@ -205,6 +205,16 @@ schoolRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
  *                         type: string
  *                       message:
  *                         type: string
+ *       409:
+ *         description: School with this name or email already exists
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: A school with this name or email already exists
  *       500:
  *         description: Error creating the school
  *         content:
