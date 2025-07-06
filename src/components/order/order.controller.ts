@@ -7,7 +7,10 @@ import { OpenAI } from 'openai';
 
 const em = orm.em;
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_KEY });
+const openai = new OpenAI({
+  baseURL: 'https://models.github.ai/inference',
+  apiKey: process.env.OPENAI_KEY,
+});
 
 const orderZodSchema = z.object({
   id: objectIdSchema.optional(),
@@ -26,7 +29,7 @@ function sanitizeOrderInput(req: Request, res: Response, next: NextFunction): vo
       field: err.path.join('.'),
       message: err.message,
     }));
-    res.status(400).json({ message: formattedError });
+    res.status(400).json({ errors: formattedError });
   }
 }
 
@@ -44,7 +47,7 @@ function sanitizeOrderReviewInput(req: Request, res: Response, next: NextFunctio
       field: err.path.join('.'),
       message: err.message,
     }));
-    res.status(400).json({ message: formattedError });
+    res.status(400).json({ errors: formattedError });
   }
 }
 
@@ -159,7 +162,7 @@ function generateTrackingId(): string {
 }
 
 function scheduleAutoDelivery(id: string) {
-  const delay = 60000; // 60 seconds
+  const delay = 10000; // 10 seconds
 
   setTimeout(async () => {
     try {
@@ -273,12 +276,26 @@ async function refund(req: Request, res: Response) {
   }
 }
 
+// Returns true if the review is safe, false if flagged
 async function checkReviewWithOpenAI(reviewText: string): Promise<boolean> {
-  // Returns true if the review is safe, false if flagged
-  const moderation = await openai.moderations.create({
-    input: reviewText,
+  const prompt = `
+  You are a content moderation AI. Analyze the following product review and respond ONLY with "SAFE" if it is appropriate, or "UNSAFE" if it contains hate speech, violence, sexual content, or other inappropriate material.
+  
+  Review: """${reviewText}"""
+  `;
+
+  const response = await openai.chat.completions.create({
+    model: 'openai/gpt-4.1',
+    messages: [
+      { role: 'system', content: 'You are a strict content moderation assistant.' },
+      { role: 'user', content: prompt },
+    ],
+    temperature: 0,
+    max_tokens: 1,
   });
-  return !moderation.results[0].flagged;
+
+  const content = response.choices[0].message.content?.trim().toUpperCase();
+  return content === 'SAFE';
 }
 
 async function review(req: Request, res: Response) {
@@ -296,7 +313,7 @@ async function review(req: Request, res: Response) {
     // Use the extracted function to check the review
     const isSafe = await checkReviewWithOpenAI(reviewInput.review);
     if (!isSafe) {
-      res.status(400).json({ message: 'Review contains inappropriate content.' });
+      res.status(400).json({ message: 'Review contains inappropriate content' });
       return;
     }
 

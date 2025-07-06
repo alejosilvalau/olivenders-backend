@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/orders/
 
 ### Get one order by ID
-GET http://localhost:3000/api/orders/686a737a0d77818d5ba540a3
+GET http://localhost:3000/api/orders/686adf9b2786a48dfdb0e756
 
 ### Create a new order
 POST http://localhost:3000/api/orders/
@@ -25,35 +25,26 @@ Content-Type: application/json
 }
 
 ### Pay an existing order
-PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/pay/
-Content-Type: application/json
+PATCH http://localhost:3000/api/orders/686adf9b2786a48dfdb0e756/pay/
 
 ### Dispatch an existing order
-PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/dispatch/
-Content-Type: application/json
-
-### Deliver an existing order
-PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/deliver/
-Content-Type: application/json
+PATCH http://localhost:3000/api/orders/686adf9b2786a48dfdb0e756/dispatch/
 
 ### Complete an existing order
-PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/complete/
-Content-Type: application/json
+PATCH http://localhost:3000/api/orders/686adf9b2786a48dfdb0e756/complete/
 
 ### Cancel an existing order
 PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/cancel/
-Content-Type: application/json
 
 ### Refund an existing order
 PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/refund/
-Content-Type: application/json
 
 ### Add a review to a complete order
 PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/review/
 Content-Type: application/json
 
 {
-  "review": "Disaster! I tried to summon a ghost, and ended up with a frog!"
+  "review": "Good product, but it didn't serve my needs."
 }
 
 ### Delete order
