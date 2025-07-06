@@ -162,7 +162,7 @@ async function add(req: Request, res: Response) {
     input.password = await bcrypt.hash(input.password, hashRounds);
 
     input.role = WizardRole.Wizard;
-    input.deleted = false;
+    input.deactivated = false;
 
     const wizard = em.create(Wizard, input);
     await em.flush();
@@ -317,13 +317,33 @@ async function makeWizard(req: Request, res: Response) {
   }
 }
 
-async function logicRemove(req: Request, res: Response) {
+async function deactivate(req: Request, res: Response) {
   try {
     const id = req.params.id;
     const wizardToUpdate = await em.findOneOrFail(Wizard, { id });
-    wizardToUpdate.deleted = true;
+    wizardToUpdate.deactivated = true;
     await em.flush();
-    res.status(200).json({ message: 'Wizard deactivated', data: sanitizeWizardResponse(wizardToUpdate) });
+
+    const sanitizedResponse = sanitizeWizardResponse(wizardToUpdate);
+    res.status(200).json({ message: 'Wizard account disabled', data: sanitizedResponse });
+  } catch (error: any) {
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Wizard not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
+  }
+}
+
+async function activate(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const wizardToUpdate = await em.findOneOrFail(Wizard, { id });
+    wizardToUpdate.deactivated = false;
+    await em.flush();
+
+    const sanitizedResponse = sanitizeWizardResponse(wizardToUpdate);
+    res.status(200).json({ message: 'Wizard account enabled', data: sanitizedResponse });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
       res.status(404).json({ message: 'Wizard not found' });
@@ -358,5 +378,9 @@ export {
   validatePassword,
   update,
   changePasswordWithoutToken,
+  makeAdmin,
+  makeWizard,
+  deactivate,
+  activate,
   remove,
 };

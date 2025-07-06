@@ -13,6 +13,10 @@ import {
   validatePassword,
   update,
   changePasswordWithoutToken,
+  makeAdmin,
+  makeWizard,
+  deactivate,
+  activate,
   remove,
 } from './wizard.controller.js';
 import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
@@ -500,6 +504,16 @@ wizardRouter.put('/:id', sanitizeMongoQuery, sanitizeWizardInput, update);
  *                   example: Error al actualizar la contraseña
  */
 wizardRouter.patch('/:id', sanitizeMongoQuery, sanitizeWizardPartialInput, changePasswordWithoutToken);
+
+// TODO: Add documentation for this endpoint, only for admin users
+wizardRouter.patch('/:id/role/admin', sanitizeMongoQuery, makeAdmin);
+
+// TODO: Add documentation for this endpoint, only for admin users
+wizardRouter.patch('/:id/role/wizard', sanitizeMongoQuery, makeWizard);
+
+wizardRouter.patch('/:id/deactivate', sanitizeMongoQuery, deactivate);
+
+wizardRouter.patch('/:id/activate', sanitizeMongoQuery, activate);
 
 /**
  * @swagger

@@ -34,7 +34,7 @@ export class Wizard extends BaseEntity {
   role!: WizardRole;
 
   @Property({ nullable: false })
-  deleted!: boolean;
+  deactivated!: boolean;
 
   @ManyToOne(() => School, { nullable: false })
   school!: Rel<School>;
