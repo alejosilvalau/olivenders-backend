@@ -94,6 +94,8 @@ async function add(req: Request, res: Response) {
     const input = req.body.sanitizedInput;
     input.name = input.name.toLowerCase();
 
+    input.status = WandStatus.Available; 
+
     input.total_price = await calculateWandPrice(input.wood, input.core, input.profit);
 
     const wand = em.create(Wand, input);
