@@ -506,10 +506,10 @@ wizardRouter.put('/:id', sanitizeMongoQuery, sanitizeWizardInput, update);
 wizardRouter.patch('/:id', sanitizeMongoQuery, sanitizeWizardPartialInput, changePasswordWithoutToken);
 
 // TODO: Add documentation for this endpoint, only for admin users
-wizardRouter.patch('/:id/role/admin', sanitizeMongoQuery, makeAdmin);
+wizardRouter.patch('/:id/admin', sanitizeMongoQuery, makeAdmin);
 
 // TODO: Add documentation for this endpoint, only for admin users
-wizardRouter.patch('/:id/role/user', sanitizeMongoQuery, makeUser);
+wizardRouter.patch('/:id/user', sanitizeMongoQuery, makeUser);
 
 wizardRouter.patch('/:id/deactivate', sanitizeMongoQuery, deactivate);
 
