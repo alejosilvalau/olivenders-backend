@@ -3,9 +3,11 @@ import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 import { orm } from '../../shared/db/orm.js';
 import { z } from 'zod';
 import { Order, OrderStatus, PaymentProvider } from './order.entity.js';
-import { DateTimeType } from '@mikro-orm/core';
+import { OpenAI } from 'openai';
 
 const em = orm.em;
+
+const openai = new OpenAI({ apiKey: process.env.OPENAI_KEY });
 
 const orderZodSchema = z.object({
   id: objectIdSchema.optional(),
@@ -184,6 +186,7 @@ async function dispatch(req: Request, res: Response) {
 
     // Here you would integrate with the shipping provider
     // For example, using a shipping API to create a shipment
+
     orderToDispatch.tracking_id = generateTrackingId();
     orderToDispatch.status = OrderStatus.Dispatched;
     await em.flush();
@@ -270,6 +273,14 @@ async function refund(req: Request, res: Response) {
   }
 }
 
+async function checkReviewWithOpenAI(reviewText: string): Promise<boolean> {
+  // Returns true if the review is safe, false if flagged
+  const moderation = await openai.moderations.create({
+    input: reviewText,
+  });
+  return !moderation.results[0].flagged;
+}
+
 async function review(req: Request, res: Response) {
   try {
     const id = req.params.id;
@@ -282,7 +293,12 @@ async function review(req: Request, res: Response) {
 
     const reviewInput = req.body.sanitizedInput;
 
-    // Add AI check here
+    // Use the extracted function to check the review
+    const isSafe = await checkReviewWithOpenAI(reviewInput.review);
+    if (!isSafe) {
+      res.status(400).json({ message: 'Review contains inappropriate content.' });
+      return;
+    }
 
     orderToReview.review = reviewInput.review;
     await em.flush();
