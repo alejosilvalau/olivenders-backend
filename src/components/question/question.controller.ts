@@ -52,10 +52,10 @@ async function findOne(req: Request, res: Response, next: NextFunction) {
 async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput;
-    const question = em.create(Question, input);
 
     input.created_at = new Date();
 
+    const question = em.create(Question, input);
     await em.flush();
     res.status(201).json({ message: 'Question created', data: question });
   } catch (error: any) {

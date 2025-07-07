@@ -52,4 +52,4 @@ Content-Type: application/json
 }
 
 ### Delete order
-DELETE http://localhost:3000/api/orders/686b119f924dcee51724545b
+DELETE http://localhost:3000/api/orders/686b970b94b3abba7b748de3
