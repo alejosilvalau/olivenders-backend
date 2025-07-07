@@ -66,7 +66,7 @@ questionRouter.get('/', findAll);
  *       500:
  *         description: Error retrieving the question
  */
-questionRouter.get('/:id', findOne);
+questionRouter.get('/:id', sanitizeMongoQuery, findOne);
 
 /**
  * @swagger
@@ -94,7 +94,7 @@ questionRouter.get('/:id', findOne);
  *       500:
  *         description: Error creating the question
  */
-questionRouter.post('/', sanitizeQuestionInput, sanitizeMongoQuery, add);
+questionRouter.post('/', sanitizeMongoQuery, sanitizeQuestionInput, add);
 
 /**
  * @swagger
@@ -129,7 +129,7 @@ questionRouter.post('/', sanitizeQuestionInput, sanitizeMongoQuery, add);
  *       500:
  *         description: Error updating the question
  */
-questionRouter.put('/:id', sanitizeQuestionInput, sanitizeMongoQuery, update);
+questionRouter.put('/:id', sanitizeMongoQuery, sanitizeQuestionInput, update);
 
 /**
  * @swagger

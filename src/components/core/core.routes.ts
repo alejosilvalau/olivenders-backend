@@ -100,7 +100,7 @@ coreRouter.get('/', findAll);
  *       500:
  *         description: Error retrieving the core
  */
-coreRouter.get('/:id', findOne);
+coreRouter.get('/:id', sanitizeMongoQuery, findOne);
 
 /**
  * @swagger
@@ -267,7 +267,7 @@ coreRouter.post('/', sanitizeMongoQuery, sanitizeCoreInput, add);
  *                   type: string
  *                   example: An error occurred while updating the core
  */
-coreRouter.put('/:id', sanitizeMongoQuery,sanitizeCoreInput, update);
+coreRouter.put('/:id', sanitizeMongoQuery, sanitizeCoreInput, update);
 
 /**
  * @swagger
