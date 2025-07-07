@@ -184,7 +184,7 @@ async function deactivate(req: Request, res: Response) {
 async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const wandToDelete = await em.findOneOrFail(Wand, { id });
+    const wandToDelete = await em.findOneOrFail(Wand, { id }, { populate: ['order'] });
     await em.removeAndFlush(wandToDelete);
     em.clear();
     res.status(200).json({ message: 'Wand deleted' });

@@ -113,7 +113,7 @@ async function update(req: Request, res: Response) {
 async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const coreToDelete = await em.findOneOrFail(Core, { id }, { populate: ['wands'] });
+    const coreToDelete = await em.findOneOrFail(Core, { id }, { populate: ['wands', 'wands.order'] });
     await em.removeAndFlush(coreToDelete);
 
     res.status(200).json({ message: 'Core deleted' });

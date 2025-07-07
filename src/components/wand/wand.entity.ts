@@ -1,7 +1,8 @@
-import { Entity, Property, ManyToOne, Cascade, Rel } from '@mikro-orm/core';
+import { Entity, Property, ManyToOne, Cascade, Rel, OneToOne } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
 import Wood from '../wood/wood.entity.js';
 import { Core } from '../core/core.entity.js';
+import { Order } from '../order/order.entity.js';
 
 export enum WandStatus {
   Available = 'available',
@@ -36,4 +37,11 @@ export class Wand extends BaseEntity {
 
   @ManyToOne(() => Core, { nullable: false })
   core!: Rel<Core>;
+
+  @OneToOne(() => Order, order => order.wand, {
+    nullable: true,
+    unique: true,
+    cascade: [Cascade.REMOVE],
+  })
+  order?: Rel<Order>;
 }

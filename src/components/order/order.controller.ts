@@ -55,7 +55,11 @@ function sanitizeOrderReviewInput(req: Request, res: Response, next: NextFunctio
 
 async function findAll(req: Request, res: Response) {
   try {
-    const orders = await em.find(Order, {}, { populate: ['wizard', 'wizard.school'] });
+    const orders = await em.find(
+      Order,
+      {},
+      { populate: ['wizard', 'wizard.school', 'wand', 'wand.wood', 'wand.core'] }
+    );
     const sanitizedOrders = sanitizeOrderResponseArray(orders);
     res.status(200).json({ message: 'Orders fetched', data: sanitizedOrders });
   } catch (error: any) {
@@ -80,7 +84,11 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const order = await em.findOneOrFail(Order, { id }, { populate: ['wizard', 'wizard.school'] });
+    const order = await em.findOneOrFail(
+      Order,
+      { id },
+      { populate: ['wizard', 'wizard.school', 'wand', 'wand.wood', 'wand.core'] }
+    );
     const sanitizedOrder = sanitizeOrderResponse(order);
     res.status(200).json({ message: 'Order fetched', data: sanitizedOrder });
   } catch (error: any) {

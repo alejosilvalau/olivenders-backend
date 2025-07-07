@@ -1,6 +1,18 @@
-import { Entity, Property, Collection, OneToMany, Cascade, types, DateTimeType, ManyToOne, Rel } from '@mikro-orm/core';
+import {
+  Entity,
+  Property,
+  Collection,
+  OneToMany,
+  Cascade,
+  types,
+  DateTimeType,
+  ManyToOne,
+  Rel,
+  OneToOne,
+} from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
 import { Wizard } from '../wizard/wizard.entity.js';
+import { Wand } from '../wand/wand.entity.js';
 
 export enum OrderStatus {
   Pending = 'pending',
@@ -48,4 +60,11 @@ export class Order extends BaseEntity {
 
   @ManyToOne(() => Wizard, { nullable: false })
   wizard!: Rel<Wizard>;
+
+  @OneToOne(() => Wand, wand => wand.order, {
+    nullable: false,
+    unique: true,
+    owner: true,
+  })
+  wand!: Rel<Wand>;
 }
