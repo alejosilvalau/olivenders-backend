@@ -12,7 +12,8 @@ Content-Type: application/json
   "payment_reference": "ord_123445454789",
   "payment_provider": "paypal",
   "shipping_address": "Hogwarts Castle, Scotland",
-  "wizard": "686b0661b4ed364cc6c641fe"
+  "wizard": "686b0661b4ed364cc6c641fe",
+  "wand": "686b10e29e70e5bf1347fe08"
 }
 
 ### Update an existing order
@@ -23,7 +24,8 @@ Content-Type: application/json
   "payment_reference": "ord_987654321",
   "payment_provider": "stripe",
   "shipping_address": "The Burrow, Ottery St. Catchpole",
-  "wizard": "686b10e29e70e5bf1347fe08"
+  "wizard": "686b10e29e70e5bf1347fe08",
+  "wand": "686b10e29e70e5bf1347fe08"
 }
 
 ### Pay an existing order

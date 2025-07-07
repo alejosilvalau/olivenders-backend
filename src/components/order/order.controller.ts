@@ -19,6 +19,7 @@ const orderZodSchema = z.object({
   payment_provider: z.nativeEnum(PaymentProvider),
   shipping_address: z.string().trim().min(1),
   wizard: objectIdSchema,
+  wand: objectIdSchema,
 });
 
 function sanitizeOrderInput(req: Request, res: Response, next: NextFunction): void {
