@@ -71,7 +71,7 @@ quizRouter.get('/', findAll);
  *       500:
  *         description: Error retrieving the quiz
  */
-quizRouter.get('/:id', findOne);
+quizRouter.get('/:id', sanitizeMongoQuery, findOne);
 
 /**
  * @swagger
@@ -99,7 +99,7 @@ quizRouter.get('/:id', findOne);
  *       500:
  *         description: Error creating the quiz
  */
-quizRouter.post('/', sanitizeTestInput, sanitizeMongoQuery, add);
+quizRouter.post('/', sanitizeMongoQuery, sanitizeTestInput, add);
 
 /**
  * @swagger
@@ -134,7 +134,7 @@ quizRouter.post('/', sanitizeTestInput, sanitizeMongoQuery, add);
  *       500:
  *         description: Error updating the quiz
  */
-quizRouter.put('/:id', sanitizeTestInput, sanitizeMongoQuery, update);
+quizRouter.put('/:id', sanitizeMongoQuery, sanitizeTestInput, update);
 
 /**
  * @swagger
