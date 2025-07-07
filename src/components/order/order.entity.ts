@@ -34,8 +34,8 @@ export class Order extends BaseEntity {
   @Property({ nullable: true })
   tracking_id!: string;
 
-  @Property({ nullable: false, type: DateTimeType })
-  date!: DateTimeType;
+  @Property({ nullable: false, type: Date })
+  date!: Date;
 
   @Property({ nullable: false })
   status!: OrderStatus;

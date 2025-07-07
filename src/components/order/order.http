@@ -10,20 +10,20 @@ Content-Type: application/json
 
 {
   "payment_reference": "ord_123445454789",
-  "payment_provider": "wire_transfer",
+  "payment_provider": "paypal",
   "shipping_address": "Hogwarts Castle, Scotland",
-  "wizard": "686aa814867bf56ce7c5351e"
+  "wizard": "686b0661b4ed364cc6c641fe"
 }
 
 ### Update an existing order
-PUT http://localhost:3000/api/orders/686a81542b4cac1ba6c980e8
+PUT http://localhost:3000/api/orders/686b079ce49f5f3532b8e26e
 Content-Type: application/json
 
 {
   "payment_reference": "ord_987654321",
   "payment_provider": "stripe",
   "shipping_address": "The Burrow, Ottery St. Catchpole",
-  "wizard": "686aa814867bf56ce7c5351e"
+  "wizard": "686b10e29e70e5bf1347fe08"
 }
 
 ### Pay an existing order
@@ -50,4 +50,4 @@ Content-Type: application/json
 }
 
 ### Delete order
-DELETE http://localhost:3000/api/orders/686a73980d77818d5ba540a4
+DELETE http://localhost:3000/api/orders/686b0762e49f5f3532b8e26d

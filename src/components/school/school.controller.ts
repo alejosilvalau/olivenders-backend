@@ -113,7 +113,7 @@ async function update(req: Request, res: Response) {
 async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const schoolToDelete = await em.findOneOrFail(School, { id }, { populate: ['wizards'] });
+    const schoolToDelete = await em.findOneOrFail(School, { id }, { populate: ['wizards', 'wizards.orders'] });
     await em.removeAndFlush(schoolToDelete);
     res.status(200).json({ message: 'School deleted' });
   } catch (error: any) {

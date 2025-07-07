@@ -28,7 +28,7 @@ Content-Type: application/json
   "email": "draco.malfoy@hogwarts.edu",
   "address": "5 Manor Drive, Malfoy Manor",
   "phone": "445345678",
-  "school": "68692a9caddddb28d9452ee9"
+  "school": "686b10cf9e70e5bf1347fe07"
 }
 
 ### Login to a wizard account

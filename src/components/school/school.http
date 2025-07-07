@@ -30,4 +30,4 @@ Content-Type: application/json
 }
 
 ### Delete a school
-DELETE http://localhost:3000/api/schools/68692a9caddddb28d9452ee9
+DELETE http://localhost:3000/api/schools/686b10cf9e70e5bf1347fe07
