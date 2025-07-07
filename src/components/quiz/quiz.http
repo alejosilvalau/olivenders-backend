@@ -9,18 +9,16 @@ POST http://localhost:3000/api/quizzes/
 Content-Type: application/json
 
 {
-  "name": "Advanced Spellcasting",
-  "date": "2025-07-15T10:00:00Z"
+  "name": "Advanced Spellcasting"
 }
 
 ### Update an existing test
-PUT http://localhost:3000/api/quizzes/68330e7503f0d4d3a6021aeb
+PUT http://localhost:3000/api/quizzes/686b9b20f72a5a70ad8fc5ae
 Content-Type: application/json
 
 {
-  "name": "Intermediate Potion Making",
-  "date": "2025-08-20T14:30:00Z"
+  "name": "Intermediate Potion Making"
 }
 
 ### Delete a test
-DELETE http://localhost:3000/api/quizzes/68330e7503f0d4d3a6021aeb
+DELETE http://localhost:3000/api/quizzes/686b9b12f72a5a70ad8fc5ad
