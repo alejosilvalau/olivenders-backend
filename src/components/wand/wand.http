@@ -2,13 +2,13 @@
 GET http://localhost:3000/api/wands/
 
 ### Get all wands by core
-GET http://localhost:3000/api/wands/core/68691bcb4e73ad09c1b0de32
+GET http://localhost:3000/api/wands/core/686aa443c710b3a438dae241
 
 ### Get all wands by wood
 GET http://localhost:3000/api/wands/wood/68691b824e73ad09c1b0de31
 
 ### Get one wand by ID
-GET http://localhost:3000/api/wands/68683ed4508f3212ea14e89a
+GET http://localhost:3000/api/wands/686aa443c710b3a438dae241
 
 ### Create a new wand
 POST http://localhost:3000/api/wands/

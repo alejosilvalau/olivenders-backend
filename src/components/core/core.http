@@ -28,4 +28,4 @@ Content-Type: application/json
 }
 
 ### Delete a core
-DELETE http://localhost:3000/api/cores/686919e04e73ad09c1b0de30
+DELETE http://localhost:3000/api/cores/6869049884656d883f79c22a

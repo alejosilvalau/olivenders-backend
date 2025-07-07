@@ -12,8 +12,8 @@ Content-Type: application/json
   "payment_reference": "ord_123445454789",
   "payment_provider": "paypal",
   "shipping_address": "Hogwarts Castle, Scotland",
-  "wizard": "686b0661b4ed364cc6c641fe",
-  "wand": "686b10e29e70e5bf1347fe08"
+  "wizard": "686b1a81f92fcf19c204d43e",
+  "wand": "686aa443c710b3a438dae241"
 }
 
 ### Update an existing order
@@ -52,4 +52,4 @@ Content-Type: application/json
 }
 
 ### Delete order
-DELETE http://localhost:3000/api/orders/686b0762e49f5f3532b8e26d
+DELETE http://localhost:3000/api/orders/686b119f924dcee51724545b
