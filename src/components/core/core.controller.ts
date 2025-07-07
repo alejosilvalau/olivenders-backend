@@ -66,7 +66,6 @@ async function findOneByName(req: Request, res: Response) {
 
 async function add(req: Request, res: Response) {
   try {
-    console.log('Cleared the EntityManager');
     const input = req.body.sanitizedInput;
     input.name = input.name.toLowerCase();
     input.wands = [];

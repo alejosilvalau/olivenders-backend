@@ -115,7 +115,7 @@ async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput;
 
-    input.date = Date();
+    input.created_at = Date();
     input.status = OrderStatus.Pending;
     input.completed = false;
 

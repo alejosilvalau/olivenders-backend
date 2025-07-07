@@ -5,4 +5,7 @@ import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
 export class Question extends BaseEntity {
   @Property({ nullable: false })
   question!: string;
+
+  @Property({ nullable: false })
+  created_at?: Date;
 }
