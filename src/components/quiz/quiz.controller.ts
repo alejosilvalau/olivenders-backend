@@ -3,144 +3,107 @@ import { orm } from '../../shared/db/orm.js';
 import { z } from 'zod';
 import { Quiz } from './quiz.entity.js';
 
+const em = orm.em;
+
 const quizZodSchema = z.object({
   id: z.string().uuid().optional(),
   name: z.string().trim().min(1),
-  date: z
-    .string()
-    .transform(val => new Date(val))
-    .or(z.date()),
 });
-
-const em = orm.em;
 
 function sanitizeQuizInput(req: Request, res: Response, next: NextFunction): void {
   try {
     const validatedInput = quizZodSchema.parse(req.body);
 
-    // Always ensure date is a Date object for consistent processing
-    if (validatedInput.date && isNaN(validatedInput.date.getTime())) {
-      throw new Error('Invalid date format');
-    }
-
-    req.body.sanitizedInput = {
-      id: validatedInput.id,
-      name: validatedInput.name,
-      date: validatedInput.date,
-    };
-
-    Object.keys(req.body.sanitizedInput).forEach(key => {
-      if (req.body.sanitizedInput[key] === undefined) {
-        delete req.body.sanitizedInput[key];
-      }
-    });
-
+    req.body.sanitizedInput = { ...validatedInput };
     next();
   } catch (error: any) {
-    if (error.errors) {
-      const formattedError = error.errors.map((err: z.ZodIssue) => ({
-        field: err.path.join('.'),
-        message: err.message,
-      }));
-      res.status(400).json({ errors: formattedError });
-    } else {
-      res.status(400).json({ errors: [{ message: error.message }] });
-    }
+    const formattedError = error.errors.map((err: z.ZodIssue) => ({
+      field: err.path.join('.'),
+      message: err.message,
+    }));
+    res.status(400).json({ errors: formattedError });
   }
 }
 
-async function findAll(req: Request, res: Response, next: NextFunction): Promise<void> {
+async function findAll(req: Request, res: Response, next: NextFunction) {
   try {
-    em.clear();
     const quizzes = await em.find(Quiz, {});
-    res.status(200).json({ message: 'Quizzes fetched', data: quizzes });
+    res.status(200).json({ message: 'Quiz fetched', data: quizzes });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    res.status(500).json({ message: error.message });
   }
 }
 
-async function findOne(req: Request, res: Response, next: NextFunction): Promise<void> {
+async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id;
-    const quiz = await em.findOne(Quiz, { id });
-    if (!quiz) {
-      res.status(404).json({ message: 'Quiz not found', data: null });
-      return;
-    }
+    const quiz = await em.findOneOrFail(Quiz, { id });
     res.status(200).json({ message: 'Quiz fetched', data: quiz });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Quiz not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
-async function findOneById(id: string) {
-  try {
-    const quiz = await em.findOne(Quiz, { id });
-    return quiz;
-  } catch (error: any) {
-    return error.message;
-  }
-}
-
-async function add(req: Request, res: Response): Promise<void> {
+async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput;
-    input.name = input.name.toUpperCase();
 
-    const existingQuiz = await em.findOne(Quiz, {
-      id: input.id,
-    });
+    input.created_at = new Date();
 
-    if (existingQuiz) {
-      res.status(409).json({ message: 'The quiz already exists', data: null });
-    } else {
-      const quiz = em.create(Quiz, input);
-      await em.flush();
-      res.status(201).json({ message: 'Quiz created', data: quiz });
-    }
+    const quiz = em.create(Quiz, input);
+    await em.flush();
+    res.status(201).json({ message: 'Quiz created', data: quiz });
   } catch (error: any) {
-    res.status(500).json({ message: 'An error occurred while creating the quiz', data: null });
+    if (error.code === 11000) {
+      // MongoDB duplicate key error code
+      res.status(409).json({
+        message: 'A quiz with this name already exists',
+      });
+    } else {
+      res.status(500).json({
+        message: 'An error occurred while creating the quiz',
+      });
+    }
   }
 }
 
-async function update(req: Request, res: Response): Promise<void> {
+async function update(req: Request, res: Response) {
   try {
     const id = req.params.id;
     const input = req.body.sanitizedInput;
 
-    // Convert name to uppercase if it's provided
-    if (input.name) {
-      input.name = input.name.toUpperCase();
-    }
-
-    const quizToUpdate = await em.findOne(Quiz, { id });
-    if (!quizToUpdate) {
-      res.status(404).json({ message: 'Quiz not found', data: null });
-      return;
-    }
-
+    const quizToUpdate = await em.findOneOrFail(Quiz, { id });
     em.assign(quizToUpdate, input);
     await em.flush();
+
     res.status(200).json({ message: 'Quiz updated', data: quizToUpdate });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Quiz not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
-async function remove(req: Request, res: Response): Promise<void> {
+async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const quizToDelete = await em.findOne(Quiz, { id });
-    if (!quizToDelete) {
-      res.status(404).json({ message: 'Quiz not found', data: null });
-      return;
-    }
-
+    const quizToDelete = await em.findOneOrFail(Quiz, { id });
     await em.removeAndFlush(quizToDelete);
-    res.status(200).json({ message: 'Quiz deleted', data: null });
+
+    res.status(200).json({ message: 'Quiz deleted' });
   } catch (error: any) {
-    res.status(500).json({ message: error.message, data: null });
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Quiz not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
-export { sanitizeQuizInput as sanitizeTestInput, findAll, findOne, findOneById, add, update, remove };
+export { sanitizeQuizInput as sanitizeTestInput, findAll, findOne, add, update, remove };

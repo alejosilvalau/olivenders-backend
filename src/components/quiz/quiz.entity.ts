@@ -6,6 +6,6 @@ export class Quiz extends BaseEntity {
   @Property({ nullable: false })
   name!: string;
 
-  @Property({ nullable: false, type: DateTimeType })
-  date!: DateTimeType;
+  @Property({ nullable: false, type: Date })
+  created_at!: Date;
 }

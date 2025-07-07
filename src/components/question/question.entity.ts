@@ -6,6 +6,6 @@ export class Question extends BaseEntity {
   @Property({ nullable: false })
   question!: string;
 
-  @Property({ nullable: false })
+  @Property({ nullable: false, type: Date })
   created_at?: Date;
 }
