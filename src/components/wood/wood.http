@@ -30,4 +30,4 @@ Content-Type: application/json
 }
 
 ### Delete a wood
-DELETE http://localhost:3000/api/woods/686900b70896ab9a49bbce9f
+DELETE http://localhost:3000/api/woods/68691342a2b501ef3c6c6d81

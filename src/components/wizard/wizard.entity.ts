@@ -2,6 +2,7 @@ import { Entity, Property, ManyToOne, Cascade, Ref, Rel, OneToMany, Collection }
 import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
 import { School } from '../school/school.entity.js';
 import { Order } from '../order/order.entity.js';
+import { Answer } from '../answer/answer.entity.js';
 
 export enum WizardRole {
   Admin = 'admin',
@@ -42,4 +43,7 @@ export class Wizard extends BaseEntity {
 
   @OneToMany(() => Order, order => order.wizard, { cascade: [Cascade.REMOVE] })
   orders = new Collection<Order>(this);
+
+  @OneToMany(() => Answer, answer => answer.wizard, { cascade: [Cascade.REMOVE] })
+  answers = new Collection<Answer>(this);
 }

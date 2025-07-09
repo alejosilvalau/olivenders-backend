@@ -10,7 +10,7 @@ const em = orm.em;
 const quizZodSchema = z.object({
   id: objectIdSchema.optional(),
   name: z.string().trim().min(1),
-  questions: z.array(objectIdSchema),
+  questions: z.array(objectIdSchema).min(1, "Quiz must have at least one question"),
 });
 
 const sanitizeQuizInput = sanitizeInput(quizZodSchema);

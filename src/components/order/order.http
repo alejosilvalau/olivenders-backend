@@ -13,7 +13,7 @@ Content-Type: application/json
   "payment_provider": "paypal",
   "shipping_address": "Hogwarts Castle, Scotland",
   "wizard": "686b1a81f92fcf19c204d43e",
-  "wand": "686aa443c710b3a438dae241"
+  "wand": "686ea8ed0c9787d5d6afbbc8"
 }
 
 ### Update an existing order
