@@ -3,6 +3,7 @@ import { orm } from '../../shared/db/orm.js';
 import { School } from './school.entity.js';
 import { z } from 'zod';
 import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
+import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 
 const em = orm.em;
 
@@ -14,19 +15,7 @@ const schoolZodSchema = z.object({
   phone: z.string().trim().min(1),
 });
 
-const sanitizeSchoolInput = (req: Request, res: Response, next: NextFunction): void => {
-  try {
-    const validatedInput = schoolZodSchema.parse(req.body);
-    req.body.sanitizedInput = { ...validatedInput };
-    next();
-  } catch (error: any) {
-    const formattedError = error.errors.map((err: z.ZodIssue) => ({
-      field: err.path.join('.'),
-      message: err.message,
-    }));
-    res.status(400).json({ errors: formattedError });
-  }
-};
+const sanitizeSchoolInput = sanitizeInput(schoolZodSchema);
 
 async function findAll(req: Request, res: Response, next: NextFunction) {
   try {

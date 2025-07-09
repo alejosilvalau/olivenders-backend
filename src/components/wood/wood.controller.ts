@@ -3,6 +3,7 @@ import { orm } from '../../shared/db/orm.js';
 import { z } from 'zod';
 import Wood from './wood.entity.js';
 import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
+import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 
 const em = orm.em;
 
@@ -14,19 +15,7 @@ const woodZodSchema = z.object({
   price: z.number(),
 });
 
-const sanitizeWoodInput = (req: Request, res: Response, next: NextFunction): void => {
-  try {
-    const validatedInput = woodZodSchema.parse(req.body);
-    req.body.sanitizedInput = { ...validatedInput };
-    next();
-  } catch (error: any) {
-    const formattedError = error.errors.map((err: z.ZodIssue) => ({
-      field: err.path.join('.'),
-      message: err.message,
-    }));
-    res.status(400).json({ errors: formattedError });
-  }
-};
+const sanitizeWoodInput = sanitizeInput(woodZodSchema);
 
 async function findAll(req: Request, res: Response, next: NextFunction) {
   try {

@@ -3,6 +3,7 @@ import { orm } from '../../shared/db/orm.js';
 import { Core } from './core.entity.js';
 import { z } from 'zod';
 import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
+import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 
 const em = orm.em;
 
@@ -13,19 +14,7 @@ const coreZodSchema = z.object({
   price: z.number().positive(),
 });
 
-const sanitizeCoreInput = (req: Request, res: Response, next: NextFunction): void => {
-  try {
-    const validatedInput = coreZodSchema.parse(req.body);
-    req.body.sanitizedInput = { ...validatedInput };
-    next();
-  } catch (error: any) {
-    const formattedError = error.errors.map((err: z.ZodIssue) => ({
-      field: err.path.join('.'),
-      message: err.message,
-    }));
-    res.status(400).json({ errors: formattedError });
-  }
-};
+const sanitizeCoreInput = sanitizeInput(coreZodSchema);
 
 async function findAll(req: Request, res: Response) {
   try {

@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { sanitizeWizardResponse, sanitizeWizardResponseArray } from '../../shared/entities/sanitizeWizardResponse.js';
+import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 
 dotenv.config();
 const em = orm.em;
@@ -28,35 +29,9 @@ const wizardZodSchema = z.object({
   school: objectIdSchema,
 });
 
-function sanitizeWizardInput(req: Request, res: Response, next: NextFunction): void {
-  try {
-    const validatedInput = wizardZodSchema.parse(req.body);
-    req.body.sanitizedInput = { ...validatedInput };
-    next();
-  } catch (error: any) {
-    const formattedError = error.errors.map((err: z.ZodIssue) => ({
-      field: err.path.join('.'),
-      message: err.message,
-    }));
-    res.status(400).json({ errors: formattedError });
-  }
-}
+const sanitizeWizardInput = sanitizeInput(wizardZodSchema);
 
-const partialWizardZodSchema = wizardZodSchema.partial();
-
-function sanitizeWizardPartialInput(req: Request, res: Response, next: NextFunction): void {
-  try {
-    const validatedInput = partialWizardZodSchema.parse(req.body);
-    req.body.sanitizedInput = { ...validatedInput };
-    next();
-  } catch (error: any) {
-    const formattedError = error.errors.map((err: z.ZodIssue) => ({
-      field: err.path.join('.'),
-      message: err.message,
-    }));
-    res.status(400).json({ errors: formattedError });
-  }
-}
+const sanitizeWizardPartialInput = sanitizeInput(wizardZodSchema.partial());
 
 
 async function findAll(req: Request, res: Response) {

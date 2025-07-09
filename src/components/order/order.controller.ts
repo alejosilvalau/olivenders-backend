@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { Order, OrderStatus, PaymentProvider } from './order.entity.js';
 import { sanitizeOrderResponseArray, sanitizeOrderResponse } from '../../shared/entities/sanitizeOrderResponse.js';
 import { OpenAI } from 'openai';
+import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 
 const em = orm.em;
 
@@ -22,37 +23,13 @@ const orderZodSchema = z.object({
   wand: objectIdSchema,
 });
 
-function sanitizeOrderInput(req: Request, res: Response, next: NextFunction): void {
-  try {
-    const validatedInput = orderZodSchema.parse(req.body);
-    req.body.sanitizedInput = { ...validatedInput };
-    next();
-  } catch (error: any) {
-    const formattedError = error.errors.map((err: z.ZodIssue) => ({
-      field: err.path.join('.'),
-      message: err.message,
-    }));
-    res.status(400).json({ errors: formattedError });
-  }
-}
+const sanitizeOrderInput = sanitizeInput(orderZodSchema);
 
 const orderReviewZodSchema = z.object({
   review: z.string().trim().min(1),
 });
 
-function sanitizeOrderReviewInput(req: Request, res: Response, next: NextFunction): void {
-  try {
-    const validatedInput = orderReviewZodSchema.parse(req.body);
-    req.body.sanitizedInput = { ...validatedInput };
-    next();
-  } catch (error: any) {
-    const formattedError = error.errors.map((err: z.ZodIssue) => ({
-      field: err.path.join('.'),
-      message: err.message,
-    }));
-    res.status(400).json({ errors: formattedError });
-  }
-}
+const sanitizeOrderReviewInput = sanitizeInput(orderReviewZodSchema);
 
 async function findAll(req: Request, res: Response) {
   try {

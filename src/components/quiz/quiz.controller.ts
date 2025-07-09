@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { orm } from '../../shared/db/orm.js';
 import { z } from 'zod';
 import { Quiz } from './quiz.entity.js';
+import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 
 const em = orm.em;
 
@@ -10,20 +11,7 @@ const quizZodSchema = z.object({
   name: z.string().trim().min(1),
 });
 
-function sanitizeQuizInput(req: Request, res: Response, next: NextFunction): void {
-  try {
-    const validatedInput = quizZodSchema.parse(req.body);
-
-    req.body.sanitizedInput = { ...validatedInput };
-    next();
-  } catch (error: any) {
-    const formattedError = error.errors.map((err: z.ZodIssue) => ({
-      field: err.path.join('.'),
-      message: err.message,
-    }));
-    res.status(400).json({ errors: formattedError });
-  }
-}
+const sanitizeQuizInput = sanitizeInput(quizZodSchema);
 
 async function findAll(req: Request, res: Response, next: NextFunction) {
   try {

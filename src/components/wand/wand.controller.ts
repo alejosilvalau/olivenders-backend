@@ -5,6 +5,7 @@ import { Wand, WandStatus } from './wand.entity.js';
 import { z } from 'zod';
 import Wood from '../wood/wood.entity.js';
 import { Core } from '../core/core.entity.js';
+import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 
 const em = orm.em;
 
@@ -19,20 +20,7 @@ const wandZodSchema = z.object({
   core: objectIdSchema,
 });
 
-function sanitizeWandInput(req: Request, res: Response, next: NextFunction) {
-  try {
-    const validatedInput = wandZodSchema.parse(req.body);
-
-    req.body.sanitizedInput = { ...validatedInput };
-    next();
-  } catch (error: any) {
-    const formattedError = error.errors.map((err: z.ZodIssue) => ({
-      field: err.path.join('.'),
-      message: err.message,
-    }));
-    res.status(400).json({ errors: formattedError });
-  }
-}
+const sanitizeWandInput = sanitizeInput(wandZodSchema);
 
 async function calculateWandPrice(woodId: string, coreId: string, profit: number) {
   try {
