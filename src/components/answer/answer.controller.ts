@@ -16,7 +16,11 @@ const sanitizeAnswerInput = sanitizeInput(answerZodSchema);
 
 async function findAll(req: Request, res: Response, next: NextFunction) {
   try {
-    const answers = await em.find(Answer, {});
+    const answers = await em.find(
+      Answer,
+      {},
+      { populate: ['quiz', 'quiz.questions', 'wizard', 'wizard.school', 'wand', 'wand.wood', 'wand.core'] }
+    );
     res.status(200).json({ message: 'Answers fetched', data: answers });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -26,7 +30,11 @@ async function findAll(req: Request, res: Response, next: NextFunction) {
 async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id;
-    const answer = await em.findOneOrFail(Answer, { id });
+    const answer = await em.findOneOrFail(
+      Answer,
+      { id },
+      { populate: ['quiz', 'quiz.questions', 'wizard', 'wizard.school', 'wand', 'wand.wood', 'wand.core'] }
+    );
     res.status(200).json({ message: 'Answer fetched', data: answer });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {

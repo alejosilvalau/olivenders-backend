@@ -83,7 +83,7 @@ async function update(req: Request, res: Response) {
 async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const quizToDelete = await em.findOneOrFail(Quiz, { id });
+    const quizToDelete = await em.findOneOrFail(Quiz, { id }, { populate: ['answers'] });
     await em.removeAndFlush(quizToDelete);
 
     res.status(200).json({ message: 'Quiz deleted' });
