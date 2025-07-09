@@ -9,7 +9,8 @@ POST http://localhost:3000/api/quizzes/
 Content-Type: application/json
 
 {
-  "name": "Advanced Spellcasting"
+  "name": "Advanced Spellcasting",
+  "questions": ["686e497ae9cae37589d37c9c", "686e497be9cae37589d37c9d"]
 }
 
 ### Update an existing quiz
@@ -17,7 +18,8 @@ PUT http://localhost:3000/api/quizzes/686b9b20f72a5a70ad8fc5ae
 Content-Type: application/json
 
 {
-  "name": "Intermediate Potion Making"
+  "name": "Intermediate Potion Making",
+  "questions": ["68625b411ccf0f2835c9e75a", "68625b411ccf0f2835c9e75b"]
 }
 
 ### Delete a quiz

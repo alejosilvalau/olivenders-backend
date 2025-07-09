@@ -1,5 +1,6 @@
-import { Entity, Property, ManyToOne, Cascade, Ref } from '@mikro-orm/core';
+import { Entity, Property, ManyToOne, Cascade, Ref, ManyToMany, Collection } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
+import { Quiz } from '../quiz/quiz.entity.js';
 
 @Entity()
 export class Question extends BaseEntity {
@@ -12,5 +13,6 @@ export class Question extends BaseEntity {
   @Property({ nullable: false, type: 'json' })
   options!: string[];
 
-  //TODO: Relationship with quiz and answer
+  @ManyToMany(() => Quiz, quiz => quiz.questions, { cascade: [Cascade.REMOVE] })
+  quizzes = new Collection<Quiz>(this);
 }
