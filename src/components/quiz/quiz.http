@@ -19,7 +19,7 @@ Content-Type: application/json
 
 {
   "name": "Intermediate Potion Making",
-  "questions": ["68625b411ccf0f2835c9e75a", "68625b411ccf0f2835c9e75b"]
+  "questions": ["686e497ae9cae37589d37c9c", "686e497be9cae37589d37c9d"]
 }
 
 ### Delete a quiz

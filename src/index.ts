@@ -69,6 +69,10 @@ app.use('/api/orders', orderRouter);
 app.use('/api/wizards', wizardRouter);
 app.use('/api/answers', answerRouter);
 
+app.get('/health', (_, res) => {
+  res.status(200).send('OK');
+});
+
 app.use((_, res) => {
   res.status(404).json({ message: 'Resource not found' });
 });
