@@ -1,10 +1,10 @@
 ### Get all quizzes
 GET http://localhost:3000/api/quizzes
 
-### Get one test by ID
+### Get one quiz by ID
 GET http://localhost:3000/api/quizzes/68625b411ccf0f2835c9e75a
 
-### Create a new test
+### Create a new quiz
 POST http://localhost:3000/api/quizzes/
 Content-Type: application/json
 
@@ -12,7 +12,7 @@ Content-Type: application/json
   "name": "Advanced Spellcasting"
 }
 
-### Update an existing test
+### Update an existing quiz
 PUT http://localhost:3000/api/quizzes/686b9b20f72a5a70ad8fc5ae
 Content-Type: application/json
 
@@ -20,5 +20,5 @@ Content-Type: application/json
   "name": "Intermediate Potion Making"
 }
 
-### Delete a test
+### Delete a quiz
 DELETE http://localhost:3000/api/quizzes/686b9b12f72a5a70ad8fc5ad

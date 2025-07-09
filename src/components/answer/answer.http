@@ -1,0 +1,24 @@
+### Get all answers
+GET http://localhost:3000/api/answers
+
+### Get one answer by ID
+GET http://localhost:3000/api/answers/686e4532547a33a9fd881456
+
+### Create a new answer
+POST http://localhost:3000/api/answers/
+Content-Type: application/json
+
+{
+  "score": 10
+}
+
+### Update an existing answer
+PUT http://localhost:3000/api/answers/686e4532547a34a9fd881456
+Content-Type: application/json
+
+{
+  "score": 5
+}
+
+### Delete a answer
+DELETE http://localhost:3000/api/answers/686e4532547a33a9fd881456

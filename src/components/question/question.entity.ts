@@ -11,4 +11,6 @@ export class Question extends BaseEntity {
 
   @Property({ nullable: false, type: 'json' })
   options!: string[];
+
+  //TODO: Relationship with quiz and answer
 }

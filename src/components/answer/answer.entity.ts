@@ -9,4 +9,6 @@ export class Answer extends BaseEntity {
 
   @Property({ nullable: false })
   score!: number;
+
+  //TODO: Relationship with quiz, wand and wizard
 }

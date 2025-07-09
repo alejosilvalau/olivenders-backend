@@ -8,4 +8,6 @@ export class Quiz extends BaseEntity {
 
   @Property({ nullable: false, type: Date })
   created_at!: Date;
+
+  //TODO: Relationship with question
 }

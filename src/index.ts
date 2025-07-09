@@ -14,6 +14,7 @@ import { questionRouter } from './components/question/question.routes.js';
 import { quizRouter } from './components/quiz/quiz.routes.js';
 import { orderRouter } from './components/order/order.routes.js';
 import { wizardRouter } from './components/wizard/wizard.routes.js';
+import { answerRouter } from './components/answer/answer.routes.js';
 
 dotenv.config();
 
@@ -66,6 +67,7 @@ app.use('/api/questions', questionRouter);
 app.use('/api/quizzes', quizRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/wizards', wizardRouter);
+app.use('/api/answers', answerRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: 'Resource not found' });
