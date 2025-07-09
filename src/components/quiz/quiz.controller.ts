@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { Quiz } from './quiz.entity.js';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
-import { wrap } from '@mikro-orm/core';
 
 const em = orm.em;
 
@@ -18,8 +17,7 @@ const sanitizeQuizInput = sanitizeInput(quizZodSchema);
 
 async function findAll(req: Request, res: Response, next: NextFunction) {
   try {
-    const quizzes = await em.find(Quiz, {});
-    await em.populate(quizzes, ['questions']);
+    const quizzes = await em.find(Quiz, {}, { populate: ['questions'] });
     res.status(200).json({ message: 'Quiz fetched', data: quizzes });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -29,8 +27,7 @@ async function findAll(req: Request, res: Response, next: NextFunction) {
 async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id;
-    const quiz = await em.findOneOrFail(Quiz, { id });
-    await em.populate(quiz, ['questions']);
+    const quiz = await em.findOneOrFail(Quiz, { id }, { populate: ['questions'] });
     res.status(200).json({ message: 'Quiz fetched', data: quiz });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {

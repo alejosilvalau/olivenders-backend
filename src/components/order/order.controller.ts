@@ -324,7 +324,6 @@ async function remove(req: Request, res: Response) {
     const id = req.params.id;
     const orderToDelete = await em.findOneOrFail(Order, { id });
     await em.removeAndFlush(orderToDelete);
-    em.clear();
     res.status(200).json({ message: 'Order deleted' });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
