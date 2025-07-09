@@ -9,6 +9,7 @@ const em = orm.em;
 const questionZodSchema = z.object({
   id: objectIdSchema.optional(),
   question: z.string().trim().min(1),
+  options: z.array(z.string().trim().min(1)).min(2).max(3),
 });
 
 const sanitizeQuestionInput = (req: Request, res: Response, next: NextFunction): void => {

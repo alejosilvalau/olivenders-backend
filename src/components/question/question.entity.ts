@@ -8,4 +8,7 @@ export class Question extends BaseEntity {
 
   @Property({ nullable: false, type: Date })
   created_at?: Date;
+
+  @Property({ nullable: false, type: 'json' })
+  options!: string[];
 }

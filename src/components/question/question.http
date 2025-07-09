@@ -9,7 +9,8 @@ POST http://localhost:3000/api/questions/
 Content-Type: application/json
 
 {
-  "question": "What is your favorite wand type?"
+  "question": "What is your favorite wand type?",
+  "options": ["Holly", "Elder", "Yew"]
 }
 
 ### Update an existing question
@@ -17,8 +18,9 @@ PUT http://localhost:3000/api/questions/686b979441583c9dba2fd30c
 Content-Type: application/json
 
 {
-  "question": "What is your preferred wand core?"
+  "question": "What is your preferred wand core?",
+  "options": ["Phoenix Feather", "Dragon Heartstring", "Unicorn Hair"]
 }
 
 ### Delete a question
-DELETE http://localhost:3000/api/questions/68625794720b449b17e17e52
+DELETE http://localhost:3000/api/questions/686e3fdeacbfe95cbfa0d0b2
