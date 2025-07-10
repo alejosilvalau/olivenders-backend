@@ -3,10 +3,8 @@ import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 import { orm } from '../../shared/db/orm.js';
 import { Wand, WandStatus } from './wand.entity.js';
 import { z } from 'zod';
-import { Wood } from '../wood/wood.entity.js';
-import { Core } from '../core/core.entity.js';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
-import { ensureEntityExists } from '../../shared/db/ensureEntityExists.js';
+import { ensureCoreExists, ensureWoodExists } from '../../shared/db/ensureEntityExists.js';
 
 const em = orm.em;
 
@@ -70,10 +68,10 @@ async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput;
 
-    const wood = await ensureEntityExists<Wood>(em, Wood, input.wood, res);
+    const wood = await ensureWoodExists(em, input.wood, res);
     if (!wood) return;
 
-    const core = await ensureEntityExists<Core>(em, Core, input.core, res);
+    const core = await ensureCoreExists(em, input.core, res);
     if (!core) return;
 
     input.name = input.name.toLowerCase();
@@ -101,10 +99,10 @@ async function update(req: Request, res: Response) {
 
     const input = req.body.sanitizedInput;
 
-    const wood = await ensureEntityExists<Wood>(em, Wood, input.wood, res);
+    const wood = await ensureWoodExists(em, input.wood, res);
     if (!wood) return;
 
-    const core = await ensureEntityExists<Core>(em, Core, input.core, res);
+    const core = await ensureCoreExists(em, input.core, res);
     if (!core) return;
 
     input.name = input.name.toLowerCase();

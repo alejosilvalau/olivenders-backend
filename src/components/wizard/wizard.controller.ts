@@ -8,8 +8,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { sanitizeWizardResponse, sanitizeWizardResponseArray } from '../../shared/entities/sanitizeWizardResponse.js';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
-import { ensureEntityExists } from '../../shared/db/ensureEntityExists.js';
-import { School } from '../school/school.entity.js';
+import { ensureSchoolExists } from '../../shared/db/ensureEntityExists.js';
 
 dotenv.config();
 const em = orm.em;
@@ -122,7 +121,7 @@ async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput;
 
-    if (!(await ensureEntityExists<School>(em, School, input.school, res))) return;
+    if (!(await ensureSchoolExists(em, input.school, res))) return;
 
     input.name = input.name.toLowerCase();
     input.email = input.email.toLowerCase();
@@ -199,7 +198,7 @@ async function update(req: Request, res: Response) {
     const id = req.params.id;
     const input = req.body.sanitizedInput;
 
-    if (!(await ensureEntityExists<School>(em, School, input.school, res))) return;
+    if (!(await ensureSchoolExists(em, input.school, res))) return;
 
     input.name = input.name.toLowerCase();
     input.email = input.email.toLowerCase();

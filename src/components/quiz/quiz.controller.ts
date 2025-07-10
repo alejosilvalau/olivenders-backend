@@ -4,8 +4,7 @@ import { z } from 'zod';
 import { Quiz } from './quiz.entity.js';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
-import { ensureEntityExists } from '../../shared/db/ensureEntityExists.js';
-import { Question } from '../question/question.entity.js';
+import { ensureQuestionExists } from '../../shared/db/ensureEntityExists.js';
 
 const em = orm.em;
 
@@ -48,7 +47,7 @@ async function add(req: Request, res: Response) {
     const input = req.body.sanitizedInput;
 
     for (const questionId of input.questions) {
-      if (!(await ensureEntityExists<Question>(em, Question, questionId, res))) return;
+      if (!(await ensureQuestionExists(em, questionId, res))) return;
     }
 
     input.created_at = new Date();
@@ -76,7 +75,7 @@ async function update(req: Request, res: Response) {
     const input = req.body.sanitizedInput;
 
     for (const questionId of input.questions) {
-      if (!(await ensureEntityExists<Question>(em, Question, questionId, res))) return;
+      if (!(await ensureQuestionExists(em, questionId, res))) return;
     }
 
     const quizToUpdate = await em.findOneOrFail(Quiz, { id });
