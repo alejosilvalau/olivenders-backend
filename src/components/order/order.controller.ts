@@ -6,6 +6,9 @@ import { Order, OrderStatus, PaymentProvider } from './order.entity.js';
 import { sanitizeOrderResponseArray, sanitizeOrderResponse } from '../../shared/entities/sanitizeOrderResponse.js';
 import { OpenAI } from 'openai';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
+import { ensureEntityExists } from '../../shared/db/ensureEntityExists.js';
+import { Wizard } from '../wizard/wizard.entity.js';
+import { Wand } from '../wand/wand.entity.js';
 
 const em = orm.em;
 
@@ -92,6 +95,9 @@ async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput;
 
+    if (!(await ensureEntityExists(em, Wizard, input.wizard, res))) return;
+    if (!(await ensureEntityExists(em, Wand, input.wand, res))) return;
+
     input.created_at = Date();
     input.status = OrderStatus.Pending;
     input.completed = false;
@@ -110,8 +116,11 @@ async function update(req: Request, res: Response) {
     const id = req.params.id;
     const input = req.body.sanitizedInput;
 
+    if (!(await ensureEntityExists(em, Wizard, input.wizard, res))) return;
+    if (!(await ensureEntityExists(em, Wand, input.wand, res))) return;
+
     const orderToUpdate = await em.findOneOrFail(Order, id);
-    em.assign(orderToUpdate, req.body.sanitizedInput);
+    em.assign(orderToUpdate, input);
     await em.flush();
 
     const sanitizedResponse = sanitizeOrderResponse(orderToUpdate);
