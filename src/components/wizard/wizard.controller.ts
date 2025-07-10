@@ -8,6 +8,8 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { sanitizeWizardResponse, sanitizeWizardResponseArray } from '../../shared/entities/sanitizeWizardResponse.js';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
+import { ensureEntityExists } from '../../shared/db/ensureEntityExists.js';
+import { School } from '../school/school.entity.js';
 
 dotenv.config();
 const em = orm.em;
@@ -32,7 +34,6 @@ const wizardZodSchema = z.object({
 const sanitizeWizardInput = sanitizeInput(wizardZodSchema);
 
 const sanitizeWizardPartialInput = sanitizeInput(wizardZodSchema.partial());
-
 
 async function findAll(req: Request, res: Response) {
   try {
@@ -120,6 +121,9 @@ async function isEmailAvailable(req: Request, res: Response) {
 async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput;
+
+    if (!(await ensureEntityExists(em, School, input.school, res))) return;
+
     input.name = input.name.toLowerCase();
     input.email = input.email.toLowerCase();
 
@@ -195,6 +199,9 @@ async function update(req: Request, res: Response) {
     const id = req.params.id;
 
     const input = req.body.sanitizedInput;
+
+    if (!(await ensureEntityExists(em, School, input.school, res))) return;
+
     input.name = input.name.toLowerCase();
     input.email = input.email.toLowerCase();
 
