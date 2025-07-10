@@ -10,7 +10,7 @@ Content-Type: application/json
 
 {
   "name": "Advanced Spellcasting",
-  "questions": ["686e497be9cae37589d37c9d", "686e497ce9cae37589d37c9e"]
+  "questions": ["686fac6fe5c1922fd703246d", "686fae3b65cba5a60140dfa6"]
 }
 
 ### Update an existing quiz

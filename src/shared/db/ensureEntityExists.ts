@@ -6,6 +6,7 @@ import { Quiz } from '../../components/quiz/quiz.entity.js';
 import { Wand } from '../../components/wand/wand.entity.js';
 import { School } from '../../components/school/school.entity.js';
 import { Core } from '../../components/core/core.entity.js';
+import { Question } from '../../components/question/question.entity.js';
 
 async function _ensureEntityExists<T extends AnyEntity<T>>(
   em: EntityManager,

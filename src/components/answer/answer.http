@@ -10,8 +10,8 @@ Content-Type: application/json
 
 {
   "score": 5,
-  "quiz": "686f05d6c630c6c037fae638",
-  "wizard": "686f07849ce7415044acf3a4"
+  "quiz": "686fac76e5c1922fd703246e",
+  "wizard": "686fab31e5c1922fd703246c"
 }
 
 ### Update an existing answer
