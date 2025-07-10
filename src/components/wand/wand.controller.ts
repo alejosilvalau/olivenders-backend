@@ -22,16 +22,8 @@ const wandZodSchema = z.object({
 
 const sanitizeWandInput = sanitizeInput(wandZodSchema);
 
-async function calculateWandPrice(woodId: string, coreId: string, profit: number) {
-  try {
-    const wood = await em.findOneOrFail(Wood, { id: woodId });
-    const core = await em.findOneOrFail(Core, { id: coreId });
-
-    const totalPrice = wood.price + core.price + profit;
-    return totalPrice;
-  } catch (error: any) {
-    throw new Error(`Failed to calculate wand price: ${error.message}`);
-  }
+async function calculateWandPrice(wood: Wood, core: Core, profit: number) {
+  return wood.price + core.price + profit;
 }
 
 async function findAll(req: Request, res: Response) {
@@ -80,11 +72,32 @@ async function findOne(req: Request, res: Response) {
 async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput;
+
+    try {
+      await em.findOneOrFail(Wood, { id: input.wood });
+    } catch (error: any) {
+      if (error.name === 'NotFoundError') {
+        res.status(404).json({ message: 'Wood not found' });
+        return;
+      }
+      throw error;
+    }
+
+    try {
+      await em.findOneOrFail(Core, { id: input.core });
+    } catch (error: any) {
+      if (error.name === 'NotFoundError') {
+        res.status(404).json({ message: 'Core not found' });
+        return;
+      }
+      throw error;
+    }
+
     input.name = input.name.toLowerCase();
 
-    input.status = WandStatus.Available; 
+    input.status = WandStatus.Available;
 
-    input.total_price = await calculateWandPrice(input.wood, input.core, input.profit);
+    input.total_price = calculateWandPrice(input.wood, input.core, input.profit);
 
     const wand = em.create(Wand, input);
     await em.flush();
@@ -104,6 +117,27 @@ async function update(req: Request, res: Response) {
     const id = req.params.id;
 
     const input = req.body.sanitizedInput;
+
+    try {
+      await em.findOneOrFail(Wood, { id: input.wood });
+    } catch (error: any) {
+      if (error.name === 'NotFoundError') {
+        res.status(404).json({ message: 'Wood not found' });
+        return;
+      }
+      throw error;
+    }
+
+    try {
+      await em.findOneOrFail(Core, { id: input.core });
+    } catch (error: any) {
+      if (error.name === 'NotFoundError') {
+        res.status(404).json({ message: 'Core not found' });
+        return;
+      }
+      throw error;
+    }
+
     input.name = input.name.toLowerCase();
 
     input.total_price = await calculateWandPrice(input.wood, input.core, input.profit);
