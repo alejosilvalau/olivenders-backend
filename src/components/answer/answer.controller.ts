@@ -54,20 +54,15 @@ async function getRandomWandByScore(score: number): Promise<Wand> {
       throw { status: 404, message: 'No available wands found' };
     }
 
-    // Calculate offset based on score
     const offset = score % totalCount;
-    const [wand] = await em.find(Wand, { status: WandStatus.Available }, { limit: 1, offset });
-
-    if (!wand) {
-      throw { status: 404, message: 'Wand not found at calculated position' };
-    }
+    const wand = await em.findOneOrFail(Wand, { status: WandStatus.Available }, { offset });
 
     return wand;
   } catch (error: any) {
-    if (!error.status) {
-      throw { status: 500, message: error.message || 'Unknown error occurred' };
+    if (error.name === 'NotFoundError' || error.status === 404) {
+      throw { status: 404, message: 'Wand not found at calculated position' };
     }
-    throw error;
+    throw { status: 500, message: error.message || 'Unknown error occurred' };
   }
 }
 
@@ -77,7 +72,6 @@ async function add(req: Request, res: Response) {
 
     input.created_at = new Date();
 
-    // Check for quiz
     try {
       await em.findOneOrFail(Quiz, { id: input.quiz });
     } catch (error: any) {
@@ -88,7 +82,6 @@ async function add(req: Request, res: Response) {
       throw error;
     }
 
-    // Check for wizard
     try {
       await em.findOneOrFail(Wizard, { id: input.wizard });
     } catch (error: any) {
@@ -99,7 +92,6 @@ async function add(req: Request, res: Response) {
       throw error;
     }
 
-    // Get wand by score
     try {
       input.wand = await getRandomWandByScore(input.score);
     } catch (error: any) {
