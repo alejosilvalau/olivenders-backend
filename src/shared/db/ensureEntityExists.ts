@@ -1,12 +1,7 @@
 import { Response } from 'express';
 import { EntityManager } from '@mikro-orm/core';
 
-export async function ensureEntityExists(
-  em: EntityManager,
-  entityClass: any,
-  id: string,
-  res: Response
-): Promise<boolean> {
+export async function ensureEntityExists(em: EntityManager, entityClass: any, id: string, res: Response): Promise<boolean> {
   try {
     await em.findOneOrFail(entityClass, { id });
     return true;

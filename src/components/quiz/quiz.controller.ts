@@ -4,13 +4,18 @@ import { z } from 'zod';
 import { Quiz } from './quiz.entity.js';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
+import { ensureEntityExists } from '../../shared/db/ensureEntityExists.js';
+import { Question } from '../question/question.entity.js';
 
 const em = orm.em;
 
 const quizZodSchema = z.object({
   id: objectIdSchema.optional(),
   name: z.string().trim().min(1),
-  questions: z.array(objectIdSchema).min(1, "Quiz must have at least one question"),
+  questions: z
+    .array(objectIdSchema)
+    .min(1, 'Quiz must have at least one question')
+    .max(10, 'Quiz can have a maximum of 10 questions'),
 });
 
 const sanitizeQuizInput = sanitizeInput(quizZodSchema);
@@ -42,6 +47,10 @@ async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput;
 
+    for (const questionId of input.questions) {
+      if (!(await ensureEntityExists(em, Question, questionId, res))) return;
+    }
+
     input.created_at = new Date();
 
     const quiz = em.create(Quiz, input);
@@ -65,6 +74,10 @@ async function update(req: Request, res: Response) {
   try {
     const id = req.params.id;
     const input = req.body.sanitizedInput;
+
+    for (const questionId of input.questions) {
+      if (!(await ensureEntityExists(em, Question, questionId, res))) return;
+    }
 
     const quizToUpdate = await em.findOneOrFail(Quiz, { id });
     em.assign(quizToUpdate, input);
