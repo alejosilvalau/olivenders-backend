@@ -22,10 +22,6 @@ const wandZodSchema = z.object({
 
 const sanitizeWandInput = sanitizeInput(wandZodSchema);
 
-async function calculateWandPrice(wood: Wood, core: Core, profit: number) {
-  return wood.price + core.price + profit;
-}
-
 async function findAll(req: Request, res: Response) {
   try {
     const wands = await em.find(Wand, {}, { populate: ['wood', 'core'] });
@@ -97,7 +93,7 @@ async function add(req: Request, res: Response) {
 
     input.status = WandStatus.Available;
 
-    input.total_price = calculateWandPrice(input.wood, input.core, input.profit);
+    input.total_price = input.wood + input.core + input.profit;
 
     const wand = em.create(Wand, input);
     await em.flush();
@@ -140,7 +136,7 @@ async function update(req: Request, res: Response) {
 
     input.name = input.name.toLowerCase();
 
-    input.total_price = await calculateWandPrice(input.wood, input.core, input.profit);
+    input.total_price = input.wood + input.core + input.profit;
 
     const wandToUpdate = await em.findOneOrFail(Wand, id);
     em.assign(wandToUpdate, input);
