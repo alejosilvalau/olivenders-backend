@@ -6,9 +6,7 @@ import { Order, OrderStatus, PaymentProvider } from './order.entity.js';
 import { sanitizeOrderResponseArray, sanitizeOrderResponse } from '../../shared/entities/sanitizeOrderResponse.js';
 import { OpenAI } from 'openai';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
-import { ensureEntityExists } from '../../shared/db/ensureEntityExists.js';
-import { Wizard } from '../wizard/wizard.entity.js';
-import { Wand } from '../wand/wand.entity.js';
+import { ensureWandExists, ensureWizardExists } from '../../shared/db/ensureEntityExists.js';
 
 const em = orm.em;
 
@@ -95,8 +93,8 @@ async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput;
 
-    if (!(await ensureEntityExists<Wizard>(em, Wizard, input.wizard, res))) return;
-    if (!(await ensureEntityExists<Wand>(em, Wand, input.wand, res))) return;
+    if (!(await ensureWizardExists(em, input.wizard, res))) return;
+    if (!(await ensureWandExists(em, input.wand, res))) return;
 
     input.created_at = Date();
     input.status = OrderStatus.Pending;
@@ -116,8 +114,8 @@ async function update(req: Request, res: Response) {
     const id = req.params.id;
     const input = req.body.sanitizedInput;
 
-    if (!(await ensureEntityExists<Wizard>(em, Wizard, input.wizard, res))) return;
-    if (!(await ensureEntityExists<Wand>(em, Wand, input.wand, res))) return;
+    if (!(await ensureWizardExists(em, input.wizard, res))) return;
+    if (!(await ensureWandExists(em, input.wand, res))) return;
 
     const orderToUpdate = await em.findOneOrFail(Order, id);
     em.assign(orderToUpdate, input);

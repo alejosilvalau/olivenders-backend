@@ -5,10 +5,8 @@ import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 import { Answer } from './answer.entity.js';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 import { Wand, WandStatus } from '../wand/wand.entity.js';
-import { Quiz } from '../quiz/quiz.entity.js';
-import { Wizard } from '../wizard/wizard.entity.js';
 import { sanitizeAnswerResponse, sanitizeAnswerResponseArray } from '../../shared/entities/sanitizeAnswerResponse.js';
-import { ensureEntityExists } from '../../shared/db/ensureEntityExists.js';
+import { ensureQuizExists, ensureWizardExists } from '../../shared/db/ensureEntityExists.js';
 
 const em = orm.em;
 
@@ -71,8 +69,8 @@ async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput;
 
-    if (!(await ensureEntityExists<Quiz>(em, Quiz, input.quiz, res))) return;
-    if (!(await ensureEntityExists<Wizard>(em, Wizard, input.wizard, res))) return;
+    if (!(await ensureQuizExists(em, input.quiz, res))) return;
+    if (!(await ensureWizardExists(em, input.wizard, res))) return;
 
     input.created_at = new Date();
 
@@ -98,8 +96,8 @@ async function update(req: Request, res: Response) {
     const id = req.params.id;
     const input = req.body.sanitizedInput;
 
-    if (!(await ensureEntityExists<Quiz>(em, Quiz, input.quiz, res))) return;
-    if (!(await ensureEntityExists<Wizard>(em, Wizard, input.wizard, res))) return;
+    if (!(await ensureQuizExists(em, input.quiz, res))) return;
+    if (!(await ensureWizardExists(em, input.wizard, res))) return;
 
     const answer = await em.findOneOrFail(Answer, { id });
 
