@@ -6,6 +6,7 @@ import { z } from 'zod';
 import Wood from '../wood/wood.entity.js';
 import { Core } from '../core/core.entity.js';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
+import { ensureEntityExists } from '../../shared/db/ensureEntityExists.js';
 
 const em = orm.em;
 
@@ -69,25 +70,8 @@ async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput;
 
-    try {
-      await em.findOneOrFail(Wood, { id: input.wood });
-    } catch (error: any) {
-      if (error.name === 'NotFoundError') {
-        res.status(404).json({ message: 'Wood not found' });
-        return;
-      }
-      throw error;
-    }
-
-    try {
-      await em.findOneOrFail(Core, { id: input.core });
-    } catch (error: any) {
-      if (error.name === 'NotFoundError') {
-        res.status(404).json({ message: 'Core not found' });
-        return;
-      }
-      throw error;
-    }
+    if (!(await ensureEntityExists(em, Wood, input.wood, res))) return;
+    if (!(await ensureEntityExists(em, Core, input.core, res))) return;
 
     input.name = input.name.toLowerCase();
 
@@ -114,25 +98,8 @@ async function update(req: Request, res: Response) {
 
     const input = req.body.sanitizedInput;
 
-    try {
-      await em.findOneOrFail(Wood, { id: input.wood });
-    } catch (error: any) {
-      if (error.name === 'NotFoundError') {
-        res.status(404).json({ message: 'Wood not found' });
-        return;
-      }
-      throw error;
-    }
-
-    try {
-      await em.findOneOrFail(Core, { id: input.core });
-    } catch (error: any) {
-      if (error.name === 'NotFoundError') {
-        res.status(404).json({ message: 'Core not found' });
-        return;
-      }
-      throw error;
-    }
+    if (!(await ensureEntityExists(em, Wood, input.wood, res))) return;
+    if (!(await ensureEntityExists(em, Core, input.core, res))) return;
 
     input.name = input.name.toLowerCase();
 

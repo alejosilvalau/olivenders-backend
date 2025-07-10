@@ -8,6 +8,7 @@ import { Wand, WandStatus } from '../wand/wand.entity.js';
 import { Quiz } from '../quiz/quiz.entity.js';
 import { Wizard } from '../wizard/wizard.entity.js';
 import { sanitizeAnswerResponse, sanitizeAnswerResponseArray } from '../../shared/entities/sanitizeAnswerResponse.js';
+import { ensureEntityExists } from '../../shared/db/ensureEntityExists.js';
 
 const em = orm.em;
 
@@ -72,25 +73,8 @@ async function add(req: Request, res: Response) {
 
     input.created_at = new Date();
 
-    try {
-      await em.findOneOrFail(Quiz, { id: input.quiz });
-    } catch (error: any) {
-      if (error.name === 'NotFoundError') {
-        res.status(404).json({ message: 'Quiz not found' });
-        return;
-      }
-      throw error;
-    }
-
-    try {
-      await em.findOneOrFail(Wizard, { id: input.wizard });
-    } catch (error: any) {
-      if (error.name === 'NotFoundError') {
-        res.status(404).json({ message: 'Wizard not found' });
-        return;
-      }
-      throw error;
-    }
+    if (!(await ensureEntityExists(em, Quiz, input.quiz, res))) return;
+    if (!(await ensureEntityExists(em, Wizard, input.wizard, res))) return;
 
     try {
       input.wand = await getRandomWandByScore(input.score);
@@ -115,29 +99,9 @@ async function update(req: Request, res: Response) {
     const input = req.body.sanitizedInput;
     const answer = await em.findOneOrFail(Answer, { id });
 
-    // Check for quiz
-    try {
-      await em.findOneOrFail(Quiz, { id: input.quiz });
-    } catch (error: any) {
-      if (error.name === 'NotFoundError') {
-        res.status(404).json({ message: 'Quiz not found' });
-        return;
-      }
-      throw error;
-    }
+    if (!(await ensureEntityExists(em, Quiz, input.quiz, res))) return;
+    if (!(await ensureEntityExists(em, Wizard, input.wizard, res))) return;
 
-    // Check for wizard
-    try {
-      await em.findOneOrFail(Wizard, { id: input.wizard });
-    } catch (error: any) {
-      if (error.name === 'NotFoundError') {
-        res.status(404).json({ message: 'Wizard not found' });
-        return;
-      }
-      throw error;
-    }
-
-    // Get wand by score
     try {
       input.wand = await getRandomWandByScore(input.score);
     } catch (error: any) {
