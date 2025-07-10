@@ -12,8 +12,8 @@ Content-Type: application/json
   "payment_reference": "ord_123445454789",
   "payment_provider": "paypal",
   "shipping_address": "Hogwarts Castle, Scotland",
-  "wizard": "686b1a81f92fcf19c204d43e",
-  "wand": "686ea8ed0c9787d5d6afbbc8"
+  "wizard": "686fab31e5c1922fd703246c",
+  "wand": "686f8f8fdd25f6850640b77a"
 }
 
 ### Update an existing order
@@ -29,7 +29,7 @@ Content-Type: application/json
 }
 
 ### Pay an existing order
-PATCH http://localhost:3000/api/orders/686adf9b2786a48dfdb0e756/pay/
+PATCH http://localhost:3000/api/orders/686fb56c7ea9027a508b6855/pay/
 
 ### Dispatch an existing order
 PATCH http://localhost:3000/api/orders/686adf9b2786a48dfdb0e756/dispatch/
@@ -38,7 +38,7 @@ PATCH http://localhost:3000/api/orders/686adf9b2786a48dfdb0e756/dispatch/
 PATCH http://localhost:3000/api/orders/686adf9b2786a48dfdb0e756/complete/
 
 ### Cancel an existing order
-PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/cancel/
+PATCH http://localhost:3000/api/orders/686fb56c7ea9027a508b6855/cancel/
 
 ### Refund an existing order
 PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/refund/
@@ -52,4 +52,4 @@ Content-Type: application/json
 }
 
 ### Delete order
-DELETE http://localhost:3000/api/orders/686f0bbd43c2bbe59b1a4b04
+DELETE http://localhost:3000/api/orders/686fb412209ffde23f959824

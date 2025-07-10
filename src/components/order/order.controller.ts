@@ -7,6 +7,7 @@ import { sanitizeOrderResponseArray, sanitizeOrderResponse } from '../../shared/
 import { OpenAI } from 'openai';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 import { ensureWandExists, ensureWizardExists } from '../../shared/db/ensureEntityExists.js';
+import { Wand, WandStatus } from '../wand/wand.entity.js';
 
 const em = orm.em;
 
@@ -94,7 +95,13 @@ async function add(req: Request, res: Response) {
     const input = req.body.sanitizedInput;
 
     if (!(await ensureWizardExists(em, input.wizard, res))) return;
-    if (!(await ensureWandExists(em, input.wand, res))) return;
+
+    const wand = await ensureWandExists(em, input.wand, res);
+    if (!wand) return;
+    if (wand.status !== WandStatus.Available) {
+      res.status(400).json({ message: 'Wand is not available' });
+      return;
+    }
 
     input.created_at = Date();
     input.status = OrderStatus.Pending;
@@ -115,7 +122,13 @@ async function update(req: Request, res: Response) {
     const input = req.body.sanitizedInput;
 
     if (!(await ensureWizardExists(em, input.wizard, res))) return;
-    if (!(await ensureWandExists(em, input.wand, res))) return;
+
+    const wand = await ensureWandExists(em, input.wand, res);
+    if (!wand) return;
+    if (wand.status !== WandStatus.Available) {
+      res.status(400).json({ message: 'Wand is not available' });
+      return;
+    }
 
     const orderToUpdate = await em.findOneOrFail(Order, id);
     em.assign(orderToUpdate, input);
@@ -135,7 +148,7 @@ async function update(req: Request, res: Response) {
 async function pay(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const orderToPay = await em.findOneOrFail(Order, { id });
+    const orderToPay = await em.findOneOrFail(Order, { id }, { populate: ['wand'] });
 
     if (orderToPay.status !== OrderStatus.Pending) {
       res.status(400).json({ message: 'Order is not in a payable state' });
@@ -146,6 +159,7 @@ async function pay(req: Request, res: Response) {
     // For example, using Stripe or PayPal SDKs
 
     orderToPay.status = OrderStatus.Paid;
+    orderToPay.wand.status = WandStatus.Sold;
     await em.flush();
     const sanitizedResponse = sanitizeOrderResponse(orderToPay);
     res.status(200).json({ message: 'Order paid successfully', data: sanitizedResponse });
@@ -221,6 +235,7 @@ async function complete(req: Request, res: Response) {
 
     orderToComplete.status = OrderStatus.Completed;
     orderToComplete.completed = true;
+
     await em.flush();
 
     const sanitizedResponse = sanitizeOrderResponse(orderToComplete);
@@ -237,14 +252,19 @@ async function complete(req: Request, res: Response) {
 async function cancel(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const orderToCancel = await em.findOneOrFail(Order, { id });
+    const orderToCancel = await em.findOneOrFail(Order, { id }, { populate: ['wand'] });
 
-    if (orderToCancel.status === OrderStatus.Completed || orderToCancel.status === OrderStatus.Refunded) {
+    if (
+      orderToCancel.status === OrderStatus.Completed ||
+      orderToCancel.status === OrderStatus.Refunded ||
+      orderToCancel.status === OrderStatus.Pending
+    ) {
       res.status(400).json({ message: 'Order cannot be cancelled at this stage' });
       return;
     }
 
     orderToCancel.status = OrderStatus.Cancelled;
+    orderToCancel.wand.status = WandStatus.Available;
     await em.flush();
 
     const sanitizedResponse = sanitizeOrderResponse(orderToCancel);

@@ -45,7 +45,7 @@ PATCH http://localhost:3000/api/wands/68683ed4508f3212ea14e89a/available/
 PATCH http://localhost:3000/api/wands/686aa443c710b3a438dae241/sold/
 
 ### Deactivate a wand
-PATCH http://localhost:3000/api/wands/686aa443c710b3a438dae241/deactivate/
+PATCH http://localhost:3000/api/wands/686f9031ac6adbb1f1f68116/deactivate/
 
 ### Delete a wand
 DELETE http://localhost:3000/api/wands/686f8d86a53d8619cffeb2cc
