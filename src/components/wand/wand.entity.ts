@@ -1,6 +1,6 @@
 import { Entity, Property, ManyToOne, Cascade, Rel, OneToOne, Collection, OneToMany } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
-import Wood from '../wood/wood.entity.js';
+import { Wood } from '../wood/wood.entity.js';
 import { Core } from '../core/core.entity.js';
 import { Order } from '../order/order.entity.js';
 import { Answer } from '../answer/answer.entity.js';

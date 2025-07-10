@@ -122,7 +122,7 @@ async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput;
 
-    if (!(await ensureEntityExists(em, School, input.school, res))) return;
+    if (!(await ensureEntityExists<School>(em, School, input.school, res))) return;
 
     input.name = input.name.toLowerCase();
     input.email = input.email.toLowerCase();
@@ -197,10 +197,9 @@ async function validatePassword(req: Request, res: Response) {
 async function update(req: Request, res: Response) {
   try {
     const id = req.params.id;
-
     const input = req.body.sanitizedInput;
 
-    if (!(await ensureEntityExists(em, School, input.school, res))) return;
+    if (!(await ensureEntityExists<School>(em, School, input.school, res))) return;
 
     input.name = input.name.toLowerCase();
     input.email = input.email.toLowerCase();

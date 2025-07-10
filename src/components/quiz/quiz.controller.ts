@@ -48,7 +48,7 @@ async function add(req: Request, res: Response) {
     const input = req.body.sanitizedInput;
 
     for (const questionId of input.questions) {
-      if (!(await ensureEntityExists(em, Question, questionId, res))) return;
+      if (!(await ensureEntityExists<Question>(em, Question, questionId, res))) return;
     }
 
     input.created_at = new Date();
@@ -76,7 +76,7 @@ async function update(req: Request, res: Response) {
     const input = req.body.sanitizedInput;
 
     for (const questionId of input.questions) {
-      if (!(await ensureEntityExists(em, Question, questionId, res))) return;
+      if (!(await ensureEntityExists<Question>(em, Question, questionId, res))) return;
     }
 
     const quizToUpdate = await em.findOneOrFail(Quiz, { id });

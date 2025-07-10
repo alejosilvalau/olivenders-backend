@@ -15,13 +15,13 @@ POST http://localhost:3000/api/wands/
 Content-Type: application/json
 
 {
-  "name": "Charles Weasle first wand",
-  "length_inches": 12,
-  "description": "The most powerful wand in existence",
+  "name": "Elder Wand",
+  "length_inches": 15,
+  "description": "The most powerful wand in existence, made from elder wood and a Thestral tail hair core",
   "image": "https://example.com/elder-wand.jpg",
   "profit": 1000,
-  "wood": "68691b824e76ad09c1b0de31",
-  "core": "68691bcb4e73ad09c1b0de32"
+  "wood": "686f8a4e968a4fc88cf2e759",
+  "core": "686f8a60968a4fc88cf2e75a"
 }
 
 ### Update an existing wand
@@ -48,4 +48,4 @@ PATCH http://localhost:3000/api/wands/686aa443c710b3a438dae241/sold/
 PATCH http://localhost:3000/api/wands/686aa443c710b3a438dae241/deactivate/
 
 ### Delete a wand
-DELETE http://localhost:3000/api/wands/686f041446b7b754fe4b582f
+DELETE http://localhost:3000/api/wands/686f8d86a53d8619cffeb2cc

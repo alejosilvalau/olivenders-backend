@@ -3,7 +3,7 @@ import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
 import { Wand } from '../wand/wand.entity.js';
 
 @Entity()
-class Wood extends BaseEntity {
+export class Wood extends BaseEntity {
   @Property({ nullable: false, unique: true })
   name!: string;
 
@@ -19,5 +19,3 @@ class Wood extends BaseEntity {
   @OneToMany(() => Wand, wand => wand.wood, { cascade: [Cascade.REMOVE] })
   wands = new Collection<Wand>(this);
 }
-
-export default Wood;

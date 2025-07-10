@@ -3,7 +3,7 @@ import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 import { orm } from '../../shared/db/orm.js';
 import { Wand, WandStatus } from './wand.entity.js';
 import { z } from 'zod';
-import Wood from '../wood/wood.entity.js';
+import { Wood } from '../wood/wood.entity.js';
 import { Core } from '../core/core.entity.js';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 import { ensureEntityExists } from '../../shared/db/ensureEntityExists.js';
@@ -70,14 +70,17 @@ async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput;
 
-    if (!(await ensureEntityExists(em, Wood, input.wood, res))) return;
-    if (!(await ensureEntityExists(em, Core, input.core, res))) return;
+    const wood = await ensureEntityExists<Wood>(em, Wood, input.wood, res);
+    if (!wood) return;
+
+    const core = await ensureEntityExists<Core>(em, Core, input.core, res);
+    if (!core) return;
 
     input.name = input.name.toLowerCase();
 
     input.status = WandStatus.Available;
 
-    input.total_price = input.wood + input.core + input.profit;
+    input.total_price = wood.price + core.price + input.profit;
 
     const wand = em.create(Wand, input);
     await em.flush();
@@ -98,12 +101,15 @@ async function update(req: Request, res: Response) {
 
     const input = req.body.sanitizedInput;
 
-    if (!(await ensureEntityExists(em, Wood, input.wood, res))) return;
-    if (!(await ensureEntityExists(em, Core, input.core, res))) return;
+    const wood = await ensureEntityExists<Wood>(em, Wood, input.wood, res);
+    if (!wood) return;
+
+    const core = await ensureEntityExists<Core>(em, Core, input.core, res);
+    if (!core) return;
 
     input.name = input.name.toLowerCase();
 
-    input.total_price = input.wood + input.core + input.profit;
+    input.total_price = wood.price + core.price + input.profit;
 
     const wandToUpdate = await em.findOneOrFail(Wand, id);
     em.assign(wandToUpdate, input);

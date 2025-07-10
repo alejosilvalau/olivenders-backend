@@ -71,11 +71,11 @@ async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput;
 
-    if (!(await ensureEntityExists(em, Quiz, input.quiz, res))) return;
-    if (!(await ensureEntityExists(em, Wizard, input.wizard, res))) return;
+    if (!(await ensureEntityExists<Quiz>(em, Quiz, input.quiz, res))) return;
+    if (!(await ensureEntityExists<Wizard>(em, Wizard, input.wizard, res))) return;
 
     input.created_at = new Date();
-    
+
     try {
       input.wand = await getRandomWandByScore(input.score);
     } catch (error: any) {
@@ -98,11 +98,11 @@ async function update(req: Request, res: Response) {
     const id = req.params.id;
     const input = req.body.sanitizedInput;
 
-    if (!(await ensureEntityExists(em, Quiz, input.quiz, res))) return;
-    if (!(await ensureEntityExists(em, Wizard, input.wizard, res))) return;
+    if (!(await ensureEntityExists<Quiz>(em, Quiz, input.quiz, res))) return;
+    if (!(await ensureEntityExists<Wizard>(em, Wizard, input.wizard, res))) return;
 
     const answer = await em.findOneOrFail(Answer, { id });
-    
+
     try {
       input.wand = await getRandomWandByScore(input.score);
     } catch (error: any) {
