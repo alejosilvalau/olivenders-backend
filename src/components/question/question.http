@@ -23,4 +23,4 @@ Content-Type: application/json
 }
 
 ### Delete a question
-DELETE http://localhost:3000/api/questions/686e497ae9cae37589d37c9c
+DELETE http://localhost:3000/api/questions/686e497ce9cae37589d37c9e

@@ -84,4 +84,4 @@ PATCH http://localhost:3000/api/wizards/686a99c88d35246deb7b8fac/deactivate
 PATCH http://localhost:3000/api/wizards/686a99c88d35246deb7b8fac/activate
 
 ### Delete wizard
-DELETE http://localhost:3000/api/wizards/686b1a81f92fcf19c204d43e
+DELETE http://localhost:3000/api/wizards/686f07849ce7415044acf3a4

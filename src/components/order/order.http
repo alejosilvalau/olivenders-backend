@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/orders/
 
 ### Get one order by ID
-GET http://localhost:3000/api/orders/686aee61be43a3a8d58acf91
+GET http://localhost:3000/api/orders/686f0bbd43c2bbe59b1a4b04
 
 ### Create a new order
 POST http://localhost:3000/api/orders/
@@ -52,4 +52,4 @@ Content-Type: application/json
 }
 
 ### Delete order
-DELETE http://localhost:3000/api/orders/686b970b94b3abba7b748de3
+DELETE http://localhost:3000/api/orders/686f0bbd43c2bbe59b1a4b04
