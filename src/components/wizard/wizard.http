@@ -23,12 +23,12 @@ Content-Type: application/json
 {
   "username": "dracomalfoy",
   "password": "Expelio123#@",
-  "name": "Draco",
+  "name": "Hayy",
   "last_name": "Malfoy",
   "email": "draco.malfoy@hogwarts.edu",
   "address": "5 Manor Drive, Malfoy Manor",
   "phone": "445345678",
-  "school": "686b10cf9e70e5bf1347fe07"
+  "school": "686b10ff9e70e5bf1347fe07"
 }
 
 ### Login to a wizard account
@@ -84,4 +84,4 @@ PATCH http://localhost:3000/api/wizards/686a99c88d35246deb7b8fac/deactivate
 PATCH http://localhost:3000/api/wizards/686a99c88d35246deb7b8fac/activate
 
 ### Delete wizard
-DELETE http://localhost:3000/api/wizards/686aa629c90db9e766e55c9a
+DELETE http://localhost:3000/api/wizards/686b1a81f92fcf19c204d43e

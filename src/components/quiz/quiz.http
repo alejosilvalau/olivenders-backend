@@ -10,7 +10,7 @@ Content-Type: application/json
 
 {
   "name": "Advanced Spellcasting",
-  "questions": ["686e497ae9cae37589d37c9c", "686e497be9cae37589d37c9d"]
+  "questions": ["686e497be9cae37589d37c9d", "686e497ce9cae37589d37c9e"]
 }
 
 ### Update an existing quiz
@@ -23,4 +23,4 @@ Content-Type: application/json
 }
 
 ### Delete a quiz
-DELETE http://localhost:3000/api/quizzes/686e4952e9cae37589d37c9b
+DELETE http://localhost:3000/api/quizzes/686f058cc630c6c037fae637

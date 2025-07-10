@@ -2,23 +2,27 @@
 GET http://localhost:3000/api/answers
 
 ### Get one answer by ID
-GET http://localhost:3000/api/answers/686e4532547a33a9fd881456
+GET http://localhost:3000/api/answers/686f060ec630c6c037fae639
 
 ### Create a new answer
 POST http://localhost:3000/api/answers/
 Content-Type: application/json
 
 {
-  "score": 10
+  "score": 5,
+  "quiz": "686f05d6c630c6c037fae638",
+  "wizard": "686f07849ce7415044acf3a4"
 }
 
 ### Update an existing answer
-PUT http://localhost:3000/api/answers/686e4532547a34a9fd881456
+PUT http://localhost:3000/api/answers/686f060ec630c6c037fae639
 Content-Type: application/json
 
 {
-  "score": 5
+  "score": 5,
+  "quiz": "686f05d6c630c6c037fae638",
+  "wizard": "686f07849ce7415044acf3a4"
 }
 
 ### Delete a answer
-DELETE http://localhost:3000/api/answers/686e4532547a33a9fd881456
+DELETE http://localhost:3000/api/answers/686f060ec630c6c037fae639

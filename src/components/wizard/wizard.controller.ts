@@ -137,7 +137,7 @@ async function add(req: Request, res: Response) {
   } catch (error: any) {
     if (error.code === 11000) {
       res.status(409).json({
-        message: 'A wizard with this name or email already exists',
+        message: 'A wizard with this username or email already exists',
       });
     } else {
       res.status(500).json({ message: 'An error occurred while creating the wizard' });
