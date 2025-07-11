@@ -18,8 +18,15 @@ const sanitizeCoreInput = sanitizeInput(coreZodSchema);
 
 async function findAll(req: Request, res: Response) {
   try {
-    const cores = await em.find(Core, {});
-    res.status(200).json({ message: 'Cores fetched', data: cores });
+    const page = Number(req.query.page) || 1;
+    const pageSize = Number(req.query.pageSize) || 10;
+    const offset = (page - 1) * pageSize;
+
+    const [cores, total] = await em.findAndCount(Core, {}, { limit: pageSize, offset });
+
+    const totalPages = Math.ceil(total / pageSize);
+
+    res.status(200).json({ message: 'Cores fetched', data: cores, total, page, pageSize, totalPages });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }

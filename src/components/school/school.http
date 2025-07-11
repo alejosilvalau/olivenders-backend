@@ -1,5 +1,5 @@
 ### Get all schools
-GET http://localhost:3000/api/schools?page=1&pageSize=10
+GET http://localhost:3000/api/schools?page=1&pageSize=5
 
 ### Get one school by ID
 GET http://localhost:3000/api/schools/68692a9caddddb28d9452ee9
@@ -12,10 +12,10 @@ POST http://localhost:3000/api/schools/
 Content-Type: application/json
 
 {
-  "name": "Hogwarts School of Witchcraft and Wizardry",
-  "email": "hogwarts@magic.com",
-  "address": "Magic Street 123",
-  "phone": "123456789"
+  "name": "Ilvermorny School of Witchcraft and Wizardry",
+  "email": "ilvermorny@magic.com",
+  "address": "Mount Greylock, United States of America",
+  "phone": "987654321"
 }
 
 ### Update an existing school

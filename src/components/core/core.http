@@ -1,5 +1,5 @@
 ### Get all cores
-GET http://localhost:3000/api/cores/
+GET http://localhost:3000/api/cores?page=1&pageSize=5
 
 ### Get one wood by ID
 GET http://localhost:3000/api/cores/686876537ae52f25a89ca4d5

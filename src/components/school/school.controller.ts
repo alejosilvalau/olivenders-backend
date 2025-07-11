@@ -24,13 +24,15 @@ async function findAll(req: Request, res: Response, next: NextFunction) {
     const offset = (page - 1) * pageSize;
 
     const [schools, total] = await em.findAndCount(School, {}, { limit: pageSize, offset });
+
+    const totalPages = Math.ceil(total / pageSize);
     res.status(200).json({
       message: 'Schools fetched',
       data: schools,
       total,
       page,
       pageSize,
-      totalPages: Math.ceil(total / pageSize),
+      totalPages,
     });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
