@@ -31,23 +31,7 @@ async function findAllByCore(req: Request, res: Response) {
 }
 
 async function findAllByWood(req: Request, res: Response) {
-  try {
-    const woodId = req.params.woodId;
-    const page = Number(req.query.page) || 1;
-    const pageSize = Number(req.query.pageSize) || 10;
-    const offset = (page - 1) * pageSize;
-
-    const [wands, total] = await em.findAndCount(
-      Wand,
-      { wood: woodId, status: WandStatus.Available },
-      { populate: ['wood', 'core'], limit: pageSize, offset }
-    );
-
-    const totalPages = Math.ceil(total / pageSize);
-    res.status(200).json({ message: 'Wands fetched', data: wands, total, page, pageSize, totalPages });
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
+  return paginateWand(em, req, res, { wood: req.params.woodId, status: WandStatus.Available });
 }
 
 async function findOne(req: Request, res: Response) {
