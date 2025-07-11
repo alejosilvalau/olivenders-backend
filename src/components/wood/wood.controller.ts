@@ -19,8 +19,14 @@ const sanitizeWoodInput = sanitizeInput(woodZodSchema);
 
 async function findAll(req: Request, res: Response, next: NextFunction) {
   try {
-    const woods = await em.find(Wood, {});
-    res.status(200).json({ message: 'Woods fetched', data: woods });
+    const page = Number(req.query.page) || 1;
+    const pageSize = Number(req.query.pageSize) || 10;
+    const offset = (page - 1) * pageSize;
+
+    const [woods, total] = await em.findAndCount(Wood, {}, { limit: pageSize, offset });
+
+    const totalPages = Math.ceil(total / pageSize);
+    res.status(200).json({ message: 'Woods fetched', data: woods, total, page, pageSize, totalPages });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
