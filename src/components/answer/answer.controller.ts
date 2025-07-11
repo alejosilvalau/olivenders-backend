@@ -7,6 +7,7 @@ import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 import { Wand, WandStatus } from '../wand/wand.entity.js';
 import { sanitizeAnswerResponse, sanitizeAnswerResponseArray } from '../../shared/entities/sanitizeAnswerResponse.js';
 import { ensureQuizExists, ensureWizardExists } from '../../shared/db/ensureEntityExists.js';
+import { paginateEntity } from '../../shared/db/paginateEntity.js';
 
 const em = orm.em;
 
@@ -20,13 +21,7 @@ const answerZodSchema = z.object({
 const sanitizeAnswerInput = sanitizeInput(answerZodSchema);
 
 async function findAll(req: Request, res: Response, next: NextFunction) {
-  try {
-    const answers = await em.find(Answer, {}, { populate: ['quiz', 'wizard', 'wand'] });
-    const sanitizedResponses = sanitizeAnswerResponseArray(answers);
-    res.status(200).json({ message: 'Answers fetched', data: sanitizedResponses });
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
+  return paginateEntity(Answer, em, req, res, {}, ['quiz', 'wizard', 'wand'], sanitizeAnswerResponseArray);
 }
 
 async function findOne(req: Request, res: Response, next: NextFunction) {

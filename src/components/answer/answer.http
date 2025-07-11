@@ -1,5 +1,5 @@
 ### Get all answers
-GET http://localhost:3000/api/answers
+GET http://localhost:3000/api/answers?page=1&pageSize=5
 
 ### Get one answer by ID
 GET http://localhost:3000/api/answers/686f060ec630c6c037fae639
