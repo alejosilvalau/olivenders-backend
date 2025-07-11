@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { Wood } from './wood.entity.js';
 import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
+import { paginateWood } from '../../shared/db/paginateEntity.js';
 
 const em = orm.em;
 
@@ -18,18 +19,7 @@ const woodZodSchema = z.object({
 const sanitizeWoodInput = sanitizeInput(woodZodSchema);
 
 async function findAll(req: Request, res: Response, next: NextFunction) {
-  try {
-    const page = Number(req.query.page) || 1;
-    const pageSize = Number(req.query.pageSize) || 10;
-    const offset = (page - 1) * pageSize;
-
-    const [woods, total] = await em.findAndCount(Wood, {}, { limit: pageSize, offset });
-
-    const totalPages = Math.ceil(total / pageSize);
-    res.status(200).json({ message: 'Woods fetched', data: woods, total, page, pageSize, totalPages });
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
+  return paginateWood(em, req, res);
 }
 
 async function findOne(req: Request, res: Response, next: NextFunction) {
