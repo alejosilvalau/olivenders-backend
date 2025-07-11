@@ -1,5 +1,5 @@
 ### Get all wizards
-GET http://localhost:3000/api/wizards/
+GET http://localhost:3000/api/wizards?page=1&pageSize=5
 
 ### Get one wizard by ID
 GET http://localhost:3000/api/wizards/68698280a91cb51622ab22b6

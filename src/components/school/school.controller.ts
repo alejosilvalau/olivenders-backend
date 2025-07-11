@@ -4,7 +4,7 @@ import { School } from './school.entity.js';
 import { z } from 'zod';
 import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
-import { paginateSchool } from '../../shared/db/paginateEntity.js';
+import { paginateEntity } from '../../shared/db/paginateEntity.js';
 
 const em = orm.em;
 
@@ -19,7 +19,7 @@ const schoolZodSchema = z.object({
 const sanitizeSchoolInput = sanitizeInput(schoolZodSchema);
 
 async function findAll(req: Request, res: Response, next: NextFunction) {
-  return paginateSchool(em, req, res);
+  return paginateEntity(School, em, req, res);
 }
 
 async function findOne(req: Request, res: Response, next: NextFunction) {

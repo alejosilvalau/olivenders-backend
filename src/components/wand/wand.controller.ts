@@ -5,7 +5,7 @@ import { Wand, WandStatus } from './wand.entity.js';
 import { z } from 'zod';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 import { ensureCoreExists, ensureWoodExists } from '../../shared/db/ensureEntityExists.js';
-import { paginateWand } from '../../shared/db/paginateEntity.js';
+import { paginateEntity } from '../../shared/db/paginateEntity.js';
 
 const em = orm.em;
 
@@ -23,15 +23,15 @@ const wandZodSchema = z.object({
 const sanitizeWandInput = sanitizeInput(wandZodSchema);
 
 async function findAll(req: Request, res: Response) {
-  return paginateWand(em, req, res);
+  return paginateEntity(Wand, em, req, res);
 }
 
 async function findAllByCore(req: Request, res: Response) {
-  return paginateWand(em, req, res, { core: req.params.coreId, status: WandStatus.Available });
+  return paginateEntity(Wand, em, req, res, { core: req.params.coreId, status: WandStatus.Available });
 }
 
 async function findAllByWood(req: Request, res: Response) {
-  return paginateWand(em, req, res, { wood: req.params.woodId, status: WandStatus.Available });
+  return paginateEntity(Wand, em, req, res, { wood: req.params.woodId, status: WandStatus.Available });
 }
 
 async function findOne(req: Request, res: Response) {

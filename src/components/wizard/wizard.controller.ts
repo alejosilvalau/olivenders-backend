@@ -9,7 +9,7 @@ import bcrypt from 'bcrypt';
 import { sanitizeWizardResponse, sanitizeWizardResponseArray } from '../../shared/entities/sanitizeWizardResponse.js';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 import { ensureSchoolExists } from '../../shared/db/ensureEntityExists.js';
-import { paginateWizard } from '../../shared/db/paginateEntity.js';
+import { paginateEntity } from '../../shared/db/paginateEntity.js';
 
 dotenv.config();
 const em = orm.em;
@@ -36,7 +36,7 @@ const sanitizeWizardInput = sanitizeInput(wizardZodSchema);
 const sanitizeWizardPartialInput = sanitizeInput(wizardZodSchema.partial());
 
 async function findAll(req: Request, res: Response) {
-  return paginateWizard(em, req, res, {}, ['school'], sanitizeWizardResponseArray);
+  return paginateEntity(Wizard, em, req, res, {}, ['school'], sanitizeWizardResponseArray);
 }
 
 async function findOne(req: Request, res: Response) {

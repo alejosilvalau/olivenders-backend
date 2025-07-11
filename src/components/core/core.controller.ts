@@ -4,7 +4,7 @@ import { Core } from './core.entity.js';
 import { z } from 'zod';
 import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
-import { paginateCore } from '../../shared/db/paginateEntity.js';
+import { paginateEntity } from '../../shared/db/paginateEntity.js';
 
 const em = orm.em;
 
@@ -18,7 +18,7 @@ const coreZodSchema = z.object({
 const sanitizeCoreInput = sanitizeInput(coreZodSchema);
 
 async function findAll(req: Request, res: Response) {
-  return paginateCore(em, req, res);
+  return paginateEntity(Core, em, req, res);
 }
 
 async function findOne(req: Request, res: Response, next: NextFunction) {

@@ -5,6 +5,7 @@ import { Quiz } from './quiz.entity.js';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 import { ensureQuestionExists } from '../../shared/db/ensureEntityExists.js';
+import { paginateEntity } from '../../shared/db/paginateEntity.js';
 
 const em = orm.em;
 
@@ -20,12 +21,7 @@ const quizZodSchema = z.object({
 const sanitizeQuizInput = sanitizeInput(quizZodSchema);
 
 async function findAll(req: Request, res: Response, next: NextFunction) {
-  try {
-    const quizzes = await em.find(Quiz, {}, { populate: ['questions'] });
-    res.status(200).json({ message: 'Quiz fetched', data: quizzes });
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
+  return paginateEntity(Quiz, em, req, res, {}, ['questions']);
 }
 
 async function findOne(req: Request, res: Response, next: NextFunction) {
