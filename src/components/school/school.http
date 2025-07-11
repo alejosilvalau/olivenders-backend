@@ -1,5 +1,5 @@
 ### Get all schools
-GET http://localhost:3000/api/schools?page=1&pageSize=5
+GET http://localhost:3000/api/schools?page=2&pageSize=5
 
 ### Get one school by ID
 GET http://localhost:3000/api/schools/68692a9caddddb28d9452ee9

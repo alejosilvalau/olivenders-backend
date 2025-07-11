@@ -5,6 +5,7 @@ import { Wand, WandStatus } from './wand.entity.js';
 import { z } from 'zod';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 import { ensureCoreExists, ensureWoodExists } from '../../shared/db/ensureEntityExists.js';
+import { paginateWand } from '../../shared/db/paginateEntity.js';
 
 const em = orm.em;
 
@@ -22,38 +23,11 @@ const wandZodSchema = z.object({
 const sanitizeWandInput = sanitizeInput(wandZodSchema);
 
 async function findAll(req: Request, res: Response) {
-  try {
-    const page = Number(req.query.page) || 1;
-    const pageSize = Number(req.query.pageSize) || 10;
-    const offset = (page - 1) * pageSize;
-
-    const [wands, total] = await em.findAndCount(Wand, {}, { populate: ['wood', 'core'], limit: pageSize, offset });
-
-    const totalPages = Math.ceil(total / pageSize);
-    res.status(200).json({ message: 'Wands fetched', data: wands, total, page, pageSize, totalPages });
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
+  return paginateWand(em, req, res);
 }
 
 async function findAllByCore(req: Request, res: Response) {
-  try {
-    const coreId = req.params.coreId;
-    const page = Number(req.query.page) || 1;
-    const pageSize = Number(req.query.pageSize) || 10;
-    const offset = (page - 1) * pageSize;
-
-    const [wands, total] = await em.findAndCount(
-      Wand,
-      { core: coreId, status: WandStatus.Available },
-      { populate: ['wood', 'core'], limit: pageSize, offset }
-    );
-
-    const totalPages = Math.ceil(total / pageSize);
-    res.status(200).json({ message: 'Wands fetched', data: wands, total, page, pageSize, totalPages });
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
+  return paginateWand(em, req, res, { core: req.params.coreId, status: WandStatus.Available });
 }
 
 async function findAllByWood(req: Request, res: Response) {
