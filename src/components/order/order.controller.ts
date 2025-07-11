@@ -8,6 +8,7 @@ import { OpenAI } from 'openai';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 import { ensureWandExists, ensureWizardExists } from '../../shared/db/ensureEntityExists.js';
 import { Wand, WandStatus } from '../wand/wand.entity.js';
+import { paginateEntity } from '../../shared/db/paginateEntity.js';
 
 const em = orm.em;
 
@@ -34,17 +35,15 @@ const orderReviewZodSchema = z.object({
 const sanitizeOrderReviewInput = sanitizeInput(orderReviewZodSchema);
 
 async function findAll(req: Request, res: Response) {
-  try {
-    const orders = await em.find(
-      Order,
-      {},
-      { populate: ['wizard', 'wizard.school', 'wand', 'wand.wood', 'wand.core'] }
-    );
-    const sanitizedResponses = sanitizeOrderResponseArray(orders);
-    res.status(200).json({ message: 'Orders fetched', data: sanitizedResponses });
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
+  return paginateEntity(
+    Order,
+    em,
+    req,
+    res,
+    {},
+    ['wizard', 'wizard.school', 'wand', 'wand.wood', 'wand.core'],
+    sanitizeOrderResponseArray
+  );
 }
 
 // async function findAllByWizard(req: Request, res: Response) {
