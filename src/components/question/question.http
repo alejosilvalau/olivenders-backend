@@ -1,5 +1,5 @@
 ### Get all questions
-GET http://localhost:3000/api/questions
+GET http://localhost:3000/api/questions?page=2&pageSize=5
 
 ### Get one question by ID
 GET http://localhost:3000/api/questions/68625794720b449b17e17e52

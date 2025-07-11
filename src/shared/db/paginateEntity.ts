@@ -5,6 +5,7 @@ import { Wand } from '../../components/wand/wand.entity.js';
 import { School } from '../../components/school/school.entity.js';
 import { Wood } from '../../components/wood/wood.entity.js';
 import { Core } from '../../components/core/core.entity.js';
+import { Question } from '../../components/question/question.entity.js';
 
 async function _paginateEntity<T extends AnyEntity<T>>(
   em: EntityManager,
@@ -93,4 +94,15 @@ export function paginateCore(
   sanitizer?: (items: Core[]) => Core[]
 ) {
   return _paginateEntity(em, Core, req, res, findOptions, populate, sanitizer);
+}
+
+export function paginateQuestion(
+  em: EntityManager,
+  req: Request,
+  res: Response,
+  findOptions: object = {},
+  populate: string[] = [],
+  sanitizer?: (items: Question[]) => Question[]
+) {
+  return _paginateEntity(em, Question, req, res, findOptions, populate, sanitizer);
 }
