@@ -4,6 +4,7 @@ import { Core } from './core.entity.js';
 import { z } from 'zod';
 import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
+import { paginateCore } from '../../shared/db/paginateEntity.js';
 
 const em = orm.em;
 
@@ -17,19 +18,7 @@ const coreZodSchema = z.object({
 const sanitizeCoreInput = sanitizeInput(coreZodSchema);
 
 async function findAll(req: Request, res: Response) {
-  try {
-    const page = Number(req.query.page) || 1;
-    const pageSize = Number(req.query.pageSize) || 10;
-    const offset = (page - 1) * pageSize;
-
-    const [cores, total] = await em.findAndCount(Core, {}, { limit: pageSize, offset });
-
-    const totalPages = Math.ceil(total / pageSize);
-
-    res.status(200).json({ message: 'Cores fetched', data: cores, total, page, pageSize, totalPages });
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
+  return paginateCore(em, req, res);
 }
 
 async function findOne(req: Request, res: Response, next: NextFunction) {
