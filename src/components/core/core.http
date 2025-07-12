@@ -1,6 +1,6 @@
 ### Get all cores
 GET http://localhost:3000/api/cores?page=1&pageSize=5
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUyMzIyMzY4LCJleHAiOjE3NTIzMjU5Njh9.4vlgWmcYLgdLkIVTUnssBtcIvZn6g7Za3msUx5G9bz8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMjQyMCwiZXhwIjoxNzUyMzI2MDIwfQ.TcPt3Yaks3wZwL-H2s4xMLnp90qluzdwdn7AClEVwU4
 
 ### Get one wood by ID
 GET http://localhost:3000/api/cores/686876537ae52f25a89ca4d5

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { sanitizeSchoolInput, findAll, findOne, add, update, remove, findOneByName } from './school.controller.js';
 import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
+import { verifyAdminRole, verifyToken } from '../../middleware/authMiddleware.js';
 
 export const schoolRouter = Router();
 
@@ -66,8 +67,6 @@ export const schoolRouter = Router();
  */
 schoolRouter.get('/', findAll);
 
-
-
 /**
  * @swagger
  * /api/schools/{id}:
@@ -114,7 +113,7 @@ schoolRouter.get('/', findAll);
  *                 message:
  *                   type: string
  */
-schoolRouter.get('/:id', sanitizeMongoQuery, findOne);
+schoolRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
 
 /**
  * @swagger
@@ -162,7 +161,7 @@ schoolRouter.get('/:id', sanitizeMongoQuery, findOne);
  *                 message:
  *                   type: string
  */
-schoolRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
+schoolRouter.get('/name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOneByName);
 
 /**
  * @swagger
@@ -225,7 +224,7 @@ schoolRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
  *                 message:
  *                   type: string
  */
-schoolRouter.post('/', sanitizeMongoQuery, sanitizeSchoolInput, add);
+schoolRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeSchoolInput, add);
 
 /**
  * @swagger
@@ -295,7 +294,7 @@ schoolRouter.post('/', sanitizeMongoQuery, sanitizeSchoolInput, add);
  *                 message:
  *                   type: string
  */
-schoolRouter.put('/:id', sanitizeMongoQuery, sanitizeSchoolInput, update);
+schoolRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeSchoolInput, update);
 
 /**
  * @swagger
@@ -341,4 +340,4 @@ schoolRouter.put('/:id', sanitizeMongoQuery, sanitizeSchoolInput, update);
  *                 message:
  *                   type: string
  */
-schoolRouter.delete('/:id', sanitizeMongoQuery, remove);
+schoolRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);
