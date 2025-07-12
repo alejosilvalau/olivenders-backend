@@ -15,27 +15,30 @@ import {
   remove,
 } from './order.controller.js';
 import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
+import { verifyAdminRole, verifyToken } from '../../middleware/authMiddleware.js';
 
 export const orderRouter = Router();
 
-orderRouter.get('/', findAll);
+orderRouter.get('/', verifyToken, verifyAdminRole, findAll);
 
-orderRouter.get('/:id', sanitizeMongoQuery, findOne);
+// orderRouter.get('/:wizardId', sanitizeMongoQuery, verifyToken, findOneByWizard);
 
-orderRouter.post('/', sanitizeMongoQuery, sanitizeOrderInput, add);
+orderRouter.get('/:id', sanitizeMongoQuery, verifyToken, findOne);
 
-orderRouter.put('/:id', sanitizeMongoQuery, sanitizeOrderInput, update);
+orderRouter.post('/', sanitizeMongoQuery, verifyToken, sanitizeOrderInput, add);
 
-orderRouter.patch('/:id/pay', sanitizeMongoQuery, pay);
+orderRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeOrderInput, update);
 
-orderRouter.patch('/:id/dispatch', sanitizeMongoQuery, dispatch);
+orderRouter.patch('/:id/pay', sanitizeMongoQuery, verifyToken, pay);
 
-orderRouter.patch('/:id/complete', sanitizeMongoQuery, complete);
+orderRouter.patch('/:id/dispatch', sanitizeMongoQuery, verifyToken, verifyAdminRole, dispatch);
 
-orderRouter.patch('/:id/cancel', sanitizeMongoQuery, cancel);
+orderRouter.patch('/:id/complete', sanitizeMongoQuery, verifyToken, complete);
 
-orderRouter.patch('/:id/refund', sanitizeMongoQuery, refund);
+orderRouter.patch('/:id/cancel', sanitizeMongoQuery, verifyToken, cancel);
 
-orderRouter.patch('/:id/review', sanitizeMongoQuery, sanitizeOrderReviewInput, review);
+orderRouter.patch('/:id/refund', sanitizeMongoQuery, verifyToken, refund);
 
-orderRouter.delete('/:id', sanitizeMongoQuery, remove);
+orderRouter.patch('/:id/review', sanitizeMongoQuery, verifyToken, sanitizeOrderReviewInput, review);
+
+orderRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);
