@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { sanitizeWoodInput, findAll, findOne, add, update, remove, findOneByName } from './wood.controller.js';
 import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
+import { verifyAdminRole, verifyToken } from '../../middleware/authMiddleware.js';
 
 export const woodRouter = Router();
 
@@ -64,7 +65,7 @@ export const woodRouter = Router();
  *                 message:
  *                   type: string
  */
-woodRouter.get('/',findAll);
+woodRouter.get('/', verifyToken, verifyAdminRole, findAll);
 
 /**
  * @swagger
@@ -112,7 +113,7 @@ woodRouter.get('/',findAll);
  *                 message:
  *                   type: string
  */
-woodRouter.get('/:id', sanitizeMongoQuery, findOne);
+woodRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
 
 /**
  * @swagger
@@ -160,7 +161,7 @@ woodRouter.get('/:id', sanitizeMongoQuery, findOne);
  *                 message:
  *                   type: string
  */
-woodRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
+woodRouter.get('/name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOneByName);
 
 /**
  * @swagger
@@ -242,7 +243,7 @@ woodRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
  *                   type: string
  *                   example: An error occurred while creating the wood
  */
-woodRouter.post('/', sanitizeMongoQuery, sanitizeWoodInput, add);
+woodRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeWoodInput, add);
 
 /**
  * @swagger
@@ -325,7 +326,7 @@ woodRouter.post('/', sanitizeMongoQuery, sanitizeWoodInput, add);
  *                 message:
  *                   type: string
  */
-woodRouter.put('/:id', sanitizeMongoQuery, sanitizeWoodInput, update);
+woodRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeWoodInput, update);
 
 /**
  * @swagger
@@ -371,4 +372,4 @@ woodRouter.put('/:id', sanitizeMongoQuery, sanitizeWoodInput, update);
  *                 message:
  *                   type: string
  */
-woodRouter.delete('/:id', sanitizeMongoQuery, remove);
+woodRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);

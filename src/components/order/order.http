@@ -1,11 +1,14 @@
 ### Get all orders
 GET http://localhost:3000/api/orders?page=1&pageSize=5
+Authorization: Bearer <your_jwt_token>
 
 ### Get one order by ID
 GET http://localhost:3000/api/orders/686f0bbd43c2bbe59b1a4b04
+Authorization: Bearer <your_jwt_token>
 
 ### Create a new order
 POST http://localhost:3000/api/orders/
+Authorization: Bearer <your_jwt_token>
 Content-Type: application/json
 
 {
@@ -18,6 +21,7 @@ Content-Type: application/json
 
 ### Update an existing order
 PUT http://localhost:3000/api/orders/686b079ce49f5f3532b8e26e
+Authorization: Bearer <your_jwt_token>
 Content-Type: application/json
 
 {
@@ -30,21 +34,27 @@ Content-Type: application/json
 
 ### Pay an existing order
 PATCH http://localhost:3000/api/orders/686fb56c7ea9027a508b6855/pay/
+Authorization: Bearer <your_jwt_token>
 
 ### Dispatch an existing order
 PATCH http://localhost:3000/api/orders/686adf9b2786a48dfdb0e756/dispatch/
+Authorization: Bearer <your_jwt_token>
 
 ### Complete an existing order
 PATCH http://localhost:3000/api/orders/686adf9b2786a48dfdb0e756/complete/
+Authorization: Bearer <your_jwt_token>
 
 ### Cancel an existing order
 PATCH http://localhost:3000/api/orders/686fb56c7ea9027a508b6855/cancel/
+Authorization: Bearer <your_jwt_token>
 
 ### Refund an existing order
 PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/refund/
+Authorization: Bearer <your_jwt_token>
 
 ### Add a review to a complete order
 PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/review/
+Authorization: Bearer <your_jwt_token>
 Content-Type: application/json
 
 {
@@ -53,3 +63,4 @@ Content-Type: application/json
 
 ### Delete order
 DELETE http://localhost:3000/api/orders/686fb412209ffde23f959824
+Authorization: Bearer <your_jwt_token>
