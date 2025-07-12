@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { sanitizeTestInput, findAll, findOne, add, update, remove } from './quiz.controller.js';
 import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
+import { verifyToken, verifyAdminRole } from '../../middleware/authMiddleware.js';
 
 export const quizRouter = Router();
 
@@ -44,7 +45,7 @@ export const quizRouter = Router();
  *       500:
  *         description: Error retrieving quizzes
  */
-quizRouter.get('/', findAll);
+quizRouter.get('/', verifyToken, verifyAdminRole, findAll);
 
 /**
  * @swagger
@@ -71,7 +72,9 @@ quizRouter.get('/', findAll);
  *       500:
  *         description: Error retrieving the quiz
  */
-quizRouter.get('/:id', sanitizeMongoQuery, findOne);
+quizRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
+
+// quizRouter.post('/random', findOneRandom); ?? <-- It should be different from one previously answered by the wizard
 
 /**
  * @swagger
@@ -99,7 +102,7 @@ quizRouter.get('/:id', sanitizeMongoQuery, findOne);
  *       500:
  *         description: Error creating the quiz
  */
-quizRouter.post('/', sanitizeMongoQuery, sanitizeTestInput, add);
+quizRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeTestInput, add);
 
 /**
  * @swagger
@@ -134,7 +137,7 @@ quizRouter.post('/', sanitizeMongoQuery, sanitizeTestInput, add);
  *       500:
  *         description: Error updating the quiz
  */
-quizRouter.put('/:id', sanitizeMongoQuery, sanitizeTestInput, update);
+quizRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeTestInput, update);
 
 /**
  * @swagger
@@ -157,4 +160,4 @@ quizRouter.put('/:id', sanitizeMongoQuery, sanitizeTestInput, update);
  *       500:
  *         description: Error deleting the quiz
  */
-quizRouter.delete('/:id', sanitizeMongoQuery, remove);
+quizRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);

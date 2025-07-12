@@ -10,6 +10,8 @@ answerRouter.get('/', findAll);
 // TODO: Add Swagger documentation for Answer by ID route
 answerRouter.get('/:id', sanitizeMongoQuery, findOne);
 
+// answerRouter.get('/:wizardId', sanitizeMongoQuery, findOneByWizardId); // If you want to get answers by wizard ID, so that it appears in the wizard's dashboard
+
 // TODO: Add Swagger documentation for adding an Answer
 answerRouter.post('/', sanitizeMongoQuery, sanitizeAnswerInput, add);
 
