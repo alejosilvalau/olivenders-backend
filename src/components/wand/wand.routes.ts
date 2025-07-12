@@ -13,6 +13,7 @@ import {
   deactivate,
 } from './wand.controller.js';
 import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
+import { verifyAdminRole, verifyToken } from '../../middleware/authMiddleware.js';
 
 export const wandRouter = Router();
 
@@ -282,7 +283,7 @@ wandRouter.get('/:id', sanitizeMongoQuery, findOne);
  *       500:
  *         description: Error creating the wand
  */
-wandRouter.post('/', sanitizeMongoQuery, sanitizeWandInput, add);
+wandRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeWandInput, add);
 
 /**
  * @swagger
@@ -354,11 +355,13 @@ wandRouter.post('/', sanitizeMongoQuery, sanitizeWandInput, add);
  *       500:
  *         description: Error updating the wand
  */
-wandRouter.put('/:id', sanitizeMongoQuery, sanitizeWandInput, update);
+wandRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeWandInput, update);
 
-wandRouter.patch('/:id/available', sanitizeMongoQuery, markAsAvailable);
+// TODO: Add Swagger documentation for the markAsAvailable endpoint
+wandRouter.patch('/:id/available', sanitizeMongoQuery, verifyToken, verifyAdminRole, markAsAvailable);
 
-wandRouter.patch('/:id/sold', sanitizeMongoQuery, markAsSold);
+// TODO: Add Swagger documentation for the markAsSold endpoint
+wandRouter.patch('/:id/sold', sanitizeMongoQuery, verifyToken, verifyAdminRole, markAsSold);
 
 /**
  * @swagger
@@ -391,7 +394,7 @@ wandRouter.patch('/:id/sold', sanitizeMongoQuery, markAsSold);
  *       500:
  *         description: Error deactivating the wand
  */
-wandRouter.patch('/:id/deactivate', sanitizeMongoQuery, deactivate);
+wandRouter.patch('/:id/deactivate', sanitizeMongoQuery, verifyToken, verifyAdminRole, deactivate);
 
 /**
  * @swagger
@@ -422,4 +425,4 @@ wandRouter.patch('/:id/deactivate', sanitizeMongoQuery, deactivate);
  *       500:
  *         description: Error deleting the wand
  */
-wandRouter.delete('/:id', sanitizeMongoQuery, remove);
+wandRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);

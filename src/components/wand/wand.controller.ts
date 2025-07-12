@@ -23,15 +23,21 @@ const wandZodSchema = z.object({
 const sanitizeWandInput = sanitizeInput(wandZodSchema);
 
 async function findAll(req: Request, res: Response) {
-  return paginateEntity(Wand, em, req, res);
+  return paginateEntity(Wand, em, req, res, {}, ['wood', 'core']);
 }
 
 async function findAllByCore(req: Request, res: Response) {
-  return paginateEntity(Wand, em, req, res, { core: req.params.coreId, status: WandStatus.Available });
+  return paginateEntity(Wand, em, req, res, { core: req.params.coreId, status: WandStatus.Available }, [
+    'wood',
+    'core',
+  ]);
 }
 
 async function findAllByWood(req: Request, res: Response) {
-  return paginateEntity(Wand, em, req, res, { wood: req.params.woodId, status: WandStatus.Available });
+  return paginateEntity(Wand, em, req, res, { wood: req.params.woodId, status: WandStatus.Available }, [
+    'wood',
+    'core',
+  ]);
 }
 
 async function findOne(req: Request, res: Response) {

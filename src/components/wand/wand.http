@@ -8,17 +8,18 @@ GET http://localhost:3000/api/wands/core/686f8a60968a4fc88cf2e75a?page=1&pageSiz
 GET http://localhost:3000/api/wands/wood/686f8a4e968a4fc88cf2e759?page=1&pageSize=5
 
 ### Get one wand by ID
-GET http://localhost:3000/api/wands/686aa443c710b3a438dae241
+GET http://localhost:3000/api/wands/686f8f8fdd25f6850640b77a
 
 ### Create a new wand
 POST http://localhost:3000/api/wands/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg
 Content-Type: application/json
 
 {
-  "name": "Elder Wand",
+  "name": "Draco Malfoy's wand",
   "length_inches": 15,
-  "description": "The most powerful wand in existence, made from elder wood and a Thestral tail hair core",
-  "image": "https://example.com/elder-wand.jpg",
+  "description": "Draco Malfoy's wand is made of hawthorn wood and contains a dragon heartstring core. It is known for its unique properties and is a favorite among wizards.",
+  "image": "https://static.wikia.nocookie.net/harrypotter/images/f/f0/Draco_Malfoy_Wand.jpg/revision/latest?cb=20141208233016",
   "profit": 1000,
   "wood": "686f8a4e968a4fc88cf2e759",
   "core": "686f8a60968a4fc88cf2e75a"
@@ -26,6 +27,7 @@ Content-Type: application/json
 
 ### Update an existing wand
 PUT http://localhost:3000/api/wands/68683ed4508eae12ea14e89a
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUyMzIyMDE3LCJleHAiOjE3NTIzMjU2MTd9.u9qjFXIa4hYnX24gKYxzBuYFcEMsAaa-A4VxLq35TRc
 Content-Type: application/json
 
 {
@@ -40,12 +42,16 @@ Content-Type: application/json
 
 ### Mark a wand as available
 PATCH http://localhost:3000/api/wands/68683ed4508f3212ea14e89a/available/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUyMzIyMDE3LCJleHAiOjE3NTIzMjU2MTd9.u9qjFXIa4hYnX24gKYxzBuYFcEMsAaa-A4VxLq35TRc
 
 ### Mark a wand as sold
 PATCH http://localhost:3000/api/wands/686aa443c710b3a438dae241/sold/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUyMzIyMDE3LCJleHAiOjE3NTIzMjU2MTd9.u9qjFXIa4hYnX24gKYxzBuYFcEMsAaa-A4VxLq35TRc
 
 ### Deactivate a wand
 PATCH http://localhost:3000/api/wands/686f9031ac6adbb1f1f68116/deactivate/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUyMzIyMDE3LCJleHAiOjE3NTIzMjU2MTd9.u9qjFXIa4hYnX24gKYxzBuYFcEMsAaa-A4VxLq35TRc
 
 ### Delete a wand
 DELETE http://localhost:3000/api/wands/686f8d86a53d8619cffeb2cc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUyMzIyMDE3LCJleHAiOjE3NTIzMjU2MTd9.u9qjFXIa4hYnX24gKYxzBuYFcEMsAaa-A4VxLq35TRc
