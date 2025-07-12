@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { sanitizeQuestionInput, findAll, findOne, add, update, remove } from './question.controller.js';
 import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
+import { verifyAdminRole, verifyToken } from '../../middleware/authMiddleware.js';
 
 export const questionRouter = Router();
 
@@ -39,7 +40,7 @@ export const questionRouter = Router();
  *       500:
  *         description: Error retrieving questions
  */
-questionRouter.get('/', findAll);
+questionRouter.get('/', verifyToken, verifyAdminRole, findAll);
 
 /**
  * @swagger
@@ -66,7 +67,7 @@ questionRouter.get('/', findAll);
  *       500:
  *         description: Error retrieving the question
  */
-questionRouter.get('/:id', sanitizeMongoQuery, findOne);
+questionRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
 
 /**
  * @swagger
@@ -94,7 +95,7 @@ questionRouter.get('/:id', sanitizeMongoQuery, findOne);
  *       500:
  *         description: Error creating the question
  */
-questionRouter.post('/', sanitizeMongoQuery, sanitizeQuestionInput, add);
+questionRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeQuestionInput, add);
 
 /**
  * @swagger
@@ -129,7 +130,7 @@ questionRouter.post('/', sanitizeMongoQuery, sanitizeQuestionInput, add);
  *       500:
  *         description: Error updating the question
  */
-questionRouter.put('/:id', sanitizeMongoQuery, sanitizeQuestionInput, update);
+questionRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeQuestionInput, update);
 
 /**
  * @swagger
@@ -152,4 +153,4 @@ questionRouter.put('/:id', sanitizeMongoQuery, sanitizeQuestionInput, update);
  *       500:
  *         description: Error deleting the question
  */
-questionRouter.delete('/:id', sanitizeMongoQuery, remove);
+questionRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);
