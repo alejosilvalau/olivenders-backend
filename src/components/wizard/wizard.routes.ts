@@ -20,7 +20,7 @@ import {
   remove,
 } from './wizard.controller.js';
 import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
-// import { verificarRol, verificarToken } from '../../middleware/authMiddleware.js';
+import { verifyToken, verifyAdminRole } from '../../middleware/authMiddleware.js';
 
 export const wizardRouter = Router();
 
@@ -98,7 +98,7 @@ export const wizardRouter = Router();
  *                   type: string
  *                   example: Detalles del error
  */
-wizardRouter.get('/', findAll);
+wizardRouter.get('/', verifyToken, verifyAdminRole, findAll);
 
 // Endpoint GET /:id
 /**
@@ -145,7 +145,7 @@ wizardRouter.get('/', findAll);
  *                   type: string
  *                   example: Detalles del error
  */
-wizardRouter.get('/:id', sanitizeMongoQuery, findOne);
+wizardRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
 
 /**
  * @swagger
@@ -454,7 +454,7 @@ wizardRouter.post('/validate/:id', sanitizeMongoQuery, sanitizeWizardPartialInpu
  *                   type: string
  *                   example: Detalles del error
  */
-wizardRouter.put('/:id', sanitizeMongoQuery, sanitizeWizardInput, update);
+wizardRouter.put('/:id', sanitizeMongoQuery, verifyToken, sanitizeWizardInput, update);
 
 /**
  * @swagger
@@ -506,12 +506,12 @@ wizardRouter.put('/:id', sanitizeMongoQuery, sanitizeWizardInput, update);
 wizardRouter.patch('/:id', sanitizeMongoQuery, sanitizeWizardPartialInput, changePasswordWithoutToken);
 
 // TODO: Add documentation for this endpoint, only for admin users
-wizardRouter.patch('/:id/admin', sanitizeMongoQuery, makeAdmin);
+wizardRouter.patch('/:id/admin', sanitizeMongoQuery, verifyToken, verifyAdminRole, makeAdmin);
 
 // TODO: Add documentation for this endpoint, only for admin users
-wizardRouter.patch('/:id/user', sanitizeMongoQuery, makeUser);
+wizardRouter.patch('/:id/user', sanitizeMongoQuery, verifyToken, verifyAdminRole, makeUser);
 
-wizardRouter.patch('/:id/deactivate', sanitizeMongoQuery, deactivate);
+wizardRouter.patch('/:id/deactivate', sanitizeMongoQuery, verifyToken, deactivate);
 
 wizardRouter.patch('/:id/activate', sanitizeMongoQuery, activate);
 
@@ -556,4 +556,4 @@ wizardRouter.patch('/:id/activate', sanitizeMongoQuery, activate);
  *                   type: string
  *                   example: Error al eliminar el usuario
  */
-wizardRouter.delete('/:id', sanitizeMongoQuery, remove);
+wizardRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);

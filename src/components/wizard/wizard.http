@@ -1,30 +1,24 @@
 ### Get all wizards
 GET http://localhost:3000/api/wizards?page=1&pageSize=5
-Authorization: Bearer <your_jwt_token>
 
 ### Get one wizard by ID
 GET http://localhost:3000/api/wizards/68698280a91cb51622ab22b6
-Authorization: Bearer <your_jwt_token>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg
 
 ### Get one wizard by email
 GET http://localhost:3000/api/wizards/email/draco.malfoy@hogwarts.edu
-Authorization: Bearer <your_jwt_token>
 
 ### Get one wizard by username
 GET http://localhost:3000/api/wizards/username/dracomalfoy
-Authorization: Bearer <your_jwt_token>
 
 ### Get if a wizard username is available
 GET http://localhost:3000/api/wizards/available/username/dracomalfoy
-Authorization: Bearer <your_jwt_token>
 
 ### Get if a wizard email is available
 GET http://localhost:3000/api/wizards/available/email/draco.malfoy@hogwarts.edu
-Authorization: Bearer <your_jwt_token>
 
 ### Create a new wizard
 POST http://localhost:3000/api/wizards/
-Authorization: Bearer <your_jwt_token>
 Content-Type: application/json
 
 {
@@ -40,7 +34,6 @@ Content-Type: application/json
 
 ### Login to a wizard account
 POST http://localhost:3000/api/wizards/login/
-Authorization: Bearer <your_jwt_token>
 Content-Type: application/json
 
 {
@@ -50,7 +43,6 @@ Content-Type: application/json
 
 ### Validate a wizard's password
 POST http://localhost:3000/api/wizards/validate/6869a017667eb044d20917ed
-Authorization: Bearer <your_jwt_token>
 Content-Type: application/json
 
 {
@@ -59,7 +51,7 @@ Content-Type: application/json
 
 ### Update an existing wizard
 PUT http://localhost:3000/api/wizards/686aa814867bf56ce7c5351e
-Authorization: Bearer <your_jwt_token>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg
 Content-Type: application/json
 
 {
@@ -75,7 +67,6 @@ Content-Type: application/json
 
 ### Change a wizard's password
 PATCH http://localhost:3000/api/wizards/6869a017667eb044d20917ed
-Authorization: Bearer <your_jwt_token>
 Content-Type: application/json
 
 {
@@ -84,20 +75,20 @@ Content-Type: application/json
 
 ### Make a wizard an admin
 PATCH http://localhost:3000/api/wizards/686fab31e5c1922fd703246c/admin
-Authorization: Bearer <your_jwt_token>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg
 
 ### Make an wizard a user
 PATCH http://localhost:3000/api/wizards/686fab31e5c1922fd703246c/user
-Authorization: Bearer <your_jwt_token>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg
 
 ### Deactivate a wizard account
 PATCH http://localhost:3000/api/wizards/686a99c88d35246deb7b8fac/deactivate
-Authorization: Bearer <your_jwt_token>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg
 
 ### Activate a wizard account
 PATCH http://localhost:3000/api/wizards/686a99c88d35246deb7b8fac/activate
-Authorization: Bearer <your_jwt_token>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg
 
 ### Delete wizard
 DELETE http://localhost:3000/api/wizards/686f07849ce7415044acf3a4
-Authorization: Bearer <your_jwt_token>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg

@@ -222,9 +222,8 @@ async function changePasswordWithoutToken(req: Request, res: Response) {
     const hashedPassword = await bcrypt.hash(newPassword, hashRounds);
     wizard.password = hashedPassword;
     await em.persistAndFlush(wizard);
-
-    const sanitizedResponse = sanitizeWizardResponse(wizard);
-    res.status(200).json({ message: 'Password updated successfully', data: sanitizedResponse });
+    
+    res.status(200).json({ message: 'Password updated successfully', data: wizard });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
       res.status(404).json({ message: 'Wizard not found' });
