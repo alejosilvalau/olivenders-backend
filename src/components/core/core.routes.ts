@@ -9,6 +9,7 @@ import {
   findOneByName,
 } from './core.controller.js';
 import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
+import { verifyAdminRole, verifyToken } from '../../middleware/authMiddleware.js';
 
 export const coreRouter = Router();
 
@@ -68,7 +69,7 @@ export const coreRouter = Router();
  *                 message:
  *                   type: string
  */
-coreRouter.get('/', findAll);
+coreRouter.get('/', verifyToken, verifyAdminRole, findAll);
 
 /**
  * @swagger
@@ -100,7 +101,7 @@ coreRouter.get('/', findAll);
  *       500:
  *         description: Error retrieving the core
  */
-coreRouter.get('/:id', sanitizeMongoQuery, findOne);
+coreRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
 
 /**
  * @swagger
@@ -132,7 +133,7 @@ coreRouter.get('/:id', sanitizeMongoQuery, findOne);
  *       500:
  *         description: Error retrieving the core
  */
-coreRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
+coreRouter.get('/name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOneByName);
 
 /**
  * @swagger
@@ -196,7 +197,7 @@ coreRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
  *                   type: string
  *                   example: An error occurred while creating the core
  */
-coreRouter.post('/', sanitizeMongoQuery, sanitizeCoreInput, add);
+coreRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeCoreInput, add);
 
 /**
  * @swagger
@@ -267,7 +268,7 @@ coreRouter.post('/', sanitizeMongoQuery, sanitizeCoreInput, add);
  *                   type: string
  *                   example: An error occurred while updating the core
  */
-coreRouter.put('/:id', sanitizeMongoQuery, sanitizeCoreInput, update);
+coreRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeCoreInput, update);
 
 /**
  * @swagger
@@ -297,4 +298,4 @@ coreRouter.put('/:id', sanitizeMongoQuery, sanitizeCoreInput, update);
  *       500:
  *         description: Error deleting the core
  */
-coreRouter.delete('/:id', sanitizeMongoQuery, remove);
+coreRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);

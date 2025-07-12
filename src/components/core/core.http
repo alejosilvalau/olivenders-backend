@@ -1,14 +1,18 @@
 ### Get all cores
 GET http://localhost:3000/api/cores?page=1&pageSize=5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUyMzIyMzY4LCJleHAiOjE3NTIzMjU5Njh9.4vlgWmcYLgdLkIVTUnssBtcIvZn6g7Za3msUx5G9bz8
 
 ### Get one wood by ID
 GET http://localhost:3000/api/cores/686876537ae52f25a89ca4d5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUyMzIyMDE3LCJleHAiOjE3NTIzMjU2MTd9.u9qjFXIa4hYnX24gKYxzBuYFcEMsAaa-A4VxLq35TRc
 
 ### Find a core by name
 GET http://localhost:3000/api/cores/name/veela%20hair
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUyMzIyMDE3LCJleHAiOjE3NTIzMjU2MTd9.u9qjFXIa4hYnX24gKYxzBuYFcEMsAaa-A4VxLq35TRc
 
 ### Create a new core
 POST http://localhost:3000/api/cores/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUyMzIyMDE3LCJleHAiOjE3NTIzMjU2MTd9.u9qjFXIa4hYnX24gKYxzBuYFcEMsAaa-A4VxLq35TRc
 Content-Type: application/json
 
 {
@@ -19,6 +23,7 @@ Content-Type: application/json
 
 ### Update an existing core
 PUT http://localhost:3000/api/cores/6869049884656d883f79c22a
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUyMzIyMDE3LCJleHAiOjE3NTIzMjU2MTd9.u9qjFXIa4hYnX24gKYxzBuYFcEMsAaa-A4VxLq35TRc
 Content-Type: application/json
 
 {
@@ -29,3 +34,4 @@ Content-Type: application/json
 
 ### Delete a core
 DELETE http://localhost:3000/api/cores/68691bcb4e73ad09c1b0de32
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUyMzIyMDE3LCJleHAiOjE3NTIzMjU2MTd9.u9qjFXIa4hYnX24gKYxzBuYFcEMsAaa-A4VxLq35TRc
