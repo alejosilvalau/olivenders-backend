@@ -161,7 +161,7 @@ async function login(req: Request, res: Response) {
     });
 
     const sanitizedResponse = sanitizeWizardResponse(wizard);
-    res.status(200).json({ message: 'Login successful', data: { user: sanitizedResponse, token: token } });
+    res.status(200).json({ message: 'Login successful', data: { wizard: sanitizedResponse, token: token } });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
       res.status(404).json({ message: 'Wizard not found' });
