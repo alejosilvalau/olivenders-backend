@@ -12,7 +12,7 @@ export function sanitizeInput(schema: ZodSchema) {
         field: err.path.join('.'),
         message: err.message,
       }));
-      res.status(400).json({ errors: formattedError });
+      res.status(400).json({ message: 'Validation failed', errors: formattedError });
     }
   };
 }
