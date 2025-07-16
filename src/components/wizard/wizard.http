@@ -1,5 +1,6 @@
 ### Get all wizards
 GET http://localhost:3000/api/wizards?page=1&pageSize=5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg
 
 ### Get one wizard by ID
 GET http://localhost:3000/api/wizards/68698280a91cb51622ab22b6
@@ -19,6 +20,7 @@ GET http://localhost:3000/api/wizards/available/email/draco.malfoy@hogwarts.edu
 
 ### Create a new wizard
 POST http://localhost:3000/api/wizards/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg
 Content-Type: application/json
 
 {

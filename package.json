@@ -10,7 +10,8 @@
     "start:dev": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"fnm exec node dist/index.js\"",
     "test": "fnm exec cross-env NODE_OPTIONS=--experimental-vm-modules jest --forceExit",
     "test:coverage": "fnm exec cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage",
-    "test:watch": "fnm exec cross-env NODE_OPTIONS=--experimental-vm-modules jest --watch"
+    "test:watch": "fnm exec cross-env NODE_OPTIONS=--experimental-vm-modules jest --watch",
+    "docker": "docker build -t olivenders-backend . && docker run --rm -p 3000:3000 olivenders-backend"
   },
   "keywords": [],
   "author": "",
