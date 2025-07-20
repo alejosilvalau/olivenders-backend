@@ -69,7 +69,8 @@ export const coreRouter = Router();
  *                 message:
  *                   type: string
  */
-coreRouter.get('/', verifyToken, verifyAdminRole, findAll);
+// coreRouter.get('/', verifyToken, verifyAdminRole, findAll);
+coreRouter.get('/', findAll);
 
 /**
  * @swagger
@@ -101,7 +102,8 @@ coreRouter.get('/', verifyToken, verifyAdminRole, findAll);
  *       500:
  *         description: Error retrieving the core
  */
-coreRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
+// coreRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
+coreRouter.get('/:id', sanitizeMongoQuery, findOne);
 
 /**
  * @swagger
@@ -133,7 +135,8 @@ coreRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne
  *       500:
  *         description: Error retrieving the core
  */
-coreRouter.get('/name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOneByName);
+// coreRouter.get('/name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOneByName);
+coreRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
 
 /**
  * @swagger
@@ -197,7 +200,8 @@ coreRouter.get('/name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, 
  *                   type: string
  *                   example: An error occurred while creating the core
  */
-coreRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeCoreInput, add);
+// coreRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeCoreInput, add);
+coreRouter.post('/', sanitizeMongoQuery, sanitizeCoreInput, add);
 
 /**
  * @swagger
@@ -268,7 +272,8 @@ coreRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeC
  *                   type: string
  *                   example: An error occurred while updating the core
  */
-coreRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeCoreInput, update);
+// coreRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeCoreInput, update);
+coreRouter.put('/:id', sanitizeMongoQuery, sanitizeCoreInput, update);
 
 /**
  * @swagger
@@ -298,4 +303,5 @@ coreRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitiz
  *       500:
  *         description: Error deleting the core
  */
-coreRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);
+// coreRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);
+coreRouter.delete('/:id', sanitizeMongoQuery, remove);
