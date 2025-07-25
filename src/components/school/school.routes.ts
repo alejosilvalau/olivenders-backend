@@ -113,7 +113,8 @@ schoolRouter.get('/', findAll);
  *                 message:
  *                   type: string
  */
-schoolRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
+// schoolRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
+schoolRouter.get('/:id', sanitizeMongoQuery, findOne);
 
 /**
  * @swagger
@@ -161,7 +162,8 @@ schoolRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findO
  *                 message:
  *                   type: string
  */
-schoolRouter.get('/name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOneByName);
+// schoolRouter.get('/name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOneByName);
+schoolRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
 
 /**
  * @swagger
@@ -224,7 +226,8 @@ schoolRouter.get('/name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole
  *                 message:
  *                   type: string
  */
-schoolRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeSchoolInput, add);
+// schoolRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeSchoolInput, add);
+schoolRouter.post('/', sanitizeMongoQuery, sanitizeSchoolInput, add);
 
 /**
  * @swagger
@@ -294,7 +297,8 @@ schoolRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitiz
  *                 message:
  *                   type: string
  */
-schoolRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeSchoolInput, update);
+// schoolRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeSchoolInput, update);
+schoolRouter.put('/:id', sanitizeMongoQuery, sanitizeSchoolInput, update);
 
 /**
  * @swagger
@@ -340,4 +344,5 @@ schoolRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanit
  *                 message:
  *                   type: string
  */
+// schoolRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);
 schoolRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);
