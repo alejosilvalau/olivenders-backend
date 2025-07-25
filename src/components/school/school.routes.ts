@@ -345,4 +345,4 @@ schoolRouter.put('/:id', sanitizeMongoQuery, sanitizeSchoolInput, update);
  *                   type: string
  */
 // schoolRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);
-schoolRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);
+schoolRouter.delete('/:id', sanitizeMongoQuery, remove);

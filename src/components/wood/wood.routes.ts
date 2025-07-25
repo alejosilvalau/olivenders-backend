@@ -65,7 +65,8 @@ export const woodRouter = Router();
  *                 message:
  *                   type: string
  */
-woodRouter.get('/', verifyToken, verifyAdminRole, findAll);
+// woodRouter.get('/', verifyToken, verifyAdminRole, findAll);
+woodRouter.get('/', findAll);
 
 /**
  * @swagger
@@ -113,7 +114,8 @@ woodRouter.get('/', verifyToken, verifyAdminRole, findAll);
  *                 message:
  *                   type: string
  */
-woodRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
+// woodRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
+woodRouter.get('/:id', sanitizeMongoQuery, findOne);
 
 /**
  * @swagger
@@ -161,7 +163,8 @@ woodRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne
  *                 message:
  *                   type: string
  */
-woodRouter.get('/name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOneByName);
+// woodRouter.get('/name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOneByName);
+woodRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
 
 /**
  * @swagger
@@ -243,7 +246,8 @@ woodRouter.get('/name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, 
  *                   type: string
  *                   example: An error occurred while creating the wood
  */
-woodRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeWoodInput, add);
+// woodRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeWoodInput, add);
+woodRouter.post('/', sanitizeMongoQuery, sanitizeWoodInput, add);
 
 /**
  * @swagger
@@ -326,7 +330,8 @@ woodRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeW
  *                 message:
  *                   type: string
  */
-woodRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeWoodInput, update);
+// woodRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeWoodInput, update);
+woodRouter.put('/:id', sanitizeMongoQuery, sanitizeWoodInput, update);
 
 /**
  * @swagger
@@ -372,4 +377,5 @@ woodRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitiz
  *                 message:
  *                   type: string
  */
-woodRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);
+// woodRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);
+woodRouter.delete('/:id', sanitizeMongoQuery, remove);

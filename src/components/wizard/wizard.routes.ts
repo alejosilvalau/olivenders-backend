@@ -98,7 +98,8 @@ export const wizardRouter = Router();
  *                   type: string
  *                   example: Detalles del error
  */
-wizardRouter.get('/', verifyToken, verifyAdminRole, findAll);
+// wizardRouter.get('/', verifyToken, verifyAdminRole, findAll);
+wizardRouter.get('/', findAll);
 
 // Endpoint GET /:id
 /**
