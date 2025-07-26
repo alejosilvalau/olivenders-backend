@@ -40,7 +40,8 @@ export const questionRouter = Router();
  *       500:
  *         description: Error retrieving questions
  */
-questionRouter.get('/', verifyToken, verifyAdminRole, findAll);
+// questionRouter.get('/', verifyToken, verifyAdminRole, findAll);
+questionRouter.get('/', findAll);
 
 /**
  * @swagger
@@ -67,7 +68,8 @@ questionRouter.get('/', verifyToken, verifyAdminRole, findAll);
  *       500:
  *         description: Error retrieving the question
  */
-questionRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
+// questionRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
+questionRouter.get('/:id', sanitizeMongoQuery, findOne);
 
 /**
  * @swagger
@@ -95,7 +97,8 @@ questionRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, fin
  *       500:
  *         description: Error creating the question
  */
-questionRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeQuestionInput, add);
+// questionRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeQuestionInput, add);
+questionRouter.post('/', sanitizeMongoQuery, sanitizeQuestionInput, add);
 
 /**
  * @swagger
@@ -130,7 +133,8 @@ questionRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanit
  *       500:
  *         description: Error updating the question
  */
-questionRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeQuestionInput, update);
+// questionRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeQuestionInput, update);
+questionRouter.put('/:id', sanitizeMongoQuery, sanitizeQuestionInput, update);
 
 /**
  * @swagger
@@ -153,4 +157,5 @@ questionRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, san
  *       500:
  *         description: Error deleting the question
  */
-questionRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);
+// questionRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);
+questionRouter.delete('/:id', sanitizeMongoQuery, remove);
