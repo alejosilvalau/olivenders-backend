@@ -16,7 +16,6 @@ import {
   makeAdmin,
   makeUser,
   deactivate,
-  activate,
   remove,
 } from './wizard.controller.js';
 import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
@@ -512,8 +511,6 @@ wizardRouter.patch('/:id/admin', sanitizeMongoQuery, verifyToken, verifyAdminRol
 wizardRouter.patch('/:id/user', sanitizeMongoQuery, verifyToken, verifyAdminRole, makeUser);
 
 wizardRouter.patch('/:id/deactivate', sanitizeMongoQuery, verifyToken, deactivate);
-
-wizardRouter.patch('/:id/activate', sanitizeMongoQuery, activate);
 
 /**
  * @swagger

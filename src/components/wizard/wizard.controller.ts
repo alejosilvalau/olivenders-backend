@@ -156,6 +156,11 @@ async function login(req: Request, res: Response) {
       return;
     }
 
+    if (wizard.deactivated) {
+      wizard.deactivated = false;
+      await em.persistAndFlush(wizard);
+    }
+
     const token = jwt.sign({ id: wizard.id, role: wizard.role }, process.env.SECRET_KEY_WEBTOKEN!, {
       expiresIn: '1h',
     });
@@ -222,7 +227,7 @@ async function changePasswordWithoutToken(req: Request, res: Response) {
     const hashedPassword = await bcrypt.hash(newPassword, hashRounds);
     wizard.password = hashedPassword;
     await em.persistAndFlush(wizard);
-    
+
     res.status(200).json({ message: 'Password updated successfully', data: wizard });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
@@ -299,23 +304,23 @@ async function deactivate(req: Request, res: Response) {
   }
 }
 
-async function activate(req: Request, res: Response) {
-  try {
-    const id = req.params.id;
-    const wizardToUpdate = await em.findOneOrFail(Wizard, { id });
-    wizardToUpdate.deactivated = false;
-    await em.flush();
+// async function activate(req: Request, res: Response) {
+//   try {
+//     const id = req.params.id;
+//     const wizardToUpdate = await em.findOneOrFail(Wizard, { id });
+//     wizardToUpdate.deactivated = false;
+//     await em.flush();
 
-    const sanitizedResponse = sanitizeWizardResponse(wizardToUpdate);
-    res.status(200).json({ message: 'Wizard account activated', data: sanitizedResponse });
-  } catch (error: any) {
-    if (error.name === 'NotFoundError') {
-      res.status(404).json({ message: 'Wizard not found' });
-    } else {
-      res.status(500).json({ message: error.message });
-    }
-  }
-}
+//     const sanitizedResponse = sanitizeWizardResponse(wizardToUpdate);
+//     res.status(200).json({ message: 'Wizard account activated', data: sanitizedResponse });
+//   } catch (error: any) {
+//     if (error.name === 'NotFoundError') {
+//       res.status(404).json({ message: 'Wizard not found' });
+//     } else {
+//       res.status(500).json({ message: error.message });
+//     }
+//   }
+// }
 
 async function remove(req: Request, res: Response) {
   try {
@@ -349,6 +354,5 @@ export {
   makeAdmin,
   makeUser,
   deactivate,
-  activate,
   remove,
 };
