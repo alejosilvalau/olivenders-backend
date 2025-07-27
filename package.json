@@ -11,8 +11,9 @@
     "test": "fnm exec cross-env NODE_OPTIONS=--experimental-vm-modules jest --forceExit",
     "test:coverage": "fnm exec cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage",
     "test:watch": "fnm exec cross-env NODE_OPTIONS=--experimental-vm-modules jest --watch",
-    "docker:start": "docker build -t olivenders-backend . && docker run --name olivenders-backend-container --rm -p 3000:3000 olivenders-backend && docker rmi olivenders-backend",
-    "docker:stop": "docker stop olivenders-backend-container || true && docker rm olivenders-backend-container || true && docker rmi olivenders-backend || true"
+    "docker:start": "docker build -t olivenders-backend . && docker run --name olivenders-backend-container -d -p 3000:3000 olivenders-backend",
+    "docker:stop": "docker stop olivenders-backend-container && docker rm -f olivenders-backend-container",
+    "docker:stop-remove": "docker stop olivenders-backend-container || true && docker rm -f olivenders-backend-container || true && docker rmi -f olivenders-backend || true"
   },
   "keywords": [],
   "author": "",
