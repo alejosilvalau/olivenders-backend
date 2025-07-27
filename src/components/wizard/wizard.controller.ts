@@ -16,7 +16,7 @@ const em = orm.em;
 
 const wizardZodSchema = z.object({
   id: objectIdSchema.optional(),
-  username: z.string(),
+  username: z.string().trim().min(6, 'Username must be at least 6 characters'),
   password: z
     .string()
     .min(6, 'Password must be at least 6 characters')
@@ -161,7 +161,7 @@ async function login(req: Request, res: Response) {
     });
 
     const sanitizedResponse = sanitizeWizardResponse(wizard);
-    res.status(200).json({ message: 'Login successful', data: { wizard: sanitizedResponse, token: token } });
+    res.status(200).json({ message: 'Login successful', data: sanitizedResponse, token: token });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
       res.status(404).json({ message: 'Wizard not found' });
