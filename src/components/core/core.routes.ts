@@ -69,7 +69,7 @@ export const coreRouter = Router();
  *                 message:
  *                   type: string
  */
-coreRouter.get('/', verifyToken, verifyAdminRole, findAll);
+coreRouter.get('/', findAll);
 
 /**
  * @swagger

@@ -65,7 +65,7 @@ export const woodRouter = Router();
  *                 message:
  *                   type: string
  */
-woodRouter.get('/', verifyToken, verifyAdminRole, findAll);
+woodRouter.get('/', findAll);
 
 /**
  * @swagger

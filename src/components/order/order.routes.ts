@@ -21,8 +21,6 @@ export const orderRouter = Router();
 
 orderRouter.get('/', verifyToken, verifyAdminRole, findAll);
 
-// orderRouter.get('/:wizardId', sanitizeMongoQuery, verifyToken, findOneByWizard);
-
 orderRouter.get('/:id', sanitizeMongoQuery, verifyToken, findOne);
 
 orderRouter.post('/', sanitizeMongoQuery, verifyToken, sanitizeOrderInput, add);
