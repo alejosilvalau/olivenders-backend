@@ -3,6 +3,7 @@ import {
   sanitizeOrderInput,
   sanitizeOrderReviewInput,
   findAll,
+  findAllByWizard,
   findOne,
   add,
   update,
@@ -20,6 +21,8 @@ import { verifyAdminRole, verifyToken } from '../../middleware/authMiddleware.js
 export const orderRouter = Router();
 
 orderRouter.get('/', verifyToken, verifyAdminRole, findAll);
+
+orderRouter.get('/wizard/:wizardId', sanitizeMongoQuery, verifyToken, findAllByWizard);
 
 orderRouter.get('/:id', sanitizeMongoQuery, verifyToken, findOne);
 

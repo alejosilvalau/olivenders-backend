@@ -46,19 +46,9 @@ async function findAll(req: Request, res: Response) {
   );
 }
 
-// async function findAllByWizard(req: Request, res: Response) {
-//   try {
-//     const idComprador = req.params.userId;
-//     const compras = await em.find(
-//       Compra,
-//       { usuario: idComprador },
-//       { populate: ['usuario', 'vehiculo', 'vehiculo.propietario'] }
-//     );
-//     res.status(200).json(compras);
-//   } catch (error: any) {
-//     res.status(500).json({ message: 'Error al obtener las compras por usuario', error: error.message });
-//   }
-// }
+async function findAllByWizard(req: Request, res: Response) {
+  return paginateEntity(Order, em, req, res, { wizard: req.params.wizardId }, ['wizard', 'wand']);
+}
 
 async function findOne(req: Request, res: Response) {
   try {
@@ -378,6 +368,7 @@ export {
   sanitizeOrderInput,
   sanitizeOrderReviewInput,
   findAll,
+  findAllByWizard,
   findOne,
   add,
   update,
