@@ -10,6 +10,9 @@ GET http://localhost:3000/api/wands/wood/686f8a4e968a4fc88cf2e759?page=1&pageSiz
 ### Get one wand by ID
 GET http://localhost:3000/api/wands/686f8f8fdd25f6850640b77a
 
+### Get one wand by name
+GET http://localhost:3000/api/wands/name/dragon%20heartstring%20wand
+
 ### Create a new wand
 POST http://localhost:3000/api/wands/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg

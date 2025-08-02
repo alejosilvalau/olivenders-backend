@@ -47,7 +47,13 @@ async function findAll(req: Request, res: Response) {
 }
 
 async function findAllByWizard(req: Request, res: Response) {
-  return paginateEntity(Order, em, req, res, { wizard: req.params.wizardId }, ['wizard', 'wand']);
+  return paginateEntity(Order, em, req, res, { wizard: req.params.wizardId }, [
+    'wizard',
+    'wizard.school',
+    'wand',
+    'wand.wood',
+    'wand.core',
+  ]);
 }
 
 async function findAllByWand(req: Request, res: Response) {

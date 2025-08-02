@@ -54,6 +54,20 @@ async function findOne(req: Request, res: Response) {
   }
 }
 
+async function findOneByName(req: Request, res: Response) {
+  try {
+    const name = req.params.name.toLowerCase();
+    const wand = await em.findOneOrFail(Wand, { name }, { populate: ['wood', 'core'] });
+    res.status(200).json({ message: 'Wand fetched', data: wand });
+  } catch (error: any) {
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: 'Wand not found' });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
+  }
+}
+
 async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput;
@@ -181,6 +195,7 @@ export {
   findAllByCore,
   findAllByWood,
   findOne,
+  findOneByName,
   add,
   update,
   markAsAvailable,

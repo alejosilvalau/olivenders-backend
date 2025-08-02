@@ -1,10 +1,10 @@
 ### Get all orders
 GET http://localhost:3000/api/orders?page=1&pageSize=5
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NDA5NjExOCwiZXhwIjoxNzU0MDk5NzE4fQ.JMFuG0N93o3bELqAO3PNWDTUJ4On9FkaE0R65EPzkCs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NDE2ODgxNywiZXhwIjoxNzU0MTcyNDE3fQ.MmNj5wsh4t9TfWNLVwLn3pL8FtqHovbjdfThroFFHOE
 
 ### Get all orders by wizard
 GET http://localhost:3000/api/orders/wizard/686fab31e5c1922fd703246c?page=1&pageSize=5
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NDA5NjExOCwiZXhwIjoxNzU0MDk5NzE4fQ.JMFuG0N93o3bELqAO3PNWDTUJ4On9FkaE0R65EPzkCs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NDE2ODgxNywiZXhwIjoxNzU0MTcyNDE3fQ.MmNj5wsh4t9TfWNLVwLn3pL8FtqHovbjdfThroFFHOE
 
 ### Get all orders by wand
 GET http://localhost:3000/api/orders/wand/686fab31e5c1922fd703246c?page=1&pageSize=5
@@ -41,8 +41,8 @@ Content-Type: application/json
 }
 
 ### Pay an existing order
-PATCH http://localhost:3000/api/orders/686fb56c7ea9027a508b6855/pay/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg
+PATCH http://localhost:3000/api/orders/688d61fdc7c793d801b3deaf/pay/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NDA5NjExOCwiZXhwIjoxNzU0MDk5NzE4fQ.JMFuG0N93o3bELqAO3PNWDTUJ4On9FkaE0R65EPzkCs
 
 ### Dispatch an existing order
 PATCH http://localhost:3000/api/orders/686adf9b2786a48dfdb0e756/dispatch/
@@ -61,8 +61,8 @@ PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/refund/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg
 
 ### Add a review to a complete order
-PATCH http://localhost:3000/api/orders/686a81c62b4cac1ba6c980ea/review/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg
+PATCH http://localhost:3000/api/orders/686fb56c7ea9027a508b6855/review/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NDE2ODgxNywiZXhwIjoxNzU0MTcyNDE3fQ.MmNj5wsh4t9TfWNLVwLn3pL8FtqHovbjdfThroFFHOE
 Content-Type: application/json
 
 {

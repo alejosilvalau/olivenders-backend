@@ -5,6 +5,7 @@ import {
   findAllByWood,
   findAll,
   findOne,
+  findOneByName,
   add,
   update,
   remove,
@@ -202,6 +203,8 @@ wandRouter.get('/wood/:woodId', sanitizeMongoQuery, findAllByWood);
  *         description: Error retrieving the wand
  */
 wandRouter.get('/:id', sanitizeMongoQuery, findOne);
+
+wandRouter.use('name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOneByName);
 
 /**
  * @swagger
