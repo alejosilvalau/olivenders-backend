@@ -24,6 +24,8 @@ orderRouter.get('/', verifyToken, verifyAdminRole, findAll);
 
 orderRouter.get('/wizard/:wizardId', sanitizeMongoQuery, verifyToken, findAllByWizard);
 
+orderRouter.get('/wand/:wandId', sanitizeMongoQuery, verifyToken, findAllByWizard);
+
 orderRouter.get('/:id', sanitizeMongoQuery, verifyToken, findOne);
 
 orderRouter.post('/', sanitizeMongoQuery, verifyToken, sanitizeOrderInput, add);

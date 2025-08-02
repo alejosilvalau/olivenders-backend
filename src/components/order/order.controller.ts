@@ -50,6 +50,10 @@ async function findAllByWizard(req: Request, res: Response) {
   return paginateEntity(Order, em, req, res, { wizard: req.params.wizardId }, ['wizard', 'wand']);
 }
 
+async function findAllByWand(req: Request, res: Response) {
+  return paginateEntity(Order, em, req, res, { wizard: req.params.wandId }, ['wizard', 'wand']);
+}
+
 async function findOne(req: Request, res: Response) {
   try {
     const id = req.params.id;
@@ -68,16 +72,6 @@ async function findOne(req: Request, res: Response) {
     }
   }
 }
-
-// async function findOneByWand(req: Request, res: Response) {
-//   try {
-//     const idVehiculo = req.params.idVehiculo;
-//     const compra = await em.findOne(Compra, { vehiculo: idVehiculo }, { populate: ['usuario', 'vehiculo'] });
-//     res.status(200).json(compra);
-//   } catch (error: any) {
-//     res.status(500).json({ message: error.message });
-//   }
-// }
 
 async function add(req: Request, res: Response) {
   try {
@@ -369,6 +363,7 @@ export {
   sanitizeOrderReviewInput,
   findAll,
   findAllByWizard,
+  findAllByWand,
   findOne,
   add,
   update,
