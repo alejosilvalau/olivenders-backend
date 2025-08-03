@@ -15,6 +15,7 @@ import { quizRouter } from './components/quiz/quiz.routes.js';
 import { orderRouter } from './components/order/order.routes.js';
 import { wizardRouter } from './components/wizard/wizard.routes.js';
 import { answerRouter } from './components/answer/answer.routes.js';
+import { imageRouter } from './components/image/image.route.js';
 
 dotenv.config();
 
@@ -68,6 +69,7 @@ app.use('/api/quizzes', quizRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/wizards', wizardRouter);
 app.use('/api/answers', answerRouter);
+app.use('/api/images', imageRouter);
 
 app.get('/health', (_, res) => {
   res.status(200).send('OK');

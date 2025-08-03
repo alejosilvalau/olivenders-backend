@@ -360,45 +360,6 @@ wandRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeW
  */
 wandRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeWandInput, update);
 
-// TODO: Add Swagger documentation for the markAsAvailable endpoint
-wandRouter.patch('/:id/available', sanitizeMongoQuery, verifyToken, verifyAdminRole, markAsAvailable);
-
-// TODO: Add Swagger documentation for the markAsSold endpoint
-wandRouter.patch('/:id/sold', sanitizeMongoQuery, verifyToken, verifyAdminRole, markAsSold);
-
-/**
- * @swagger
- * /api/wands/{id}/deactivate:
- *   patch:
- *     summary: Deactivate a wand (logical removal)
- *     tags: [Wand]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: ID of the wand
- *     responses:
- *       200:
- *         description: Wand deactivated
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Wand deactivated
- *                 data:
- *                   $ref: '#/components/schemas/Wand'
- *       404:
- *         description: Wand not found
- *       500:
- *         description: Error deactivating the wand
- */
-wandRouter.patch('/:id/deactivate', sanitizeMongoQuery, verifyToken, verifyAdminRole, deactivate);
-
 /**
  * @swagger
  * /api/wands/{id}:

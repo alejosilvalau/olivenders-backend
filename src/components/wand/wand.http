@@ -43,18 +43,6 @@ Content-Type: application/json
   "core": "6869049884656d883f79c22a"
 }
 
-### Mark a wand as available
-PATCH http://localhost:3000/api/wands/68683ed4508f3212ea14e89a/available/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUyMzIyMDE3LCJleHAiOjE3NTIzMjU2MTd9.u9qjFXIa4hYnX24gKYxzBuYFcEMsAaa-A4VxLq35TRc
-
-### Mark a wand as sold
-PATCH http://localhost:3000/api/wands/686aa443c710b3a438dae241/sold/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUyMzIyMDE3LCJleHAiOjE3NTIzMjU2MTd9.u9qjFXIa4hYnX24gKYxzBuYFcEMsAaa-A4VxLq35TRc
-
-### Deactivate a wand
-PATCH http://localhost:3000/api/wands/686f9031ac6adbb1f1f68116/deactivate/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUyMzIyMDE3LCJleHAiOjE3NTIzMjU2MTd9.u9qjFXIa4hYnX24gKYxzBuYFcEMsAaa-A4VxLq35TRc
-
 ### Delete a wand
 DELETE http://localhost:3000/api/wands/686f8d86a53d8619cffeb2cc
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUyMzIyMDE3LCJleHAiOjE3NTIzMjU2MTd9.u9qjFXIa4hYnX24gKYxzBuYFcEMsAaa-A4VxLq35TRc
