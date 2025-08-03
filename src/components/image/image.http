@@ -1,0 +1,3 @@
+### Sign a file upload to Cloudinary
+POST http://localhost:3000/api/images/sign
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NDI1OTYzMywiZXhwIjoxNzU0MjYzMjMzfQ.onfwlmCHbhw8ETo59LznpJ7QS1b5NPR0ZY258q1YAYk

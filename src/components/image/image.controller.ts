@@ -8,9 +8,11 @@ async function signUpload(req: Request, res: Response, next: NextFunction) {
   try {
     const milliseconds = 1000;
     const timestamp = Math.round(new Date().getTime() / milliseconds);
+    const folder = 'olivenders';
     const paramsToSign = {
       timestamp: timestamp,
       upload_preset: process.env.CLOUDINARY_UPLOAD_PRESET,
+      folder,
     };
 
     const signature = cloudinary.utils.api_sign_request(paramsToSign, process.env.CLOUDINARY_API_SECRET!);

@@ -9,9 +9,6 @@ import {
   add,
   update,
   remove,
-  markAsAvailable,
-  markAsSold,
-  deactivate,
 } from './wand.controller.js';
 import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
 import { verifyAdminRole, verifyToken } from '../../middleware/authMiddleware.js';
