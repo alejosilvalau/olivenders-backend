@@ -113,7 +113,7 @@ schoolRouter.get('/', findAll);
  *                 message:
  *                   type: string
  */
-schoolRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
+schoolRouter.get('/:id', sanitizeMongoQuery, findOne);
 
 /**
  * @swagger
@@ -161,7 +161,7 @@ schoolRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findO
  *                 message:
  *                   type: string
  */
-schoolRouter.get('/name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOneByName);
+schoolRouter.get('/name/:name', sanitizeMongoQuery, findOneByName);
 
 /**
  * @swagger
