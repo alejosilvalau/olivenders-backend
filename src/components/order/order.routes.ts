@@ -20,7 +20,7 @@ import { verifyAdminRole, verifyToken } from '../../middleware/authMiddleware.js
 
 export const orderRouter = Router();
 
-orderRouter.get('/', verifyToken, verifyAdminRole, findAll);
+orderRouter.get('/', findAll);
 
 orderRouter.get('/wizard/:wizardId', sanitizeMongoQuery, verifyToken, findAllByWizard);
 
