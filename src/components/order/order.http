@@ -1,6 +1,5 @@
 ### Get all orders
 GET http://localhost:3000/api/orders?page=1&pageSize=5
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NDE2ODgxNywiZXhwIjoxNzU0MTcyNDE3fQ.MmNj5wsh4t9TfWNLVwLn3pL8FtqHovbjdfThroFFHOE
 
 ### Get all orders by wizard
 GET http://localhost:3000/api/orders/wizard/686fab31e5c1922fd703246c?page=1&pageSize=5

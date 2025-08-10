@@ -400,7 +400,7 @@ wizardRouter.post('/login', sanitizeMongoQuery, sanitizeWizardPartialInput, logi
  *                   type: string
  *                   description: Mensaje de error
  */
-wizardRouter.post('/validate/:id', sanitizeMongoQuery, sanitizeWizardPartialInput, verifyToken, validatePassword);
+wizardRouter.post('/validate/:id', sanitizeMongoQuery, verifyToken, sanitizeWizardPartialInput, validatePassword);
 
 /**
  * @swagger

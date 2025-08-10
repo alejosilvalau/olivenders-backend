@@ -3,11 +3,9 @@ GET http://localhost:3000/api/schools?page=2&pageSize=5
 
 ### Get one school by ID
 GET http://localhost:3000/api/schools/68692a9caddddb28d9452ee9
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUyMzIyMDE3LCJleHAiOjE3NTIzMjU2MTd9.u9qjFXIa4hYnX24gKYxzBuYFcEMsAaa-A4VxLq35TRc
 
 ### Get a school by name
 GET http://localhost:3000/api/schools/name/hogwarts%20school%20of%20witchcraft%20and%20wizardry
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUyMzIyMDE3LCJleHAiOjE3NTIzMjU2MTd9.u9qjFXIa4hYnX24gKYxzBuYFcEMsAaa-A4VxLq35TRc
 
 ### Create a new school
 POST http://localhost:3000/api/schools/

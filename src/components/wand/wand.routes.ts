@@ -199,7 +199,7 @@ wandRouter.get('/wood/:woodId', sanitizeMongoQuery, findAllByWood);
  *       500:
  *         description: Error retrieving the wand
  */
-wandRouter.get('/:id', sanitizeMongoQuery, findOne);
+wandRouter.get('/:id', sanitizeMongoQuery, verifyToken, findOne);
 
 wandRouter.use('name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOneByName);
 
