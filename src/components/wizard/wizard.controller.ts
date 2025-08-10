@@ -39,6 +39,10 @@ async function findAll(req: Request, res: Response) {
   return paginateEntity(Wizard, em, req, res, {}, ['school'], sanitizeWizardResponseArray);
 }
 
+async function findAllBySchool(req: Request, res: Response) {
+  return paginateEntity(Wizard, em, req, res, { school: req.params.schoolId }, ['school'], sanitizeWizardResponseArray);
+}
+
 async function findOne(req: Request, res: Response) {
   try {
     const id = req.params.id;
@@ -323,6 +327,7 @@ export {
   sanitizeWizardInput,
   sanitizeWizardPartialInput,
   findAll,
+  findAllBySchool,
   findOne,
   findOneByEmail,
   findOneByUsername,

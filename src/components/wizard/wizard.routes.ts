@@ -3,6 +3,7 @@ import {
   sanitizeWizardInput,
   sanitizeWizardPartialInput,
   findAll,
+  findAllBySchool,
   findOne,
   findOneByEmail,
   findOneByUsername,
@@ -98,6 +99,9 @@ export const wizardRouter = Router();
  *                   example: Detalles del error
  */
 wizardRouter.get('/', verifyToken, verifyAdminRole, findAll);
+
+// TODO: Add documentation for this endpoint
+wizardRouter.get('/school/:schoolId', verifyToken, verifyAdminRole, findAllBySchool);
 
 // Endpoint GET /:id
 /**
