@@ -3,8 +3,8 @@ GET http://localhost:3000/api/wizards?page=1&pageSize=5
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg
 
 ### Get all wizards by school
-GET http://localhost:3000/api/wizards/school/686f8a46968a4fc88cf2e758?page=1&pageSize=5
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NDgyMjk5MiwiZXhwIjoxNzU0ODI2NTkyfQ.0VYegYDvwcwDt3ZE8tML65UGxTv7ouzgCVIEJaaz55o
+GET http://localhost:3000/api/wizards/school/6870f6d0a7d116ea3b5a1b04?page=1&pageSize=5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NDgyNTYwMSwiZXhwIjoxNzU0ODI5MjAxfQ.FSm7swpiRDA3blZ1g7rXvTmPtGR28Y3mMNwiMYRr4yM
 
 ### Get one wizard by ID
 GET http://localhost:3000/api/wizards/68698280a91cb51622ab22b6
