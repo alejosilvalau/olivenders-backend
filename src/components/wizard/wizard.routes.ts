@@ -228,7 +228,7 @@ wizardRouter.get('/email/:email', sanitizeMongoQuery, findOneByEmail);
  *                   type: string
  *                   example: Detalles del error
  */
-wizardRouter.get('/username/:username', sanitizeMongoQuery, findOneByUsername);
+wizardRouter.get('/username/:username', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOneByUsername);
 
 // TODO: Add documentation for this endpoint
 wizardRouter.get('/available/username/:username', sanitizeMongoQuery, isUsernameAvailable);
@@ -400,7 +400,7 @@ wizardRouter.post('/login', sanitizeMongoQuery, sanitizeWizardPartialInput, logi
  *                   type: string
  *                   description: Mensaje de error
  */
-wizardRouter.post('/validate/:id', sanitizeMongoQuery, sanitizeWizardPartialInput, validatePassword);
+wizardRouter.post('/validate/:id', sanitizeMongoQuery, sanitizeWizardPartialInput, verifyToken, validatePassword);
 
 /**
  * @swagger

@@ -4,6 +4,7 @@ import {
   sanitizeOrderReviewInput,
   findAll,
   findAllByWizard,
+  findAllByWand,
   findOne,
   add,
   update,
@@ -24,9 +25,9 @@ orderRouter.get('/', findAll);
 
 orderRouter.get('/wizard/:wizardId', sanitizeMongoQuery, verifyToken, findAllByWizard);
 
-orderRouter.get('/wand/:wandId', sanitizeMongoQuery, verifyToken, findAllByWizard);
+orderRouter.get('/wand/:wandId', sanitizeMongoQuery, verifyToken, verifyAdminRole, findAllByWand);
 
-orderRouter.get('/:id', sanitizeMongoQuery, verifyToken, findOne);
+orderRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
 
 orderRouter.post('/', sanitizeMongoQuery, verifyToken, sanitizeOrderInput, add);
 
