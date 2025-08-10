@@ -247,7 +247,7 @@ async function cancel(req: Request, res: Response) {
     }
 
     orderToCancel.status = OrderStatus.Cancelled;
-    orderToCancel.wand.status = WandStatus.Available;
+    orderToCancel.wand.status = WandStatus.Deactivated;
     await em.flush();
 
     const sanitizedResponse = sanitizeOrderResponse(orderToCancel);

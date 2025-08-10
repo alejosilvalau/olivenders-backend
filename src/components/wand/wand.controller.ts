@@ -126,54 +126,6 @@ async function update(req: Request, res: Response) {
   }
 }
 
-// async function markAsAvailable(req: Request, res: Response) {
-//   try {
-//     const id = req.params.id;
-//     const wandToUpdate = await em.findOneOrFail(Wand, { id });
-//     em.assign(wandToUpdate, { status: WandStatus.Available });
-//     await em.flush();
-//     res.status(200).json({ message: 'Wand available', data: wandToUpdate });
-//   } catch (error: any) {
-//     if (error.name === 'NotFoundError') {
-//       res.status(404).json({ message: 'Wand not found' });
-//     } else {
-//       res.status(500).json({ message: error.message });
-//     }
-//   }
-// }
-
-// async function markAsSold(req: Request, res: Response) {
-//   try {
-//     const id = req.params.id;
-//     const wandToUpdate = await em.findOneOrFail(Wand, { id });
-//     em.assign(wandToUpdate, { status: WandStatus.Sold });
-//     await em.flush();
-//     res.status(200).json({ message: 'Wand sold', data: wandToUpdate });
-//   } catch (error: any) {
-//     if (error.name === 'NotFoundError') {
-//       res.status(404).json({ message: 'Wand not found' });
-//     } else {
-//       res.status(500).json({ message: error.message });
-//     }
-//   }
-// }
-
-// async function deactivate(req: Request, res: Response) {
-//   try {
-//     const id = req.params.id;
-//     const wandToUpdate = await em.findOneOrFail(Wand, { id });
-//     em.assign(wandToUpdate, { status: WandStatus.Deactivated });
-//     await em.flush();
-//     res.status(200).json({ message: 'Wand deactivated', data: wandToUpdate });
-//   } catch (error: any) {
-//     if (error.name === 'NotFoundError') {
-//       res.status(404).json({ message: 'Wand not found' });
-//     } else {
-//       res.status(500).json({ message: error.message });
-//     }
-//   }
-// }
-
 async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id;
