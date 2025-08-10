@@ -111,13 +111,7 @@ async function update(req: Request, res: Response) {
     const input = req.body.sanitizedInput;
 
     if (!(await ensureWizardExists(em, input.wizard, res))) return;
-
-    const wand = await ensureWandExists(em, input.wand, res);
-    if (!wand) return;
-    if (wand.status !== WandStatus.Available) {
-      res.status(400).json({ message: 'Wand is not available' });
-      return;
-    }
+    if (!(await ensureWandExists(em, input.wand, res))) return;
 
     const orderToUpdate = await em.findOneOrFail(Order, id);
     em.assign(orderToUpdate, input);
