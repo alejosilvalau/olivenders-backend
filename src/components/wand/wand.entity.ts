@@ -12,7 +12,7 @@ export enum WandStatus {
 }
 @Entity()
 export class Wand extends BaseEntity {
-  @Property({ nullable: false, unique: true })
+  @Property({ nullable: false })
   name!: string;
 
   @Property({ nullable: false })
