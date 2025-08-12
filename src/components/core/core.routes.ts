@@ -44,30 +44,41 @@ export const coreRouter = Router();
  *   get:
  *     summary: Get all cores
  *     tags: [Core]
- *     responses:
- *       200:
- *         description: List of cores
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Cores fetched
- *                 data:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/Core'
- *       500:
- *         description: Error retrieving cores
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
+     parameters:
+       - in: query
+         name: page
+         schema:
+           type: integer
+         description: Page number
+       - in: query
+         name: pageSize
+         schema:
+           type: integer
+         description: Number of items per page
+     responses:
+       200:
+         description: List of cores
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 message:
+                   type: string
+                   example: Cores fetched
+                 data:
+                   type: array
+                   items:
+                     $ref: '#/components/schemas/Core'
+       500:
+         description: Server error
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 message:
+                   type: string
  */
 coreRouter.get('/', findAll);
 
@@ -96,10 +107,25 @@ coreRouter.get('/', findAll);
  *                   type: string
  *                 data:
  *                   $ref: '#/components/schemas/Core'
- *       404:
- *         description: Core not found
- *       500:
- *         description: Error retrieving the core
+       404:
+         description: Core not found
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 message:
+                   type: string
+                   example: Core not found
+       500:
+         description: Server error
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 message:
+                   type: string
  */
 coreRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
 
@@ -128,10 +154,25 @@ coreRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne
  *                   type: string
  *                 data:
  *                   $ref: '#/components/schemas/Core'
- *       404:
- *         description: Core not found
- *       500:
- *         description: Error retrieving the core
+       404:
+         description: Core not found
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 message:
+                   type: string
+                   example: Core not found
+       500:
+         description: Server error
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 message:
+                   type: string
  */
 coreRouter.get('/name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOneByName);
 
@@ -160,42 +201,36 @@ coreRouter.get('/name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, 
  *                   example: Core created
  *                 data:
  *                   $ref: '#/components/schemas/Core'
- *       400:
- *         description: Validation error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 errors:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       field:
- *                         type: string
- *                       message:
- *                         type: string
- *       409:
- *         description: Core with this name already exists
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: A core with this name already exists
- *       500:
- *         description: Error creating the core
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: An error occurred while creating the core
+       400:
+         description: Invalid input
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 message:
+                   type: string
+                   example: Invalid input
+       409:
+         description: Core with this name already exists
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 message:
+                   type: string
+                   example: A core with this name already exists
+       500:
+         description: Server error
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 message:
+                   type: string
+                   example: An error occurred while creating the core
  */
 coreRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeCoreInput, add);
 
@@ -231,42 +266,36 @@ coreRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeC
  *                   example: Core updated
  *                 data:
  *                   $ref: '#/components/schemas/Core'
- *       400:
- *         description: Validation error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 errors:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       field:
- *                         type: string
- *                       message:
- *                         type: string
- *       404:
- *         description: Core not found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Core not found
- *       500:
- *         description: Error updating the core
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: An error occurred while updating the core
+       400:
+         description: Invalid input
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 message:
+                   type: string
+                   example: Invalid input
+       404:
+         description: Core not found
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 message:
+                   type: string
+                   example: Core not found
+       500:
+         description: Server error
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 message:
+                   type: string
+                   example: An error occurred while updating the core
  */
 coreRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeCoreInput, update);
 
@@ -279,13 +308,13 @@ coreRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitiz
  *     parameters:
  *       - in: path
  *         name: id
+ *         required: true
  *         schema:
  *           type: string
- *         required: true
- *         description: The ID of the core
+ *         description: Core ID
  *     responses:
  *       200:
- *         description: Core deleted successfully
+ *         description: Core deleted
  *         content:
  *           application/json:
  *             schema:
@@ -293,9 +322,24 @@ coreRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitiz
  *               properties:
  *                 message:
  *                   type: string
- *       404:
- *         description: Core not found
- *       500:
- *         description: Error deleting the core
+       404:
+         description: Core not found
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 message:
+                   type: string
+                   example: Core not found
+       500:
+         description: Server error
+         content:
+           application/json:
+             schema:
+               type: object
+               properties:
+                 message:
+                   type: string
  */
 coreRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);
