@@ -15,6 +15,9 @@ export const coreRouter = Router();
 
 /**
  * @swagger
+ * tags:
+ *   - name: Core
+ *     description: Core management endpoints
  * components:
  *   schemas:
  *     Core:
@@ -23,6 +26,23 @@ export const coreRouter = Router();
  *         id:
  *           type: string
  *           description: Unique identifier for the core
+ *         name:
+ *           type: string
+ *           description: Name of the core
+ *         description:
+ *           type: string
+ *           description: Description of the core
+ *         price:
+ *           type: number
+ *           description: Price of the core
+ *       required:
+ *         - id
+ *         - name
+ *         - description
+ *         - price
+ *     CoreWithoutId:
+ *       type: object
+ *       properties:
  *         name:
  *           type: string
  *           description: Name of the core
@@ -187,7 +207,7 @@ coreRouter.get('/name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, 
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Core'
+ *             $ref: '#/components/schemas/CoreWithoutId'
  *     responses:
  *       201:
  *         description: Core created successfully
@@ -252,7 +272,7 @@ coreRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeC
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Core'
+ *             $ref: '#/components/schemas/CoreWithoutId'
  *     responses:
  *       200:
  *         description: Core updated successfully
