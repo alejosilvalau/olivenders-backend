@@ -40,7 +40,7 @@ export const coreRouter = Router();
  *         - name
  *         - description
  *         - price
- *     CoreWithoutId:
+ *     CoreRequest:
  *       type: object
  *       properties:
  *         name:
@@ -207,7 +207,7 @@ coreRouter.get('/name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, 
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/CoreWithoutId'
+ *             $ref: '#/components/schemas/CoreRequest'
  *     responses:
  *       201:
  *         description: Core created successfully
@@ -272,7 +272,7 @@ coreRouter.post('/', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeC
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/CoreWithoutId'
+ *             $ref: '#/components/schemas/CoreRequest'
  *     responses:
  *       200:
  *         description: Core updated successfully

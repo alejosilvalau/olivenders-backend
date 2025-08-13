@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
+import { swaggerComponents } from './shared/docs/swaggerComponents.js';
 import { RequestContext } from '@mikro-orm/core';
 import { orm, syncSchema } from './shared/db/orm.js';
 import { schoolRouter } from './components/school/school.routes.js';
@@ -12,10 +13,10 @@ import { coreRouter } from './components/core/core.routes.js';
 import { wandRouter } from './components/wand/wand.routes.js';
 import { questionRouter } from './components/question/question.routes.js';
 import { quizRouter } from './components/quiz/quiz.routes.js';
-import { orderRouter } from './components/order/order.routes.js';
+import { orderPaths, orderRouter } from './components/order/order.routes.js';
 import { wizardRouter } from './components/wizard/wizard.routes.js';
 import { answerRouter } from './components/answer/answer.routes.js';
-import { imageRouter } from './components/image/image.route.js';
+import { imageRouter } from './components/image/image.routes.js';
 
 dotenv.config();
 
@@ -48,6 +49,10 @@ const swaggerOptions = {
       },
       servers: [{ url: `http://localhost:${process.env.DEFAULT_PORT}` }],
     },
+    paths: {
+      ...orderPaths,
+    },
+    components: swaggerComponents,
   },
   apis: ['./dist/components/**/*.routes.js'],
 };
