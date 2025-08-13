@@ -100,6 +100,13 @@ export class EndpointBuilder {
     });
   }
 
+  signResponse(schema: string) {
+    return this.responses({
+      ...responseTemplates.success(schema),
+      ...responseTemplates.errors.serverError(),
+    });
+  }
+
   createdResponse(schema: string) {
     return this.responses({
       ...responseTemplates.created(schema),

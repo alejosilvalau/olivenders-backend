@@ -4,6 +4,7 @@ import { schoolSchemas } from '../../components/school/school.entity.js';
 import { wandSchemas } from '../../components/wand/wand.entity.js';
 import { wizardSchemas } from '../../components/wizard/wizard.entity.js';
 import { woodSchemas } from '../../components/wood/wood.entity.js';
+import { imageSchemas } from '../../components/image/image.routes.js';
 
 export const swaggerComponents = {
   schemas: {
@@ -41,6 +42,7 @@ export const swaggerComponents = {
     ...woodSchemas,
     ...wandSchemas,
     ...wizardSchemas,
+    ...imageSchemas,
   },
   securitySchemes: {
     bearerAuth: {

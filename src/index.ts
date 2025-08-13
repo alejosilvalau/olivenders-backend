@@ -16,7 +16,7 @@ import { quizRouter } from './components/quiz/quiz.routes.js';
 import { orderPaths, orderRouter } from './components/order/order.routes.js';
 import { wizardPaths, wizardRouter } from './components/wizard/wizard.routes.js';
 import { answerRouter } from './components/answer/answer.routes.js';
-import { imageRouter } from './components/image/image.routes.js';
+import { imagePaths, imageRouter } from './components/image/image.routes.js';
 
 dotenv.config();
 
@@ -56,6 +56,7 @@ const swaggerOptions = {
       ...woodPaths,
       ...wandPaths,
       ...wizardPaths,
+      ...imagePaths,
     },
     components: swaggerComponents,
   },
