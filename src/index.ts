@@ -8,7 +8,7 @@ import { swaggerComponents } from './shared/docs/swaggerComponents.js';
 import { RequestContext } from '@mikro-orm/core';
 import { orm, syncSchema } from './shared/db/orm.js';
 import { schoolPaths, schoolRouter } from './components/school/school.routes.js';
-import { woodRouter } from './components/wood/wood.routes.js';
+import { woodPaths, woodRouter } from './components/wood/wood.routes.js';
 import { corePaths, coreRouter } from './components/core/core.routes.js';
 import { wandRouter } from './components/wand/wand.routes.js';
 import { questionRouter } from './components/question/question.routes.js';
@@ -53,6 +53,7 @@ const swaggerOptions = {
       ...orderPaths,
       ...corePaths,
       ...schoolPaths,
+      ...woodPaths,
     },
     components: swaggerComponents,
   },
