@@ -10,7 +10,7 @@ import { orm, syncSchema } from './shared/db/orm.js';
 import { schoolPaths, schoolRouter } from './components/school/school.routes.js';
 import { woodPaths, woodRouter } from './components/wood/wood.routes.js';
 import { corePaths, coreRouter } from './components/core/core.routes.js';
-import { wandRouter } from './components/wand/wand.routes.js';
+import { wandPaths, wandRouter } from './components/wand/wand.routes.js';
 import { questionRouter } from './components/question/question.routes.js';
 import { quizRouter } from './components/quiz/quiz.routes.js';
 import { orderPaths, orderRouter } from './components/order/order.routes.js';
@@ -54,6 +54,7 @@ const swaggerOptions = {
       ...corePaths,
       ...schoolPaths,
       ...woodPaths,
+      ...wandPaths,
     },
     components: swaggerComponents,
   },

@@ -5,6 +5,59 @@ import { Core } from '../core/core.entity.js';
 import { Order } from '../order/order.entity.js';
 import { Answer } from '../answer/answer.entity.js';
 
+export enum WandSchemas {
+  Wand = 'Wand',
+  WandRequest = 'WandRequest',
+}
+
+export const wandSchemas = {
+  [WandSchemas.Wand]: {
+    type: 'object',
+    properties: {
+      id: { type: 'string' },
+      name: { type: 'string' },
+      length_inches: { type: 'number' },
+      description: { type: 'string' },
+      status: {
+        type: 'string',
+        enum: ['available', 'sold', 'deactivated'],
+      },
+      image: { type: 'string' },
+      profit: { type: 'number' },
+      total_price: { type: 'number' },
+      wood: { type: 'string' },
+      core: { type: 'string' },
+    },
+    required: [
+      'id',
+      'name',
+      'length_inches',
+      'description',
+      'status',
+      'image',
+      'profit',
+      'total_price',
+      'wood',
+      'core',
+    ],
+  },
+
+  [WandSchemas.WandRequest]: {
+    type: 'object',
+    properties: {
+      name: { type: 'string' },
+      length_inches: { type: 'number' },
+      description: { type: 'string' },
+      image: { type: 'string' },
+      profit: { type: 'number' },
+      wood: { type: 'string' },
+      core: { type: 'string' },
+    },
+    required: ['name', 'length_inches', 'description', 'image', 'profit', 'wood', 'core'],
+  },
+};
+
+
 export enum WandStatus {
   Available = 'available',
   Sold = 'sold',
