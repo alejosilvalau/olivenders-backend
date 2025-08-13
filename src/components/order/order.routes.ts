@@ -19,7 +19,7 @@ import {
 import { OrderSchemas } from './order.entity.js';
 import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
 import { verifyAdminRole, verifyToken } from '../../middleware/authMiddleware.js';
-import { createEndpoint, crudEndpoints } from '../../shared/docs/endpointBuilder.js';
+import { createEndpoint, crudEndpoints, HttpMethod } from '../../shared/docs/endpointBuilder.js';
 import { parameterTemplates } from '../../shared/docs/parameterTemplates.js';
 import { mergeEndpoint } from '../../shared/docs/mergeEndpoints.js';
 
@@ -31,7 +31,7 @@ orderRouter.get('/', findAll);
 
 mergeEndpoint(
   orderPaths,
-  createEndpoint('/api/orders/wizard/{wizardId}', 'get')
+  createEndpoint('/api/orders/wizard/{wizardId}', HttpMethod.GET)
     .summary('Get all orders by wizard')
     .tags([OrderSchemas.Order])
     .security([{ bearerAuth: [] }])
@@ -43,7 +43,7 @@ orderRouter.get('/wizard/:wizardId', sanitizeMongoQuery, verifyToken, findAllByW
 
 mergeEndpoint(
   orderPaths,
-  createEndpoint('/api/orders/wand/{wandId}', 'get')
+  createEndpoint('/api/orders/wand/{wandId}', HttpMethod.GET)
     .summary('Get all orders by wand')
     .tags([OrderSchemas.Order])
     .security([{ bearerAuth: [] }])
@@ -109,7 +109,7 @@ orderRouter.patch('/:id/refund', sanitizeMongoQuery, verifyToken, refund);
 statusEndpoints.forEach(({ path, summary, description }) => {
   mergeEndpoint(
     orderPaths,
-    createEndpoint(path, 'patch')
+    createEndpoint(path, HttpMethod.PATCH)
       .summary(summary)
       .description(description)
       .tags([OrderSchemas.Order])
@@ -122,7 +122,7 @@ statusEndpoints.forEach(({ path, summary, description }) => {
 
 mergeEndpoint(
   orderPaths,
-  createEndpoint('/api/orders/{id}/review', 'patch')
+  createEndpoint('/api/orders/{id}/review', HttpMethod.PATCH)
     .summary('Review an order')
     .tags([OrderSchemas.Order])
     .security([{ bearerAuth: [] }])

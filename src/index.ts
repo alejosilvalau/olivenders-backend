@@ -7,7 +7,7 @@ import swaggerUI from 'swagger-ui-express';
 import { swaggerComponents } from './shared/docs/swaggerComponents.js';
 import { RequestContext } from '@mikro-orm/core';
 import { orm, syncSchema } from './shared/db/orm.js';
-import { schoolRouter } from './components/school/school.routes.js';
+import { schoolPaths, schoolRouter } from './components/school/school.routes.js';
 import { woodRouter } from './components/wood/wood.routes.js';
 import { corePaths, coreRouter } from './components/core/core.routes.js';
 import { wandRouter } from './components/wand/wand.routes.js';
@@ -52,6 +52,7 @@ const swaggerOptions = {
     paths: {
       ...orderPaths,
       ...corePaths,
+      ...schoolPaths,
     },
     components: swaggerComponents,
   },
@@ -76,10 +77,6 @@ app.use('/api/orders', orderRouter);
 app.use('/api/wizards', wizardRouter);
 app.use('/api/answers', answerRouter);
 app.use('/api/images', imageRouter);
-
-app.get('/health', (_, res) => {
-  res.status(200).send('OK');
-});
 
 app.use((_, res) => {
   res.status(404).json({ message: 'Resource not found' });

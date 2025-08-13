@@ -1,6 +1,14 @@
 import { responseTemplates } from './responseTemplates.js';
 import { parameterTemplates } from './parameterTemplates.js';
 
+export enum HttpMethod {
+  GET = 'get',
+  POST = 'post',
+  PUT = 'put',
+  DELETE = 'delete',
+  PATCH = 'patch',
+}
+
 export class EndpointBuilder {
   private endpoint: any = {};
 
@@ -119,7 +127,7 @@ export const createEndpoint = (path: string, method: string) => new EndpointBuil
 
 export const crudEndpoints = {
   getAll: (path: string, schema: string, tag: string) =>
-    createEndpoint(path, 'get')
+    createEndpoint(path, HttpMethod.GET)
       .summary(`Get all ${tag.toLowerCase()}s`)
       .tags([tag])
       .parameters(parameterTemplates.pagination)
@@ -127,7 +135,7 @@ export const crudEndpoints = {
       .build(),
 
   getById: (path: string, schema: string, tag: string) =>
-    createEndpoint(path, 'get')
+    createEndpoint(path, HttpMethod.GET)
       .summary(`Get ${tag.toLowerCase()} by ID`)
       .tags([tag])
       .parameters([parameterTemplates.idParam])
@@ -135,7 +143,7 @@ export const crudEndpoints = {
       .build(),
 
   getByIdAuth: (path: string, schema: string, tag: string) =>
-    createEndpoint(path, 'get')
+    createEndpoint(path, HttpMethod.GET)
       .summary(`Get ${tag.toLowerCase()} by ID`)
       .tags([tag])
       .security([{ bearerAuth: [] }])
@@ -144,7 +152,7 @@ export const crudEndpoints = {
       .build(),
 
   create: (path: string, requestSchema: string, responseSchema: string, tag: string) =>
-    createEndpoint(path, 'post')
+    createEndpoint(path, HttpMethod.POST)
       .summary(`Create a new ${tag.toLowerCase()}`)
       .tags([tag])
       .requestBody(requestSchema)
@@ -152,7 +160,7 @@ export const crudEndpoints = {
       .build(),
 
   createAuth: (path: string, requestSchema: string, responseSchema: string, tag: string) =>
-    createEndpoint(path, 'post')
+    createEndpoint(path, HttpMethod.POST)
       .summary(`Create a new ${tag.toLowerCase()}`)
       .tags([tag])
       .security([{ bearerAuth: [] }])
@@ -161,7 +169,7 @@ export const crudEndpoints = {
       .build(),
 
   update: (path: string, requestSchema: string, responseSchema: string, tag: string) =>
-    createEndpoint(path, 'put')
+    createEndpoint(path, HttpMethod.PUT)
       .summary(`Update a ${tag.toLowerCase()}`)
       .tags([tag])
       .parameters([parameterTemplates.idParam])
@@ -170,7 +178,7 @@ export const crudEndpoints = {
       .build(),
 
   updateAuth: (path: string, requestSchema: string, responseSchema: string, tag: string) =>
-    createEndpoint(path, 'put')
+    createEndpoint(path, HttpMethod.PUT)
       .summary(`Update a ${tag.toLowerCase()}`)
       .tags([tag])
       .security([{ bearerAuth: [] }])
@@ -180,7 +188,7 @@ export const crudEndpoints = {
       .build(),
 
   delete: (path: string, tag: string) =>
-    createEndpoint(path, 'delete')
+    createEndpoint(path, HttpMethod.DELETE)
       .summary(`Delete a ${tag.toLowerCase()}`)
       .tags([tag])
       .parameters([parameterTemplates.idParam])
@@ -188,7 +196,7 @@ export const crudEndpoints = {
       .build(),
 
   deleteAuth: (path: string, tag: string) =>
-    createEndpoint(path, 'delete')
+    createEndpoint(path, HttpMethod.DELETE)
       .summary(`Delete a ${tag.toLowerCase()}`)
       .tags([tag])
       .security([{ bearerAuth: [] }])

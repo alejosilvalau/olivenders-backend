@@ -3,8 +3,14 @@ import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
 import { Wizard } from '../wizard/wizard.entity.js';
 import { Wand } from '../wand/wand.entity.js';
 
+export enum OrderSchemas {
+  Order = 'Order',
+  OrderRequest = 'OrderRequest',
+  OrderReviewRequest = 'OrderReviewRequest',
+}
+
 export const orderSchemas = {
-  Order: {
+  [OrderSchemas.Order]: {
     type: 'object',
     properties: {
       id: { type: 'string' },
@@ -28,7 +34,7 @@ export const orderSchemas = {
     required: ['id', 'payment_reference', 'payment_provider', 'shipping_address', 'wizard', 'wand'],
   },
 
-  OrderRequest: {
+  [OrderSchemas.OrderRequest]: {
     type: 'object',
     properties: {
       payment_reference: { type: 'string' },
@@ -43,7 +49,7 @@ export const orderSchemas = {
     required: ['payment_reference', 'payment_provider', 'shipping_address', 'wizard', 'wand'],
   },
 
-  OrderReviewRequest: {
+  [OrderSchemas.OrderReviewRequest]: {
     type: 'object',
     properties: {
       review: { type: 'string' },
@@ -51,12 +57,6 @@ export const orderSchemas = {
     required: ['review'],
   },
 };
-
-export enum OrderSchemas {
-  Order = 'Order',
-  OrderRequest = 'OrderRequest',
-  OrderReviewRequest = 'OrderReviewRequest',
-}
 
 export enum OrderStatus {
   Pending = 'pending',

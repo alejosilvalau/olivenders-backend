@@ -1,5 +1,6 @@
 import { coreSchemas } from '../../components/core/core.entity.js';
 import { orderSchemas } from '../../components/order/order.entity.js';
+import { schoolSchemas } from '../../components/school/school.entity.js';
 
 export const swaggerComponents = {
   schemas: {
@@ -33,6 +34,7 @@ export const swaggerComponents = {
     // Entity schemas
     ...orderSchemas,
     ...coreSchemas,
+    ...schoolSchemas,
   },
   securitySchemes: {
     bearerAuth: {

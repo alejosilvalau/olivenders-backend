@@ -2,8 +2,13 @@ import { Entity, Property, OneToOne, Ref, OneToMany, Cascade, Collection } from 
 import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
 import { Wand } from '../wand/wand.entity.js';
 
+export enum CoreSchemas {
+  Core = 'Core',
+  CoreRequest = 'CoreRequest',
+}
+
 export const coreSchemas = {
-  Core: {
+  [CoreSchemas.Core]: {
     type: 'object',
     properties: {
       id: { type: 'string' },
@@ -14,7 +19,7 @@ export const coreSchemas = {
     required: ['id', 'name', 'description', 'price'],
   },
 
-  CoreRequest: {
+  [CoreSchemas.CoreRequest]: {
     type: 'object',
     properties: {
       name: { type: 'string' },
@@ -24,11 +29,6 @@ export const coreSchemas = {
     required: ['name', 'description', 'price'],
   },
 };
-
-export enum CoreSchemas {
-  Core = 'Core',
-  CoreRequest = 'CoreRequest',
-}
 
 @Entity()
 export class Core extends BaseEntity {

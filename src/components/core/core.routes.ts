@@ -11,7 +11,7 @@ import {
 import { CoreSchemas } from './core.entity.js';
 import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
 import { verifyAdminRole, verifyToken } from '../../middleware/authMiddleware.js';
-import { createEndpoint, crudEndpoints } from '../../shared/docs/endpointBuilder.js';
+import { createEndpoint, crudEndpoints, HttpMethod } from '../../shared/docs/endpointBuilder.js';
 import { parameterTemplates } from '../../shared/docs/parameterTemplates.js';
 import { mergeEndpoint } from '../../shared/docs/mergeEndpoints.js';
 
@@ -26,7 +26,7 @@ coreRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne
 
 mergeEndpoint(
   corePaths,
-  createEndpoint('/api/cores/name/{name}', 'get')
+  createEndpoint('/api/cores/name/{name}', HttpMethod.GET)
     .summary('Get core by name')
     .tags([CoreSchemas.Core])
     .security([{ bearerAuth: [] }])
