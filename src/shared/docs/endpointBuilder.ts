@@ -19,6 +19,13 @@ export class EndpointBuilder {
     return this;
   }
 
+  description(text: string) {
+    const path = Object.keys(this.endpoint)[0];
+    const method = Object.keys(this.endpoint[path])[0];
+    this.endpoint[path][method].description = text;
+    return this;
+  }
+
   tags(tagArray: string[]) {
     const path = Object.keys(this.endpoint)[0];
     const method = Object.keys(this.endpoint[path])[0];

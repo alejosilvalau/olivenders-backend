@@ -61,27 +61,50 @@ orderRouter.post('/', sanitizeMongoQuery, verifyToken, sanitizeOrderInput, add);
 mergeEndpoint(orderPaths, crudEndpoints.updateAuth('/api/orders/{id}', 'OrderRequest', 'Order', 'Order'));
 orderRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeOrderInput, update);
 
-const statusEndpoints = [{ path: '/api/orders/{id}/pay', summary: 'Pay for an order' }];
+const statusEndpoints = [
+  {
+    path: '/api/orders/{id}/pay',
+    summary: 'Pay for an order',
+    description: 'Sets the order status to "paid" if payment is successful',
+  },
+];
 orderRouter.patch('/:id/pay', sanitizeMongoQuery, verifyToken, pay);
 
-statusEndpoints.push({ path: '/api/orders/{id}/dispatch', summary: 'Dispatch an order' });
+statusEndpoints.push({
+  path: '/api/orders/{id}/dispatch',
+  summary: 'Dispatch an order',
+  description: 'Sets the order status to "dispatched" if payment is successful',
+});
 orderRouter.patch('/:id/dispatch', sanitizeMongoQuery, verifyToken, verifyAdminRole, dispatch);
 
-statusEndpoints.push({ path: '/api/orders/{id}/complete', summary: 'Complete an order' });
+statusEndpoints.push({
+  path: '/api/orders/{id}/complete',
+  summary: 'Complete an order',
+  description: 'Sets the order status to "completed" if payment is successful',
+});
 orderRouter.patch('/:id/complete', sanitizeMongoQuery, verifyToken, complete);
 
-statusEndpoints.push({ path: '/api/orders/{id}/cancel', summary: 'Cancel an order' });
+statusEndpoints.push({
+  path: '/api/orders/{id}/cancel',
+  summary: 'Cancel an order',
+  description: 'Sets the order status to "cancelled" if payment is successful',
+});
 orderRouter.patch('/:id/cancel', sanitizeMongoQuery, verifyToken, cancel);
 
-statusEndpoints.push({ path: '/api/orders/{id}/refund', summary: 'Refund an order' });
+statusEndpoints.push({
+  path: '/api/orders/{id}/refund',
+  summary: 'Refund an order',
+  description: 'Sets the order status to "refunded" if payment is successful',
+});
 orderRouter.patch('/:id/refund', sanitizeMongoQuery, verifyToken, refund);
 
 // Status change endpoints
-statusEndpoints.forEach(({ path, summary }) => {
+statusEndpoints.forEach(({ path, summary, description }) => {
   mergeEndpoint(
     orderPaths,
     createEndpoint(path, 'patch')
       .summary(summary)
+      .description(description)
       .tags(['Order'])
       .parameters([parameterTemplates.idParam])
       .successResponse('Order')
