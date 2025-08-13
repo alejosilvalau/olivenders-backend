@@ -25,11 +25,6 @@ import { mergeEndpoint } from '../../shared/docs/mergeEndpoints.js';
 export const orderPaths: { [key: string]: any } = {};
 export const orderRouter = Router();
 
-
-
-
-
-
 mergeEndpoint(orderPaths, crudEndpoints.getAll('/api/orders', 'Order', 'Order'));
 orderRouter.get('/', findAll);
 
@@ -57,10 +52,10 @@ mergeEndpoint(
 );
 orderRouter.get('/wand/:wandId', sanitizeMongoQuery, verifyToken, verifyAdminRole, findAllByWand);
 
-mergeEndpoint(orderPaths, crudEndpoints.getById('/api/orders/{id}', 'Order', 'Order'));
+mergeEndpoint(orderPaths, crudEndpoints.getByIdAuth('/api/orders/{id}', 'Order', 'Order'));
 orderRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
 
-mergeEndpoint(orderPaths, crudEndpoints.create('/api/orders', 'OrderRequest', 'Order', 'Order'));
+mergeEndpoint(orderPaths, crudEndpoints.createAuth('/api/orders', 'OrderRequest', 'Order', 'Order'));
 orderRouter.post('/', sanitizeMongoQuery, verifyToken, sanitizeOrderInput, add);
 
 mergeEndpoint(orderPaths, crudEndpoints.update('/api/orders/{id}', 'OrderRequest', 'Order', 'Order'));

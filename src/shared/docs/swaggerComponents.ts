@@ -1,3 +1,5 @@
+import { orderSchemas } from '../../components/order/order.entity.js';
+
 export const swaggerComponents = {
   schemas: {
     // Global schemas
@@ -28,54 +30,7 @@ export const swaggerComponents = {
     },
 
     // Entity schemas
-    Order: {
-      type: 'object',
-      properties: {
-        id: { type: 'string' },
-        payment_reference: { type: 'string' },
-        payment_provider: {
-          type: 'string',
-          enum: ['stripe', 'paypal', 'wire_transfer', 'credit_card', 'debit_card'],
-        },
-        shipping_address: { type: 'string' },
-        tracking_id: { type: 'string' },
-        created_at: { type: 'string', format: 'date-time' },
-        status: {
-          type: 'string',
-          enum: ['pending', 'paid', 'dispatched', 'delivered', 'completed', 'cancelled', 'refunded'],
-        },
-        completed: { type: 'boolean' },
-        review: { type: 'string' },
-        wizard: { type: 'string' },
-        wand: { type: 'string' },
-      },
-      required: ['payment_reference', 'payment_provider', 'shipping_address', 'wizard', 'wand'],
-    },
-
-    OrderRequest: {
-      type: 'object',
-      properties: {
-        payment_reference: { type: 'string' },
-        payment_provider: {
-          type: 'string',
-          enum: ['stripe', 'paypal', 'wire_transfer', 'credit_card', 'debit_card'],
-        },
-        shipping_address: { type: 'string' },
-        wizard: { type: 'string' },
-        wand: { type: 'string' },
-      },
-      required: ['payment_reference', 'payment_provider', 'shipping_address', 'wizard', 'wand'],
-    },
-
-    OrderReviewRequest: {
-      type: 'object',
-      properties: {
-        review: { type: 'string' },
-      },
-      required: ['review'],
-    },
-
-    // Add other entity schemas (Core, Wood, Wand, etc.)
+    ...orderSchemas,
   },
   securitySchemes: {
     bearerAuth: {

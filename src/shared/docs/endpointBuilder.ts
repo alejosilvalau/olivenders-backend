@@ -127,10 +127,28 @@ export const crudEndpoints = {
       .successResponse(schema)
       .build(),
 
+  getByIdAuth: (path: string, schema: string, tag: string) =>
+    createEndpoint(path, 'get')
+      .summary(`Get ${tag.toLowerCase()} by ID`)
+      .tags([tag])
+      .security([{ bearerAuth: [] }])
+      .parameters([parameterTemplates.idParam])
+      .successResponse(schema)
+      .build(),
+
   create: (path: string, requestSchema: string, responseSchema: string, tag: string) =>
     createEndpoint(path, 'post')
       .summary(`Create a new ${tag.toLowerCase()}`)
       .tags([tag])
+      .requestBody(requestSchema)
+      .createdResponse(responseSchema)
+      .build(),
+
+  createAuth: (path: string, requestSchema: string, responseSchema: string, tag: string) =>
+    createEndpoint(path, 'post')
+      .summary(`Create a new ${tag.toLowerCase()}`)
+      .tags([tag])
+      .security([{ bearerAuth: [] }])
       .requestBody(requestSchema)
       .createdResponse(responseSchema)
       .build(),
