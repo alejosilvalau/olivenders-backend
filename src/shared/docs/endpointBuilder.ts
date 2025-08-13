@@ -96,7 +96,7 @@ export class EndpointBuilder {
 
   deleteResponse() {
     return this.responses({
-      200: { description: 'Resource deleted successfully' },
+      ...responseTemplates.deleted(),
       ...responseTemplates.errors.notFound(),
       ...responseTemplates.errors.serverError(),
     });
@@ -162,10 +162,29 @@ export const crudEndpoints = {
       .crudUpdateResponse(responseSchema)
       .build(),
 
+  updateAuth: (path: string, requestSchema: string, responseSchema: string, tag: string) =>
+    createEndpoint(path, 'put')
+      .summary(`Update a ${tag.toLowerCase()}`)
+      .tags([tag])
+      .security([{ bearerAuth: [] }])
+      .parameters([parameterTemplates.idParam])
+      .requestBody(requestSchema)
+      .crudUpdateResponse(responseSchema)
+      .build(),
+
   delete: (path: string, tag: string) =>
     createEndpoint(path, 'delete')
       .summary(`Delete a ${tag.toLowerCase()}`)
       .tags([tag])
+      .parameters([parameterTemplates.idParam])
+      .deleteResponse()
+      .build(),
+
+  deleteAuth: (path: string, tag: string) =>
+    createEndpoint(path, 'delete')
+      .summary(`Delete a ${tag.toLowerCase()}`)
+      .tags([tag])
+      .security([{ bearerAuth: [] }])
       .parameters([parameterTemplates.idParam])
       .deleteResponse()
       .build(),

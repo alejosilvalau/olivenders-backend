@@ -58,7 +58,7 @@ orderRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOn
 mergeEndpoint(orderPaths, crudEndpoints.createAuth('/api/orders', 'OrderRequest', 'Order', 'Order'));
 orderRouter.post('/', sanitizeMongoQuery, verifyToken, sanitizeOrderInput, add);
 
-mergeEndpoint(orderPaths, crudEndpoints.update('/api/orders/{id}', 'OrderRequest', 'Order', 'Order'));
+mergeEndpoint(orderPaths, crudEndpoints.updateAuth('/api/orders/{id}', 'OrderRequest', 'Order', 'Order'));
 orderRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeOrderInput, update);
 
 const statusEndpoints = [{ path: '/api/orders/{id}/pay', summary: 'Pay for an order' }];
@@ -101,5 +101,5 @@ mergeEndpoint(
 );
 orderRouter.patch('/:id/review', sanitizeMongoQuery, verifyToken, sanitizeOrderReviewInput, review);
 
-mergeEndpoint(orderPaths, crudEndpoints.delete('/api/orders/{id}', 'Order'));
+mergeEndpoint(orderPaths, crudEndpoints.deleteAuth('/api/orders/{id}', 'Order'));
 orderRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);

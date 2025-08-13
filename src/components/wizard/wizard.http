@@ -45,7 +45,7 @@ Content-Type: application/json
 
 {
   "username": "dracomalfoy",
-  "password": "Expelio123#@"
+  "password": "Expelio123#@@"
 }
 
 ### Validate a wizard's password

@@ -60,6 +60,23 @@ export const responseTemplates = {
     },
   }),
 
+  // Deleted response
+  deleted: () => ({
+    200: {
+      description: 'Deleted successfully',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              message: { type: 'string', example: 'Resource deleted successfully' },
+            },
+          },
+        },
+      },
+    },
+  }),
+
   // Standard error responses - Fix: Return objects with status codes as keys
   errors: {
     badRequest: () => ({
