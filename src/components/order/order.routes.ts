@@ -25,14 +25,14 @@ import { mergeEndpoint } from '../../shared/docs/mergeEndpoints.js';
 export const orderPaths: { [key: string]: any } = {};
 export const orderRouter = Router();
 
-// Basic CRUD endpoints
-mergeEndpoint(orderPaths, crudEndpoints.getAll('/api/orders', 'Order', 'Order'));
-mergeEndpoint(orderPaths, crudEndpoints.getById('/api/orders/{id}', 'Order', 'Order'));
-mergeEndpoint(orderPaths, crudEndpoints.create('/api/orders', 'OrderRequest', 'Order', 'Order'));
-mergeEndpoint(orderPaths, crudEndpoints.update('/api/orders/{id}', 'OrderRequest', 'Order', 'Order'));
-mergeEndpoint(orderPaths, crudEndpoints.delete('/api/orders/{id}', 'Order'));
 
-// Custom endpoints
+
+
+
+
+mergeEndpoint(orderPaths, crudEndpoints.getAll('/api/orders', 'Order', 'Order'));
+orderRouter.get('/', findAll);
+
 mergeEndpoint(
   orderPaths,
   createEndpoint('/api/orders/wizard/{wizardId}', 'get')
@@ -43,6 +43,7 @@ mergeEndpoint(
     .paginatedResponse('Order')
     .build()
 );
+orderRouter.get('/wizard/:wizardId', sanitizeMongoQuery, verifyToken, findAllByWizard);
 
 mergeEndpoint(
   orderPaths,
@@ -54,16 +55,33 @@ mergeEndpoint(
     .paginatedResponse('Order')
     .build()
 );
+orderRouter.get('/wand/:wandId', sanitizeMongoQuery, verifyToken, verifyAdminRole, findAllByWand);
+
+mergeEndpoint(orderPaths, crudEndpoints.getById('/api/orders/{id}', 'Order', 'Order'));
+orderRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
+
+mergeEndpoint(orderPaths, crudEndpoints.create('/api/orders', 'OrderRequest', 'Order', 'Order'));
+orderRouter.post('/', sanitizeMongoQuery, verifyToken, sanitizeOrderInput, add);
+
+mergeEndpoint(orderPaths, crudEndpoints.update('/api/orders/{id}', 'OrderRequest', 'Order', 'Order'));
+orderRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeOrderInput, update);
+
+const statusEndpoints = [{ path: '/api/orders/{id}/pay', summary: 'Pay for an order' }];
+orderRouter.patch('/:id/pay', sanitizeMongoQuery, verifyToken, pay);
+
+statusEndpoints.push({ path: '/api/orders/{id}/dispatch', summary: 'Dispatch an order' });
+orderRouter.patch('/:id/dispatch', sanitizeMongoQuery, verifyToken, verifyAdminRole, dispatch);
+
+statusEndpoints.push({ path: '/api/orders/{id}/complete', summary: 'Complete an order' });
+orderRouter.patch('/:id/complete', sanitizeMongoQuery, verifyToken, complete);
+
+statusEndpoints.push({ path: '/api/orders/{id}/cancel', summary: 'Cancel an order' });
+orderRouter.patch('/:id/cancel', sanitizeMongoQuery, verifyToken, cancel);
+
+statusEndpoints.push({ path: '/api/orders/{id}/refund', summary: 'Refund an order' });
+orderRouter.patch('/:id/refund', sanitizeMongoQuery, verifyToken, refund);
 
 // Status change endpoints
-const statusEndpoints = [
-  { path: '/api/orders/{id}/pay', summary: 'Pay for an order' },
-  { path: '/api/orders/{id}/dispatch', summary: 'Dispatch an order' },
-  { path: '/api/orders/{id}/complete', summary: 'Complete an order' },
-  { path: '/api/orders/{id}/cancel', summary: 'Cancel an order' },
-  { path: '/api/orders/{id}/refund', summary: 'Refund an order' },
-];
-
 statusEndpoints.forEach(({ path, summary }) => {
   mergeEndpoint(
     orderPaths,
@@ -76,7 +94,6 @@ statusEndpoints.forEach(({ path, summary }) => {
   );
 });
 
-// Review endpoint
 mergeEndpoint(
   orderPaths,
   createEndpoint('/api/orders/{id}/review', 'patch')
@@ -87,29 +104,7 @@ mergeEndpoint(
     .crudUpdateResponse('Order')
     .build()
 );
-
-orderRouter.get('/', findAll);
-
-orderRouter.get('/wizard/:wizardId', sanitizeMongoQuery, verifyToken, findAllByWizard);
-
-orderRouter.get('/wand/:wandId', sanitizeMongoQuery, verifyToken, verifyAdminRole, findAllByWand);
-
-orderRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
-
-orderRouter.post('/', sanitizeMongoQuery, verifyToken, sanitizeOrderInput, add);
-
-orderRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeOrderInput, update);
-
-orderRouter.patch('/:id/pay', sanitizeMongoQuery, verifyToken, pay);
-
-orderRouter.patch('/:id/dispatch', sanitizeMongoQuery, verifyToken, verifyAdminRole, dispatch);
-
-orderRouter.patch('/:id/complete', sanitizeMongoQuery, verifyToken, complete);
-
-orderRouter.patch('/:id/cancel', sanitizeMongoQuery, verifyToken, cancel);
-
-orderRouter.patch('/:id/refund', sanitizeMongoQuery, verifyToken, refund);
-
 orderRouter.patch('/:id/review', sanitizeMongoQuery, verifyToken, sanitizeOrderReviewInput, review);
 
+mergeEndpoint(orderPaths, crudEndpoints.delete('/api/orders/{id}', 'Order'));
 orderRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);
