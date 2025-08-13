@@ -10,12 +10,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZ
 GET http://localhost:3000/api/wizards/68698280a91cb51622ab22b6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg
 
-### Get one wizard by email
-GET http://localhost:3000/api/wizards/email/draco.malfoy@hogwarts.edu
-
 ### Get one wizard by username
 GET http://localhost:3000/api/wizards/username/dracomalfoy
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg
+
+### Get one wizard by email
+GET http://localhost:3000/api/wizards/email/draco.malfoy@hogwarts.edu
 
 ### Get if a wizard username is available
 GET http://localhost:3000/api/wizards/available/username/dracomalfoy
@@ -49,8 +49,8 @@ Content-Type: application/json
 }
 
 ### Validate a wizard's password
-POST http://localhost:3000/api/wizards/validate/6869a017667eb044d20917ed
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg
+POST http://localhost:3000/api/wizards/validate/686fab31e5c1922fd703246c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NTExMTg3NywiZXhwIjoxNzU1MTE1NDc3fQ.ACXyFiU5niw6TBkiY4dmBSXQb_cZctJ6c2bme6lsNWk
 Content-Type: application/json
 
 {

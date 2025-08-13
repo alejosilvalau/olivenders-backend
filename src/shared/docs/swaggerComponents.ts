@@ -2,6 +2,7 @@ import { coreSchemas } from '../../components/core/core.entity.js';
 import { orderSchemas } from '../../components/order/order.entity.js';
 import { schoolSchemas } from '../../components/school/school.entity.js';
 import { wandSchemas } from '../../components/wand/wand.entity.js';
+import { wizardSchemas } from '../../components/wizard/wizard.entity.js';
 import { woodSchemas } from '../../components/wood/wood.entity.js';
 
 export const swaggerComponents = {
@@ -39,6 +40,7 @@ export const swaggerComponents = {
     ...schoolSchemas,
     ...woodSchemas,
     ...wandSchemas,
+    ...wizardSchemas,
   },
   securitySchemes: {
     bearerAuth: {

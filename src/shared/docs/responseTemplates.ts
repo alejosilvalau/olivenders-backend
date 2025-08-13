@@ -17,6 +17,25 @@ export const responseTemplates = {
     },
   }),
 
+  // Standard login responses
+  login: (dataSchema: string) => ({
+    200: {
+      description: 'Success',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              message: { type: 'string' },
+              data: { $ref: `#/components/schemas/${dataSchema}` },
+              token: { type: 'string', description: 'JWT token for authenticated requests' },
+            },
+          },
+        },
+      },
+    },
+  }),
+
   // Paginated responses
   paginated: (itemSchema: string) => ({
     200: {

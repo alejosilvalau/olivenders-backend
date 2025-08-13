@@ -85,6 +85,14 @@ export class EndpointBuilder {
     });
   }
 
+  loginResponse(schema: string) {
+    return this.responses({
+      ...responseTemplates.login(schema),
+      ...responseTemplates.errors.notFound(),
+      ...responseTemplates.errors.serverError(),
+    });
+  }
+
   paginatedResponse(schema: string) {
     return this.responses({
       ...responseTemplates.paginated(schema),
@@ -130,6 +138,15 @@ export const crudEndpoints = {
     createEndpoint(path, HttpMethod.GET)
       .summary(`Get all ${tag.toLowerCase()}s`)
       .tags([tag])
+      .parameters(parameterTemplates.pagination)
+      .paginatedResponse(schema)
+      .build(),
+
+  getAllAuth: (path: string, schema: string, tag: string) =>
+    createEndpoint(path, HttpMethod.GET)
+      .summary(`Get all ${tag.toLowerCase()}s`)
+      .tags([tag])
+      .security([{ bearerAuth: [] }])
       .parameters(parameterTemplates.pagination)
       .paginatedResponse(schema)
       .build(),

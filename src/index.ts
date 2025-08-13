@@ -14,7 +14,7 @@ import { wandPaths, wandRouter } from './components/wand/wand.routes.js';
 import { questionRouter } from './components/question/question.routes.js';
 import { quizRouter } from './components/quiz/quiz.routes.js';
 import { orderPaths, orderRouter } from './components/order/order.routes.js';
-import { wizardRouter } from './components/wizard/wizard.routes.js';
+import { wizardPaths, wizardRouter } from './components/wizard/wizard.routes.js';
 import { answerRouter } from './components/answer/answer.routes.js';
 import { imageRouter } from './components/image/image.routes.js';
 
@@ -55,10 +55,11 @@ const swaggerOptions = {
       ...schoolPaths,
       ...woodPaths,
       ...wandPaths,
+      ...wizardPaths,
     },
     components: swaggerComponents,
   },
-  apis: ['./dist/components/**/*.routes.js'],
+  apis: ['./src/components/**/*.ts', './src/shared/docs/*.ts'],
 };
 
 const swaggerDocs = swaggerJSDoc(swaggerOptions);

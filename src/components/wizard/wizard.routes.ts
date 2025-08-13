@@ -19,542 +19,178 @@ import {
   deactivate,
   remove,
 } from './wizard.controller.js';
+import { WizardSchemas } from './wizard.entity.js';
 import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
 import { verifyToken, verifyAdminRole } from '../../middleware/authMiddleware.js';
+import { createEndpoint, crudEndpoints, HttpMethod } from '../../shared/docs/endpointBuilder.js';
+import { parameterTemplates } from '../../shared/docs/parameterTemplates.js';
+import { mergeEndpoint } from '../../shared/docs/mergeEndpoints.js';
 
+export const wizardPaths: { [key: string]: any } = {};
 export const wizardRouter = Router();
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     Wizard:
- *       type: object
- *       properties:
- *         id:
- *           type: string
- *           description: Unique identifier for the wizard
- *         username:
- *           type: string
- *           description: Wizard's username
- *         password:
- *           type: string
- *           description: Wizard's password
- *         name:
- *           type: string
- *           description: Wizard's first name
- *         last_name:
- *           type: string
- *           description: Wizard's last name
- *         email:
- *           type: string
- *           description: Wizard's email address
- *         phone:
- *           type: string
- *           description: Wizard's phone number
- *         address:
- *           type: string
- *           description: Wizard's address
- *         role:
- *           type: string
- *           description: Wizard's role
- *       required:
- *         - username
- *         - email
- *         - password
- *         - name
- *         - last_name
- *         - phone
- *         - address
- *         - role
- */
-
-/**
- * @swagger
- * /api/wizards:
- *   get:
- *     summary: Get a list of all wizards
- *     tags: [Wizard]
- *     responses:
- *       200:
- *         description: Lista de usuarios
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Wizard'
- *       500:
- *         description: Error al obtener los usuarios
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error al obtener los usuarios
- *                 error:
- *                   type: string
- *                   example: Detalles del error
- */
+mergeEndpoint(
+  wizardPaths,
+  crudEndpoints.getAllAuth('/api/wizards', WizardSchemas.WizardResponse, WizardSchemas.Wizard)
+);
 wizardRouter.get('/', verifyToken, verifyAdminRole, findAll);
 
-// TODO: Add documentation for this endpoint
+mergeEndpoint(
+  wizardPaths,
+  createEndpoint('/api/wizards/school/{schoolId}', HttpMethod.GET)
+    .summary('Get all wizards by school')
+    .tags([WizardSchemas.Wizard])
+    .security([{ bearerAuth: [] }])
+    .parameters([parameterTemplates.pathParam('schoolId', 'School ID'), ...parameterTemplates.pagination])
+    .paginatedResponse(WizardSchemas.WizardResponse)
+    .build()
+);
 wizardRouter.get('/school/:schoolId', verifyToken, verifyAdminRole, findAllBySchool);
 
-// Endpoint GET /:id
-/**
- * @swagger
- * /api/wizards/{id}:
- *   get:
- *     summary: Get a wizard by ID
- *     tags: [Wizard]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: ID del usuario
- *     responses:
- *       200:
- *         description: Usuario encontrado
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Usuario'
- *       404:
- *         description: Usuario no encontrado
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Usuario no encontrado
- *       500:
- *         description: Error al obtener el usuario
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error al obtener el usuario
- *                 error:
- *                   type: string
- *                   example: Detalles del error
- */
+mergeEndpoint(
+  wizardPaths,
+  crudEndpoints.getByIdAuth('/api/wizards/{id}', WizardSchemas.WizardResponse, WizardSchemas.Wizard)
+);
 wizardRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
 
-/**
- * @swagger
- * /api/usuarios/checkemail/{email}:
- *   get:
- *     summary: Verifica disponibilidad de correo electrónico
- *     tags: [Usuario]
- *     parameters:
- *       - in: path
- *         name: email
- *         schema:
- *           type: string
- *         required: true
- *         description: Correo electrónico
- *     responses:
- *       200:
- *         description: Resultado de disponibilidad
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 available:
- *                   type: boolean
- *                   example: true
- *       500:
- *         description: Error en la verificación
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error al verificar el correo electrónico
- *                 error:
- *                   type: string
- *                   example: Detalles del error
- */
-wizardRouter.get('/email/:email', sanitizeMongoQuery, findOneByEmail);
-
-/**
- * @swagger
- * /api/usuarios/checkusername/:username:
- *   get:
- *     summary: Verifica disponibilidad de nombre de usuario
- *     tags: [Usuario]
- *     parameters:
- *       - in: path
- *         name: username
- *         schema:
- *           type: string
- *         required: true
- *         description: Nombre de usuario
- *     responses:
- *       200:
- *         description: Resultado de disponibilidad
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 available:
- *                   type: boolean
- *                   example: true
- *       500:
- *         description: Error en la verificación
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error al verificar el nombre de usuario
- *                 error:
- *                   type: string
- *                   example: Detalles del error
- */
+mergeEndpoint(
+  wizardPaths,
+  createEndpoint('/api/wizards/username/{username}', HttpMethod.GET)
+    .summary('Get wizard by username')
+    .tags([WizardSchemas.Wizard])
+    .security([{ bearerAuth: [] }])
+    .parameters([parameterTemplates.pathParam('username', 'Wizard username')])
+    .successResponse(WizardSchemas.WizardResponse)
+    .build()
+);
 wizardRouter.get('/username/:username', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOneByUsername);
 
-// TODO: Add documentation for this endpoint
+mergeEndpoint(
+  wizardPaths,
+  createEndpoint('/api/wizards/email/{email}', HttpMethod.GET)
+    .summary('Get wizard by email')
+    .tags([WizardSchemas.Wizard])
+    .parameters([parameterTemplates.pathParam('email', 'Wizard email')])
+    .successResponse(WizardSchemas.WizardResponse)
+    .build()
+);
+wizardRouter.get('/email/:email', sanitizeMongoQuery, findOneByEmail);
+
+mergeEndpoint(
+  wizardPaths,
+  createEndpoint('/api/wizards/available/username/{username}', HttpMethod.GET)
+    .summary('Check if a wizard username is available')
+    .tags([WizardSchemas.Wizard])
+    .parameters([parameterTemplates.pathParam('username', 'Wizard username')])
+    .successResponse(WizardSchemas.WizardBooleanResponse)
+    .build()
+);
 wizardRouter.get('/available/username/:username', sanitizeMongoQuery, isUsernameAvailable);
 
-// TODO: Add documentation for this endpoint
+mergeEndpoint(
+  wizardPaths,
+  createEndpoint('/api/wizards/available/email/{email}', HttpMethod.GET)
+    .summary('Check if a wizard email is available')
+    .tags([WizardSchemas.Wizard])
+    .parameters([parameterTemplates.pathParam('email', 'Wizard email')])
+    .successResponse(WizardSchemas.WizardBooleanResponse)
+    .build()
+);
 wizardRouter.get('/available/email/:email', sanitizeMongoQuery, isEmailAvailable);
 
-/**
- * @swagger
- * /api/usuarios:
- *   post:
- *     summary: Crea un nuevo usuario
- *     tags: [Usuario]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Usuario'
- *     responses:
- *       201:
- *         description: Usuario creado
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Usuario'
- *       400:
- *         description: Error de validación o usuario ya existente
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Ya existe un usuario con ese nombre de usuario o correo electrónico.
- *       500:
- *         description: Error al crear el usuario
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error al crear el usuario
- *                 error:
- *                   type: string
- *                   example: Detalles del error
- */
+mergeEndpoint(
+  wizardPaths,
+  crudEndpoints.createAuth(
+    '/api/wizards',
+    WizardSchemas.WizardRequest,
+    WizardSchemas.WizardResponse,
+    WizardSchemas.Wizard
+  )
+);
 wizardRouter.post('/', sanitizeMongoQuery, sanitizeWizardInput, add);
 
-/**
- * @swagger
- * /api/usuarios/login:
- *   post:
- *     summary: Inicio de sesión de usuario
- *     tags: [Usuario]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               username:
- *                 type: string
- *                 description: Nombre de usuario
- *               password:
- *                 type: string
- *                 description: Contraseña del usuario
- *     responses:
- *       200:
- *         description: Login exitoso
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 token:
- *                   type: string
- *                   description: Token de autenticación
- *       401:
- *         description: Credenciales inválidas
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Credenciales inválidas
- *       404:
- *         description: Usuario no encontrado
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Usuario no encontrado
- *       500:
- *         description: Error al iniciar sesión
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error al iniciar sesión
- *                 error:
- *                   type: string
- *                   example: Detalles del error
- */
+mergeEndpoint(
+  wizardPaths,
+  createEndpoint('/api/wizards/login', HttpMethod.POST)
+    .summary('Login a wizard')
+    .tags([WizardSchemas.Wizard])
+    .requestBody(WizardSchemas.WizardLoginRequest)
+    .loginResponse(WizardSchemas.WizardResponse)
+    .build()
+);
 wizardRouter.post('/login', sanitizeMongoQuery, sanitizeWizardPartialInput, login);
 
-/**
- * @swagger
- * /api/usuarios/validate/:id:
- *   post:
- *     summary: Validar la contraseña del usuario
- *     tags: [Usuario]
- *     description: Verifica si la contraseña proporcionada coincide con la contraseña actual del usuario.
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: ID del usuario
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               password:
- *                 type: string
- *                 description: Contraseña actual del usuario
- *     responses:
- *       200:
- *         description: Contraseña validada exitosamente
- *         content:
- *           application/json:
- *             schema:
- *               type: boolean
- *               example: true
- *       404:
- *         description: Usuario no encontrado
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Usuario no encontrado"
- *       500:
- *         description: Error interno del servidor
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Mensaje de error
- */
+mergeEndpoint(
+  wizardPaths,
+  createEndpoint('/api/wizards/validate/{id}', HttpMethod.POST)
+    .summary('Validate wizard password')
+    .tags([WizardSchemas.Wizard])
+    .security([{ bearerAuth: [] }])
+    .parameters([parameterTemplates.pathParam('id', 'Wizard ID')])
+    .requestBody(WizardSchemas.WizardPasswordRequest)
+    .successResponse(WizardSchemas.WizardBooleanResponse)
+    .build()
+);
 wizardRouter.post('/validate/:id', sanitizeMongoQuery, verifyToken, sanitizeWizardPartialInput, validatePassword);
 
-/**
- * @swagger
- * /api/usuarios/{id}:
- *   put:
- *     summary: Actualiza un usuario
- *     tags: [Usuario]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: ID del usuario
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Usuario'
- *     responses:
- *       200:
- *         description: Usuario actualizado
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                 data:
- *                   $ref: '#/components/schemas/Usuario'
- *       404:
- *         description: Usuario no encontrado
- *         content:
- *           application/json:
- *             schema:
- *              type: object
- *              properties:
- *                message:
- *                  type: string
- *                  example: Usuario no encontrado
- *       500:
- *         description: Error en el servidor
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error al actualizar el usuario
- *                 error:
- *                   type: string
- *                   example: Detalles del error
- */
+mergeEndpoint(
+  wizardPaths,
+  crudEndpoints.updateAuth(
+    '/api/wizards/{id}',
+    WizardSchemas.WizardRequest,
+    WizardSchemas.WizardResponse,
+    WizardSchemas.Wizard
+  )
+);
 wizardRouter.put('/:id', sanitizeMongoQuery, verifyToken, sanitizeWizardInput, update);
 
-/**
- * @swagger
- * /api/usuarios/{id}:
- *   patch:
- *     summary: Restablece contraseña sin token
- *     tags: [Usuario]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: ID del usuario
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Usuario'
- *     responses:
- *       200:
- *         description: Contraseña actualizada
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Usuario'
- *       404:
- *         description: Usuario no encontrado
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Usuario no encontrado
- *       500:
- *         description: Error al actualizar la contraseña
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error al actualizar la contraseña
- */
+mergeEndpoint(
+  wizardPaths,
+  createEndpoint('/api/wizards/{id}', HttpMethod.PATCH)
+    .summary('Change wizard password without token')
+    .tags([WizardSchemas.Wizard])
+    .parameters([parameterTemplates.pathParam('id', 'Wizard ID')])
+    .requestBody(WizardSchemas.WizardPasswordRequest)
+    .successResponse(WizardSchemas.WizardResponse)
+    .build()
+);
 wizardRouter.patch('/:id', sanitizeMongoQuery, sanitizeWizardPartialInput, changePasswordWithoutToken);
 
-// TODO: Add documentation for this endpoint, only for admin users
+mergeEndpoint(
+  wizardPaths,
+  createEndpoint('/api/wizards/{id}/admin', HttpMethod.PATCH)
+    .summary('Make a wizard an admin')
+    .tags([WizardSchemas.Wizard])
+    .security([{ bearerAuth: [] }])
+    .parameters([parameterTemplates.pathParam('id', 'Wizard ID')])
+    .successResponse(WizardSchemas.WizardResponse)
+    .build()
+);
 wizardRouter.patch('/:id/admin', sanitizeMongoQuery, verifyToken, verifyAdminRole, makeAdmin);
 
-// TODO: Add documentation for this endpoint, only for admin users
+mergeEndpoint(
+  wizardPaths,
+  createEndpoint('/api/wizards/{id}/user', HttpMethod.PATCH)
+    .summary('Make a wizard a user')
+    .tags([WizardSchemas.Wizard])
+    .security([{ bearerAuth: [] }])
+    .parameters([parameterTemplates.pathParam('id', 'Wizard ID')])
+    .successResponse(WizardSchemas.WizardResponse)
+    .build()
+);
 wizardRouter.patch('/:id/user', sanitizeMongoQuery, verifyToken, verifyAdminRole, makeUser);
 
+mergeEndpoint(
+  wizardPaths,
+  createEndpoint('/api/wizards/{id}/deactivate', HttpMethod.PATCH)
+    .summary('Deactivate a wizard')
+    .tags([WizardSchemas.Wizard])
+    .security([{ bearerAuth: [] }])
+    .parameters([parameterTemplates.pathParam('id', 'Wizard ID')])
+    .successResponse(WizardSchemas.WizardResponse)
+    .build()
+);
 wizardRouter.patch('/:id/deactivate', sanitizeMongoQuery, verifyToken, deactivate);
 
-/**
- * @swagger
- * /api/usuarios/{id}:
- *   delete:
- *     summary: Elimina un usuario existente
- *     tags: [Usuario]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: ID del usuario
- *     responses:
- *       200:
- *         description: Usuario eliminado con exito
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Usuario'
- *       404:
- *         description: Usuario no encontrado
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Usuario no encontrado
- *       500:
- *         description: Error al eliminar el usuario
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error al eliminar el usuario
- */
+mergeEndpoint(wizardPaths, crudEndpoints.deleteAuth('/api/wizards/{id}', WizardSchemas.Wizard));
 wizardRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);
