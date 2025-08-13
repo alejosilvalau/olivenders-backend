@@ -1,15 +1,4 @@
-import {
-  Entity,
-  Property,
-  Collection,
-  OneToMany,
-  Cascade,
-  types,
-  DateTimeType,
-  ManyToOne,
-  Rel,
-  OneToOne,
-} from '@mikro-orm/core';
+import { Entity, Property, ManyToOne, Rel, OneToOne } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/db/baseEntity.entity.js';
 import { Wizard } from '../wizard/wizard.entity.js';
 import { Wand } from '../wand/wand.entity.js';
@@ -36,7 +25,7 @@ export const orderSchemas = {
       wizard: { type: 'string' },
       wand: { type: 'string' },
     },
-    required: ['payment_reference', 'payment_provider', 'shipping_address', 'wizard', 'wand'],
+    required: ['id', 'payment_reference', 'payment_provider', 'shipping_address', 'wizard', 'wand'],
   },
 
   OrderRequest: {
@@ -62,6 +51,12 @@ export const orderSchemas = {
     required: ['review'],
   },
 };
+
+export enum OrderSchemas {
+  Order = 'Order',
+  OrderRequest = 'OrderRequest',
+  OrderReviewRequest = 'OrderReviewRequest',
+}
 
 export enum OrderStatus {
   Pending = 'pending',

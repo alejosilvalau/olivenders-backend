@@ -9,7 +9,7 @@ import { RequestContext } from '@mikro-orm/core';
 import { orm, syncSchema } from './shared/db/orm.js';
 import { schoolRouter } from './components/school/school.routes.js';
 import { woodRouter } from './components/wood/wood.routes.js';
-import { coreRouter } from './components/core/core.routes.js';
+import { corePaths, coreRouter } from './components/core/core.routes.js';
 import { wandRouter } from './components/wand/wand.routes.js';
 import { questionRouter } from './components/question/question.routes.js';
 import { quizRouter } from './components/quiz/quiz.routes.js';
@@ -47,10 +47,11 @@ const swaggerOptions = {
       contact: {
         name: 'Olivenders Team',
       },
-      servers: [{ url: `http://localhost:${process.env.DEFAULT_PORT}` }],
+      servers: [{ url: process.env.API_URL || `http://localhost:${process.env.DEFAULT_PORT}` }],
     },
     paths: {
       ...orderPaths,
+      ...corePaths,
     },
     components: swaggerComponents,
   },

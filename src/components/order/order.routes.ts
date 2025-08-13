@@ -16,6 +16,7 @@ import {
   review,
   remove,
 } from './order.controller.js';
+import { OrderSchemas } from './order.entity.js';
 import { sanitizeMongoQuery } from '../../shared/db/sanitizeMongoQuery.js';
 import { verifyAdminRole, verifyToken } from '../../middleware/authMiddleware.js';
 import { createEndpoint, crudEndpoints } from '../../shared/docs/endpointBuilder.js';
@@ -25,17 +26,17 @@ import { mergeEndpoint } from '../../shared/docs/mergeEndpoints.js';
 export const orderPaths: { [key: string]: any } = {};
 export const orderRouter = Router();
 
-mergeEndpoint(orderPaths, crudEndpoints.getAll('/api/orders', 'Order', 'Order'));
+mergeEndpoint(orderPaths, crudEndpoints.getAll('/api/orders', OrderSchemas.Order, OrderSchemas.Order));
 orderRouter.get('/', findAll);
 
 mergeEndpoint(
   orderPaths,
   createEndpoint('/api/orders/wizard/{wizardId}', 'get')
     .summary('Get all orders by wizard')
-    .tags(['Order'])
+    .tags([OrderSchemas.Order])
     .security([{ bearerAuth: [] }])
     .parameters([parameterTemplates.pathParam('wizardId', 'Wizard ID'), ...parameterTemplates.pagination])
-    .paginatedResponse('Order')
+    .paginatedResponse(OrderSchemas.Order)
     .build()
 );
 orderRouter.get('/wizard/:wizardId', sanitizeMongoQuery, verifyToken, findAllByWizard);
@@ -44,21 +45,27 @@ mergeEndpoint(
   orderPaths,
   createEndpoint('/api/orders/wand/{wandId}', 'get')
     .summary('Get all orders by wand')
-    .tags(['Order'])
+    .tags([OrderSchemas.Order])
     .security([{ bearerAuth: [] }])
     .parameters([parameterTemplates.pathParam('wandId', 'Wand ID'), ...parameterTemplates.pagination])
-    .paginatedResponse('Order')
+    .paginatedResponse(OrderSchemas.Order)
     .build()
 );
 orderRouter.get('/wand/:wandId', sanitizeMongoQuery, verifyToken, verifyAdminRole, findAllByWand);
 
-mergeEndpoint(orderPaths, crudEndpoints.getByIdAuth('/api/orders/{id}', 'Order', 'Order'));
+mergeEndpoint(orderPaths, crudEndpoints.getByIdAuth('/api/orders/{id}', OrderSchemas.Order, OrderSchemas.Order));
 orderRouter.get('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOne);
 
-mergeEndpoint(orderPaths, crudEndpoints.createAuth('/api/orders', 'OrderRequest', 'Order', 'Order'));
+mergeEndpoint(
+  orderPaths,
+  crudEndpoints.createAuth('/api/orders', OrderSchemas.OrderRequest, OrderSchemas.Order, OrderSchemas.Order)
+);
 orderRouter.post('/', sanitizeMongoQuery, verifyToken, sanitizeOrderInput, add);
 
-mergeEndpoint(orderPaths, crudEndpoints.updateAuth('/api/orders/{id}', 'OrderRequest', 'Order', 'Order'));
+mergeEndpoint(
+  orderPaths,
+  crudEndpoints.updateAuth('/api/orders/{id}', OrderSchemas.OrderRequest, OrderSchemas.Order, OrderSchemas.Order)
+);
 orderRouter.put('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, sanitizeOrderInput, update);
 
 const statusEndpoints = [
@@ -105,10 +112,10 @@ statusEndpoints.forEach(({ path, summary, description }) => {
     createEndpoint(path, 'patch')
       .summary(summary)
       .description(description)
-      .tags(['Order'])
+      .tags([OrderSchemas.Order])
       .security([{ bearerAuth: [] }])
       .parameters([parameterTemplates.idParam])
-      .successResponse('Order')
+      .successResponse(OrderSchemas.Order)
       .build()
   );
 });
@@ -117,14 +124,14 @@ mergeEndpoint(
   orderPaths,
   createEndpoint('/api/orders/{id}/review', 'patch')
     .summary('Review an order')
-    .tags(['Order'])
+    .tags([OrderSchemas.Order])
     .security([{ bearerAuth: [] }])
     .parameters([parameterTemplates.idParam])
     .requestBody('OrderReviewRequest')
-    .crudUpdateResponse('Order')
+    .crudUpdateResponse(OrderSchemas.Order)
     .build()
 );
 orderRouter.patch('/:id/review', sanitizeMongoQuery, verifyToken, sanitizeOrderReviewInput, review);
 
-mergeEndpoint(orderPaths, crudEndpoints.deleteAuth('/api/orders/{id}', 'Order'));
+mergeEndpoint(orderPaths, crudEndpoints.deleteAuth('/api/orders/{id}', OrderSchemas.Order));
 orderRouter.delete('/:id', sanitizeMongoQuery, verifyToken, verifyAdminRole, remove);
