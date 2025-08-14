@@ -20,7 +20,7 @@ import { imagePaths, imageRouter } from './components/image/image.routes.js';
 
 dotenv.config();
 
-const app = express();
+export const app = express();
 
 const allowedOrigins = ['http://localhost:4200', 'http://localhost:9876'];
 app.use(

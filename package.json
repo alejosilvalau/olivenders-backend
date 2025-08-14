@@ -8,9 +8,9 @@
     "build": "npx tsc -p ./tsconfig.json",
     "start": "node dist/index.js",
     "start:dev": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"fnm exec node dist/index.js\"",
-    "test": "fnm exec cross-env NODE_OPTIONS=--experimental-vm-modules jest --forceExit",
-    "test:coverage": "fnm exec cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage",
-    "test:watch": "fnm exec cross-env NODE_OPTIONS=--experimental-vm-modules jest --watch",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --forceExit",
+    "test:coverage": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage",
+    "test:watch": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --watch",
     "docker:start": "docker build -t olivenders-backend . && docker run --name olivenders-backend-container -d -p 3000:3000 olivenders-backend",
     "docker:stop": "docker stop olivenders-backend-container && docker rm -f olivenders-backend-container",
     "docker:stop-remove": "docker stop olivenders-backend-container || true && docker rm -f olivenders-backend-container || true && docker rmi -f olivenders-backend || true"
