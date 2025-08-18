@@ -6,8 +6,8 @@ const api = supertest(app);
 describe('Wizard Login Endpoint', () => {
   test('Nonexistent user', async () => {
     const wizard = {
-      username: 'notexist', // at least 6 chars
-      password: 'Abc123#', // meets all requirements
+      username: 'notexist', // a username that does not exist in the DB
+      password: 'Abc123#', // valid format, but user does not exist
     };
     const response = await api.post('/api/wizards/login').send(wizard).expect(404);
     expect(response.body).toHaveProperty('message', 'Wizard not found');
@@ -16,7 +16,7 @@ describe('Wizard Login Endpoint', () => {
 
   test('Incorrect password', async () => {
     const wizard = {
-      username: 'dracomalfoy', // use a real username from your DB
+      username: 'dracomalfoy', // real username from your DB
       password: 'Wrong123#', // valid format, but wrong password
     };
     const response = await api.post('/api/wizards/login').send(wizard).expect(401);
@@ -26,7 +26,7 @@ describe('Wizard Login Endpoint', () => {
 
   test('Successful login', async () => {
     const wizard = {
-      username: 'dracomalfoy', // use a real username from your DB
+      username: 'dracomalfoy', // real username from your DB
       password: 'Expelio123#@@', // correct password for that user
     };
     const response = await api.post('/api/wizards/login').send(wizard).expect(200);
