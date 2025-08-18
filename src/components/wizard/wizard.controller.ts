@@ -124,6 +124,7 @@ async function add(req: Request, res: Response) {
 
     input.name = input.name.toLowerCase();
     input.email = input.email.toLowerCase();
+    input.last_name = input.last_name.toLowerCase();
 
     const hashRounds = 10;
     input.password = await bcrypt.hash(input.password, hashRounds);
@@ -206,6 +207,7 @@ async function update(req: Request, res: Response) {
 
     input.name = input.name.toLowerCase();
     input.email = input.email.toLowerCase();
+    input.last_name = input.last_name.toLowerCase();
 
     const hashRounds = 10;
     input.password = await bcrypt.hash(input.password, hashRounds);
