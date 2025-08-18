@@ -21,8 +21,8 @@ import { imagePaths, imageRouter } from './components/image/image.routes.js';
 dotenv.config();
 
 export const app = express();
-
-const allowedOrigins = ['http://localhost:4200', 'http://localhost:9876'];
+const DEFAULT_PORT = process.env.DEFAULT_PORT || 3000;
+const allowedOrigins = ['http://localhost:4200', 'http://localhost:9876', `http://localhost:${DEFAULT_PORT}`];
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -47,7 +47,7 @@ const swaggerOptions = {
       contact: {
         name: 'Olivenders Team',
       },
-      servers: [{ url: process.env.API_URL || `http://localhost:${process.env.DEFAULT_PORT}` }],
+      servers: [{ url: `http://localhost:${DEFAULT_PORT}` }],
     },
     paths: {
       ...orderPaths,
@@ -97,8 +97,8 @@ async function startServer() {
       console.log('Database schema synchronized successfully');
     }
 
-    app.listen(process.env.DEFAULT_PORT, () => {
-      console.log(`Server is listening to port ${process.env.DEFAULT_PORT}`);
+    app.listen(DEFAULT_PORT, () => {
+      console.log(`Server is listening to port ${DEFAULT_PORT}`);
     });
   } catch (error) {
     console.error('Error during server startup:', error);
