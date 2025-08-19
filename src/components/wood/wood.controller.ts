@@ -101,6 +101,7 @@ async function update(req: Request, res: Response) {
           }
         }
       }
+
       await transactionalEM.flush();
     });
 
