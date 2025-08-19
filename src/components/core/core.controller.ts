@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 import { paginateEntity } from '../../shared/db/paginateEntity.js';
+import { WandStatus } from '../wand/wand.entity.js';
 
 const em = orm.em;
 
@@ -80,9 +81,26 @@ async function update(req: Request, res: Response) {
     const input = req.body.sanitizedInput;
     input.name = input.name.toLowerCase();
 
-    const coreToUpdate = await em.findOneOrFail(Core, { id });
-    em.assign(coreToUpdate, input);
-    await em.flush();
+    let coreToUpdate: Core | null = null;
+
+    await em.transactional(async transactionalEM => {
+      coreToUpdate = await transactionalEM.findOneOrFail(Core, { id }, { populate: ['wands', 'wands.wood'] });
+
+      const oldPrice = coreToUpdate.price;
+      const newPrice = input.price;
+
+      transactionalEM.assign(coreToUpdate, input);
+
+      if (oldPrice !== newPrice) {
+        for (const wand of coreToUpdate.wands) {
+          if (wand.wood && wand.status === WandStatus.Available) {
+            wand.total_price = wand.wood.price + newPrice + wand.profit;
+            transactionalEM.persist(wand);
+          }
+        }
+      }
+      await transactionalEM.flush();
+    });
 
     res.status(200).json({ message: 'Core updated', data: coreToUpdate });
   } catch (error: any) {

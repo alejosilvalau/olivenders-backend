@@ -5,6 +5,7 @@ import { Wood } from './wood.entity.js';
 import { objectIdSchema } from '../../shared/db/objectIdSchema.js';
 import { sanitizeInput } from '../../shared/db/sanitizeInput.js';
 import { paginateEntity } from '../../shared/db/paginateEntity.js';
+import { WandStatus } from '../wand/wand.entity.js';
 
 const em = orm.em;
 
@@ -82,9 +83,27 @@ async function update(req: Request, res: Response) {
     input.name = input.name.toLowerCase();
     input.binomial_name = input.binomial_name.toLowerCase();
 
-    const woodToUpdate = await em.findOneOrFail(Wood, { id });
-    em.assign(woodToUpdate, input);
-    await em.flush();
+    let woodToUpdate: Wood | null = null;
+
+    await em.transactional(async transactionalEM => {
+      woodToUpdate = await transactionalEM.findOneOrFail(Wood, { id }, { populate: ['wands', 'wands.core'] });
+
+      const oldPrice = woodToUpdate.price;
+      const newPrice = input.price;
+
+      transactionalEM.assign(woodToUpdate, input);
+
+      if (oldPrice !== newPrice) {
+        for (const wand of woodToUpdate.wands) {
+          if (wand.core && wand.status === WandStatus.Available) {
+            wand.total_price = newPrice + wand.core.price + wand.profit;
+            transactionalEM.persist(wand);
+          }
+        }
+      }
+      await transactionalEM.flush();
+    });
+
     res.status(200).json({ message: 'Wood updated', data: woodToUpdate });
   } catch (error: any) {
     if (error.name === 'NotFoundError') {
