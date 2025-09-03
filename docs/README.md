@@ -49,11 +49,13 @@ Crear un archivo `.env` en la raíz del proyecto y agregar las credenciales
 
 ```env
 DEFAULT_PORT=3000
+FRONTEND_URL=http://localhost:4200
 MONGO_URL=mongodb+srv://usuario:contraseña@host/
 NODE_ENV=development
 ```
 
-Es necesario cambiar **usuario**, **contraseña** y **host** por su proveedor de MongoDB
+- Es necesario cambiar el `http://localhost:4200` a uno proveeido por su servidor backend si usted desea hacer un despliegue de la aplicación a producción
+- Es necesario cambiar **usuario**, **contraseña** y **host** por su proveedor de MongoDB
 
 #### Configuración de OpenAI
 
