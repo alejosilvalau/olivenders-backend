@@ -24,7 +24,6 @@ export const app = express();
 const DEFAULT_PORT = process.env.DEFAULT_PORT || 3000;
 const allowedOrigins = [
   'http://localhost:4200',
-  'http://localhost:9876',
   'http://localhost:8080',
   `http://localhost:${DEFAULT_PORT}`,
   process.env.FRONTEND_URL,
