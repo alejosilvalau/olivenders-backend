@@ -21,7 +21,7 @@ import { imagePaths, imageRouter } from './components/image/image.routes.js';
 dotenv.config();
 
 export const app = express();
-const DEFAULT_PORT = process.env.DEFAULT_PORT || 3000;
+const DEFAULT_PORT = process.env.DEFAULT_PORT || 8080;
 const allowedOrigins = [
   'http://localhost:4200',
   'http://localhost:8080',
