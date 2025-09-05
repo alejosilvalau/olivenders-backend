@@ -1,5 +1,7 @@
 # Bienvenido a la Documentación del Backend de Olivenders
 
+**⚠️ Nota:** El deploy del sitio está hecho en el tier gratis de Azure, puede tardar un momento en encender al entrar. Refresque la página si es necesario
+
 ## Descripción General
 
 La API REST de Olivenders gestiona todas las operaciones y datos relacionados con la tienda de varitas mágicas. Permite a administradores y usuarios:
