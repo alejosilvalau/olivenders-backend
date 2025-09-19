@@ -23,11 +23,13 @@ dotenv.config();
 export const app = express();
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:4200';
 const DEFAULT_PORT = process.env.DEFAULT_PORT || 8080;
+const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8080';
 const allowedOrigins = [
   'http://localhost:4200',
   'http://localhost:8080',
   `http://localhost:${DEFAULT_PORT}`,
   FRONTEND_URL,
+  BACKEND_URL,
 ];
 app.use(
   cors({
@@ -53,7 +55,7 @@ const swaggerOptions = {
       contact: {
         name: 'Olivenders Team',
       },
-      servers: [{ url: `http://localhost:${DEFAULT_PORT}` }, { url: process.env.BACKEND_URL }],
+      servers: [{ url: `http://localhost:${DEFAULT_PORT}` }, { url: BACKEND_URL }],
     },
     paths: {
       ...orderPaths,
