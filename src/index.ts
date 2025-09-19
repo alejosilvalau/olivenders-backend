@@ -53,7 +53,7 @@ const swaggerOptions = {
       contact: {
         name: 'Olivenders Team',
       },
-      servers: [{ url: `http://localhost:${DEFAULT_PORT}` }, { url: FRONTEND_URL }],
+      servers: [{ url: `http://localhost:${DEFAULT_PORT}` }, { url: process.env.BACKEND_URL }],
     },
     paths: {
       ...orderPaths,
