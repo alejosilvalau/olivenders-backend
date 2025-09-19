@@ -39,7 +39,7 @@ async function findOne(req: Request, res: Response, next: NextFunction) {
 
 async function findOneByName(req: Request, res: Response) {
   try {
-    const name = req.params.name.toLowerCase();
+    const name = decodeURIComponent(req.params.name);
     const wood = await em.findOneOrFail(Wood, { name });
     res.status(200).json({ message: 'Wood fetched', data: wood });
   } catch (error: any) {

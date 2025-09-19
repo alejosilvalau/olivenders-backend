@@ -56,7 +56,7 @@ async function findOne(req: Request, res: Response) {
 
 async function findOneByName(req: Request, res: Response) {
   try {
-    const name = req.params.name.toLowerCase();
+    const name = decodeURIComponent(req.params.name);
     const wand = await em.findOneOrFail(Wand, { name }, { populate: ['wood', 'core'] });
     res.status(200).json({ message: 'Wand fetched', data: wand });
   } catch (error: any) {
