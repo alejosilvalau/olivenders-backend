@@ -75,7 +75,7 @@ async function findOneByEmail(req: Request, res: Response) {
 
 async function findOneByUsername(req: Request, res: Response) {
   try {
-    const username = decodeURIComponent(req.params.username);
+    const username = decodeURIComponent(req.params.username).toLowerCase();
     const wizard = await em.findOneOrFail(Wizard, { username }, { populate: ['school'] });
     const sanitizedResponse = sanitizeWizardResponse(wizard);
     res.status(200).json({ message: 'Wizard fetched', data: sanitizedResponse });

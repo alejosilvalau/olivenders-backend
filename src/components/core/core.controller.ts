@@ -38,7 +38,7 @@ async function findOne(req: Request, res: Response, next: NextFunction) {
 
 async function findOneByName(req: Request, res: Response) {
   try {
-    const name = decodeURIComponent(req.params.name);
+    const name = decodeURIComponent(req.params.name).toLowerCase();
     const core = await em.findOneOrFail(Core, { name });
     res.status(200).json({ message: 'Core fetched', data: core });
   } catch (error: any) {

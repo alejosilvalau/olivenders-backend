@@ -1,5 +1,5 @@
 ### Get all wands
-GET http://localhost:3000/api/wands?page=1&pageSize=100
+GET http://localhost:8080/api/wands?page=1&pageSize=100
 
 ### Get all wands by core
 GET http://localhost:3000/api/wands/core/686f8a60968a4fc88cf2e75a?page=1&pageSize=5
@@ -12,8 +12,8 @@ GET http://localhost:3000/api/wands/686f8f8fdd25f6850640b77a
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg
 
 ### Get one wand by name
-GET http://localhost:3000/api/wands/name/dragon%20heartstring%20wand
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MjMyMzQ0NiwiZXhwIjoxNzUyMzI3MDQ2fQ.F0jXIxF7xLq6zHzaOtfDNVrjkwiC6F5yaJ5Qv1PSCBg
+GET http://localhost:8080/api/wands/name/mary%20cattermole's%20wand
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1ODM2NzQzMiwiZXhwIjoxNzU4MzcxMDMyfQ.LMfxSCa1qeq7-wPZCpC003IPyKqH2BPKP-Omuwsg7r8
 
 ### Create a new wand
 POST http://localhost:3000/api/wands/

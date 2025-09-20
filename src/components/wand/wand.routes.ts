@@ -58,7 +58,7 @@ mergeEndpoint(
     .successResponse(WandSchemas.Wand)
     .build()
 );
-wandRouter.use('name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOneByName);
+wandRouter.use('/name/:name', sanitizeMongoQuery, verifyToken, verifyAdminRole, findOneByName);
 
 mergeEndpoint(
   wandPaths,

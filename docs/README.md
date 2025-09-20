@@ -52,7 +52,7 @@ Crear un archivo `.env` en la raíz del proyecto y agregar las credenciales
 ```env
 DEFAULT_PORT=3000
 FRONTEND_URL=http://localhost:4200
-MONGO_URL=mongodb+srv://usuario:contraseña@host/
+MONGO_URL=mongodb+srv://usuario:contraseña@host
 NODE_ENV=development
 ```
 

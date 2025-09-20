@@ -7,7 +7,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZ
 
 ### Find a core by name
 GET http://localhost:3000/api/cores/name/veela%20hair
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzUyMzIyMDE3LCJleHAiOjE3NTIzMjU2MTd9.u9qjFXIa4hYnX24gKYxzBuYFcEMsAaa-A4VxLq35TRc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmZhYjMxZTVjMTkyMmZkNzAzMjQ2YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1ODM2MzQ0NSwiZXhwIjoxNzU4MzY3MDQ1fQ.AJmnoG_-PDXj7LvANwNy3fCIgypa2ybKC3QBomWig28
 
 ### Create a new core
 POST http://localhost:3000/api/cores/

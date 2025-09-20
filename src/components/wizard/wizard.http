@@ -40,12 +40,12 @@ Content-Type: application/json
 }
 
 ### Login to a wizard account
-POST http://localhost:3000/api/wizards/login/
+POST http://localhost:8080/api/wizards/login/
 Content-Type: application/json
 
 {
   "username": "dracomalfoy",
-  "password": "Expelio123#@@"
+  "password": "Expelio123#@@%%"
 }
 
 ### Validate a wizard's password
